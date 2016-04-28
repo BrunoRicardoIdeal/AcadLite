@@ -8,7 +8,8 @@ uses
   System.Actions, Vcl.ActnList, Data.DB, Vcl.Grids, Vcl.DBGrids, Vcl.DBCtrls,
   Vcl.Mask, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
-  FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client;
+  FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client,
+  Vcl.ComCtrls;
 
 type
   TfrmLancamentos = class(TForm)
@@ -57,6 +58,13 @@ type
     qryTipoLancdescricao: TStringField;
     dsTipoLanc: TDataSource;
     chkExcluidos: TCheckBox;
+    qryLancdt_exclusao: TDateTimeField;
+    edtDtExclusao: TDBEdit;
+    Label3: TLabel;
+    chkHabDtVenc: TCheckBox;
+    dtVencIni: TDateTimePicker;
+    dtVencFim: TDateTimePicker;
+    e: TLabel;
     procedure acNovoExecute(Sender: TObject);
     procedure acEditarExecute(Sender: TObject);
     procedure acGravarExecute(Sender: TObject);
@@ -67,6 +75,8 @@ type
     procedure qryLancAfterClose(DataSet: TDataSet);
     procedure qryLanccod_tipo_lancChange(Sender: TField);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure chkHabDtVencClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
   public
@@ -127,7 +137,7 @@ begin
     btnGravar.Enabled := False;
     btnCancelar.Enabled := False;
     qryLanc.Edit;
-    qryLancdt_lanc.AsDateTime := now;
+    qryLancdt_exclusao.AsDateTime := now;
     qryLanc.Post;
     qryLanc.Refresh;
    end;
@@ -170,15 +180,71 @@ end;
 
 procedure TfrmLancamentos.acPesquisarExecute(Sender: TObject);
 begin
-qryLanc.Close();
-qryLanc.Open();
+ qryLanc.Close();
+ qryLanc.SQL.Clear;
+ qryLanc.SQL.Add('select l.cod_lanc');
+ qryLanc.SQL.Add('       ,l.descricao');
+ qryLanc.SQL.Add('       ,l.dt_lanc');
+ qryLanc.SQL.Add('       ,l.dt_vencimento');
+ qryLanc.SQL.Add('       ,l.dt_exclusao');
+ qryLanc.SQL.Add('       ,l.cod_tipo_lanc');
+ qryLanc.SQL.Add('       ,tl.descricao tipo_lanc_desc');
+ qryLanc.SQL.Add('       ,tl.categoria');
+ qryLanc.SQL.Add('from lancamentos l , tipos_lancamentos tl');
+ qryLanc.SQL.Add('where l.cod_tipo_lanc = tl.cod_tipo_lanc');
+ if lblEdtCod.Text <> '' then
+ begin
+   qryLanc.SQL.Add('AND l.cod_lanc = :cod_lanc');
+   qryLanc.ParamByName('cod_lanc').AsString := lblEdtCod.Text;
+ end;
+ if lblEdtDesc.Text <> '' then
+ begin
+   qryLanc.SQL.Add('AND LOWER(l.descricao)  LIKE '+ QuotedStr('%' + LowerCase(lblEdtDesc.Text)+'%') );
+ end;
+ if cbCategoria.ItemIndex > 0 then
+ begin
+  qryLanc.SQL.Add('AND LOWER(tl.categoria) = ' + LowerCase(QuotedStr(cbCategoria.Text)));
+ end;
+ if chkHabDtVenc.Checked then
+ begin
+   qryLanc.SQL.Add('and l.dt_vencimento between :dtini and :dtfim');
+   qryLanc.ParamByName('dtini').AsDate := dtVencIni.Date;
+   qryLanc.ParamByName('dtfim').AsDate := dtVencFim.Date;
+ end;
+ if chkExcluidos.Checked then
+ begin
+  qryLanc.SQL.Add('and l.dt_exclusao is not null');
+ end
+ else
+ begin
+  qryLanc.SQL.Add('and l.dt_exclusao is null');
+ end;
+ qryLanc.Open();
+ if qryLanc.IsEmpty then
+ begin
+   ShowMessage('Nada encontrado');
+   Exit;
+ end;
 
+
+end;
+
+procedure TfrmLancamentos.chkHabDtVencClick(Sender: TObject);
+begin
+ dtVencIni.Enabled := chkHabDtVenc.Checked;
+ dtVencFim.Enabled := chkHabDtVenc.Checked;
 end;
 
 procedure TfrmLancamentos.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
  frmLancamentos := nil;
  Action := caFree;
+end;
+
+procedure TfrmLancamentos.FormShow(Sender: TObject);
+begin
+ dtVencIni.Date := date;
+ dtVencFim.Date := date;
 end;
 
 procedure TfrmLancamentos.qryLancAfterClose(DataSet: TDataSet);

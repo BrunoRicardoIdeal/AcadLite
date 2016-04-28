@@ -81,7 +81,7 @@ object frmTiposLanc: TfrmTiposLanc
       Width = 75
       Height = 25
       Action = acPesquisar
-      TabOrder = 2
+      TabOrder = 3
     end
     object cbCategoria: TComboBox
       Left = 436
@@ -90,7 +90,7 @@ object frmTiposLanc: TfrmTiposLanc
       Height = 22
       Style = csOwnerDrawFixed
       ItemIndex = 0
-      TabOrder = 3
+      TabOrder = 2
       Text = 'Todas'
       Items.Strings = (
         'Todas'

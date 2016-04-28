@@ -4,7 +4,8 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Menus;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Menus,
+  Vcl.Imaging.pngimage;
 
 type
   TfrmPrinc = class(TForm)
@@ -13,6 +14,7 @@ type
     btnEquip: TButton;
     btnTpLanc: TButton;
     Button1: TButton;
+    imgFundo: TImage;
     procedure btnPessoasClick(Sender: TObject);
     procedure btnEquipClick(Sender: TObject);
     procedure btnTpLancClick(Sender: TObject);

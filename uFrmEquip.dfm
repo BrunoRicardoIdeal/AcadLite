@@ -81,7 +81,7 @@ object frmEquip: TfrmEquip
       Width = 75
       Height = 25
       Action = acPesquisar
-      TabOrder = 2
+      TabOrder = 3
     end
     object cbTipo: TComboBox
       Left = 409
@@ -90,7 +90,7 @@ object frmEquip: TfrmEquip
       Height = 22
       Style = csOwnerDrawFixed
       ItemIndex = 0
-      TabOrder = 3
+      TabOrder = 2
       Text = 'Todos'
       Items.Strings = (
         'Todos'

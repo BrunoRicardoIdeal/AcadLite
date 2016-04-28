@@ -14,48 +14,56 @@ object frmLancamentos: TfrmLancamentos
   OldCreateOrder = False
   Position = poScreenCenter
   OnClose = FormClose
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object lblCodpes: TLabel
     Left = 40
-    Top = 396
+    Top = 436
     Width = 33
-    Height = 14
+    Height = 13
     Caption = 'C'#243'digo'
   end
   object Label5: TLabel
     Left = 164
-    Top = 396
+    Top = 436
     Width = 44
-    Height = 14
+    Height = 13
     Caption = 'Dt. Lanc.'
   end
   object lblDesc: TLabel
     Left = 27
-    Top = 423
+    Top = 463
     Width = 46
-    Height = 14
+    Height = 13
     Caption = 'Descri'#231#227'o'
   end
   object Label1: TLabel
     Left = 24
-    Top = 368
+    Top = 408
     Width = 49
     Height = 13
     Caption = 'Tipo Lanc.'
   end
   object Label2: TLabel
     Left = 3
-    Top = 450
+    Top = 490
     Width = 70
-    Height = 14
+    Height = 13
     Caption = 'Dt.Vencimento'
+  end
+  object Label3: TLabel
+    Left = 362
+    Top = 436
+    Width = 57
+    Height = 13
+    Caption = 'Dt.Exclus'#227'o'
   end
   object GroupBox1: TGroupBox
     Left = 0
     Top = 0
     Width = 800
-    Height = 113
+    Height = 161
     Align = alTop
     Caption = 'Pesquisa'
     TabOrder = 0
@@ -65,6 +73,13 @@ object frmLancamentos: TfrmLancamentos
       Width = 47
       Height = 13
       Caption = 'Categoria'
+    end
+    object e: TLabel
+      Left = 273
+      Top = 107
+      Width = 6
+      Height = 13
+      Caption = 'e'
     end
     object lblEdtCod: TLabeledEdit
       Left = 56
@@ -90,12 +105,12 @@ object frmLancamentos: TfrmLancamentos
       TabOrder = 1
     end
     object btnPsq: TButton
-      Left = 54
-      Top = 82
+      Left = 56
+      Top = 129
       Width = 75
       Height = 25
       Action = acPesquisar
-      TabOrder = 2
+      TabOrder = 7
     end
     object cbCategoria: TComboBox
       Left = 436
@@ -104,7 +119,7 @@ object frmLancamentos: TfrmLancamentos
       Height = 22
       Style = csOwnerDrawFixed
       ItemIndex = 0
-      TabOrder = 3
+      TabOrder = 2
       Text = 'Todas'
       Items.Strings = (
         'Todas'
@@ -112,12 +127,41 @@ object frmLancamentos: TfrmLancamentos
         'Receita')
     end
     object chkExcluidos: TCheckBox
-      Left = 164
-      Top = 32
-      Width = 97
+      Left = 56
+      Top = 82
+      Width = 117
       Height = 17
-      Caption = 'Exclu'#237'dos'
+      Caption = 'Somente Exclu'#237'dos'
+      TabOrder = 3
+    end
+    object chkHabDtVenc: TCheckBox
+      Left = 56
+      Top = 105
+      Width = 123
+      Height = 17
+      Caption = 'Dt. Vencimento entre'
       TabOrder = 4
+      OnClick = chkHabDtVencClick
+    end
+    object dtVencIni: TDateTimePicker
+      Left = 185
+      Top = 102
+      Width = 83
+      Height = 21
+      Date = 42487.935495578710000000
+      Time = 42487.935495578710000000
+      Enabled = False
+      TabOrder = 5
+    end
+    object dtVencFim: TDateTimePicker
+      Left = 287
+      Top = 102
+      Width = 83
+      Height = 21
+      Date = 42487.935495578710000000
+      Time = 42487.935495578710000000
+      Enabled = False
+      TabOrder = 6
     end
   end
   object pnlBotoes: TPanel
@@ -177,9 +221,9 @@ object frmLancamentos: TfrmLancamentos
   end
   object grLanc: TDBGrid
     Left = 0
-    Top = 113
+    Top = 161
     Width = 800
-    Height = 240
+    Height = 238
     Align = alTop
     DataSource = dsLanc
     Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
@@ -228,13 +272,20 @@ object frmLancamentos: TfrmLancamentos
         Title.Caption = 'Tipo'
         Width = 300
         Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'dt_exclusao'
+        Title.Caption = 'Dt. Exclus'#227'o'
+        Width = 120
+        Visible = True
       end>
   end
   object edtCodLanc: TDBEdit
     Left = 79
-    Top = 393
+    Top = 433
     Width = 73
-    Height = 22
+    Height = 21
     DataField = 'cod_lanc'
     DataSource = dsLanc
     Enabled = False
@@ -242,9 +293,9 @@ object frmLancamentos: TfrmLancamentos
   end
   object edtDtLanc: TDBEdit
     Left = 214
-    Top = 393
+    Top = 433
     Width = 127
-    Height = 22
+    Height = 21
     DataField = 'dt_lanc'
     DataSource = dsLanc
     Enabled = False
@@ -252,16 +303,16 @@ object frmLancamentos: TfrmLancamentos
   end
   object edtDescricao: TDBEdit
     Left = 79
-    Top = 420
+    Top = 460
     Width = 472
-    Height = 22
+    Height = 21
     DataField = 'descricao'
     DataSource = dsLanc
     TabOrder = 5
   end
   object dbRgCat: TDBRadioGroup
     Left = 557
-    Top = 368
+    Top = 408
     Width = 86
     Height = 74
     Caption = 'Categoria'
@@ -275,16 +326,16 @@ object frmLancamentos: TfrmLancamentos
   end
   object edtDtVenc: TDBEdit
     Left = 79
-    Top = 447
+    Top = 487
     Width = 90
-    Height = 22
+    Height = 21
     DataField = 'dt_vencimento'
     DataSource = dsLanc
     TabOrder = 7
   end
   object cbLkpTipoLanc: TDBLookupComboBox
     Left = 79
-    Top = 365
+    Top = 405
     Width = 472
     Height = 21
     DataField = 'cod_tipo_lanc'
@@ -293,6 +344,16 @@ object frmLancamentos: TfrmLancamentos
     ListField = 'descricao'
     ListSource = dsTipoLanc
     TabOrder = 8
+  end
+  object edtDtExclusao: TDBEdit
+    Left = 425
+    Top = 433
+    Width = 126
+    Height = 21
+    DataField = 'dt_exclusao'
+    DataSource = dsLanc
+    Enabled = False
+    TabOrder = 9
   end
   object AcList: TActionList
     Left = 384
@@ -331,6 +392,7 @@ object frmLancamentos: TfrmLancamentos
       '      ,l.descricao'
       '      ,l.dt_lanc'
       '      ,l.dt_vencimento'
+      '      ,l.dt_exclusao'
       '      ,l.cod_tipo_lanc'
       '      ,tl.descricao tipo_lanc_desc'
       '      ,tl.categoria'
@@ -383,6 +445,11 @@ object frmLancamentos: TfrmLancamentos
       ProviderFlags = []
       Size = 15
     end
+    object qryLancdt_exclusao: TDateTimeField
+      AutoGenerateValue = arDefault
+      FieldName = 'dt_exclusao'
+      Origin = 'dt_exclusao'
+    end
   end
   object dsLanc: TDataSource
     AutoEdit = False
@@ -401,6 +468,7 @@ object frmLancamentos: TfrmLancamentos
       FieldName = 'cod_tipo_lanc'
       Origin = 'cod_tipo_lanc'
       ProviderFlags = [pfInWhere, pfInKey]
+      ReadOnly = True
     end
     object qryTipoLancdescricao: TStringField
       AutoGenerateValue = arDefault
