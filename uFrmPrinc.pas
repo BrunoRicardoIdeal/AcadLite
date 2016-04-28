@@ -13,12 +13,14 @@ type
     btnPessoas: TButton;
     btnEquip: TButton;
     btnTpLanc: TButton;
-    Button1: TButton;
+    btnLancamentos: TButton;
     imgFundo: TImage;
+    btnRelatorios: TButton;
     procedure btnPessoasClick(Sender: TObject);
     procedure btnEquipClick(Sender: TObject);
     procedure btnTpLancClick(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
+    procedure btnLancamentosClick(Sender: TObject);
+    procedure btnRelatoriosClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -29,7 +31,8 @@ var
   frmPrinc: TfrmPrinc;
 
 implementation
-    uses ufrmPessoas,uFrmEquip, uFrmTipoLanc, uFrmLancamentos;
+    uses ufrmPessoas,uFrmEquip
+    ,uFrmTipoLanc, uFrmLancamentos, uFrmRelatorios;
 {$R *.dfm}
 
 procedure TfrmPrinc.btnEquipClick(Sender: TObject);
@@ -50,6 +53,15 @@ begin
  frmPessoas.Show;
 end;
 
+procedure TfrmPrinc.btnRelatoriosClick(Sender: TObject);
+begin
+  if frmRelatorios = nil then
+  begin
+   Application.CreateForm(TfrmRelatorios,frmRelatorios);
+  end;
+  frmRelatorios.Show;
+end;
+
 procedure TfrmPrinc.btnTpLancClick(Sender: TObject);
 begin
  if frmTiposLanc = nil then
@@ -59,7 +71,7 @@ begin
  frmTiposLanc.Show;
 end;
 
-procedure TfrmPrinc.Button1Click(Sender: TObject);
+procedure TfrmPrinc.btnLancamentosClick(Sender: TObject);
 begin
  if frmLancamentos = nil then
  begin

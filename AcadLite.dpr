@@ -9,7 +9,8 @@ uses
   Vcl.Styles,
   uFrmEquip in 'uFrmEquip.pas' {frmEquip},
   uFrmTipoLanc in 'uFrmTipoLanc.pas' {frmTiposLanc},
-  uFrmLancamentos in 'uFrmLancamentos.pas' {frmLancamentos};
+  uFrmLancamentos in 'uFrmLancamentos.pas' {frmLancamentos},
+  uFrmRelatorios in 'uFrmRelatorios.pas' {frmRelatorios};
 
 {$R *.res}
 
@@ -22,5 +23,6 @@ begin
   Application.CreateForm(TfrmEquip, frmEquip);
   Application.CreateForm(TfrmTiposLanc, frmTiposLanc);
   Application.CreateForm(TfrmLancamentos, frmLancamentos);
+  Application.CreateForm(TfrmRelatorios, frmRelatorios);
   Application.Run;
 end.

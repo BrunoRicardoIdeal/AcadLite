@@ -183,7 +183,7 @@ object frmPrinc: TfrmPrinc
       TabOrder = 2
       OnClick = btnTpLancClick
     end
-    object Button1: TButton
+    object btnLancamentos: TButton
       Left = 1
       Top = 151
       Width = 143
@@ -191,7 +191,19 @@ object frmPrinc: TfrmPrinc
       Align = alTop
       Caption = 'Lan'#231'amentos'
       TabOrder = 3
-      OnClick = Button1Click
+      OnClick = btnLancamentosClick
+    end
+    object btnRelatorios: TButton
+      Left = 1
+      Top = 201
+      Width = 143
+      Height = 50
+      Align = alTop
+      Caption = 'Relat'#243'rios'
+      TabOrder = 4
+      OnClick = btnRelatoriosClick
+      ExplicitLeft = -15
+      ExplicitTop = 257
     end
   end
 end
