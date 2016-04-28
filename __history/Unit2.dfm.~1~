@@ -1,0 +1,69 @@
+object frmPessoas: TfrmPessoas
+  Left = 0
+  Top = 0
+  Caption = 'Pessoas'
+  ClientHeight = 697
+  ClientWidth = 600
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object GroupBox1: TGroupBox
+    Left = 0
+    Top = 0
+    Width = 600
+    Height = 113
+    Align = alTop
+    Caption = 'Pesquisa'
+    TabOrder = 0
+    object lblEdtCod: TLabeledEdit
+      Left = 56
+      Top = 28
+      Width = 73
+      Height = 21
+      EditLabel.Width = 33
+      EditLabel.Height = 13
+      EditLabel.Caption = 'C'#243'digo'
+      LabelPosition = lpLeft
+      NumbersOnly = True
+      TabOrder = 0
+    end
+    object lblEdtNome: TLabeledEdit
+      Left = 56
+      Top = 55
+      Width = 321
+      Height = 21
+      EditLabel.Width = 27
+      EditLabel.Height = 13
+      EditLabel.Caption = 'Nome'
+      LabelPosition = lpLeft
+      NumbersOnly = True
+      TabOrder = 1
+    end
+    object Button1: TButton
+      Left = 54
+      Top = 82
+      Width = 75
+      Height = 25
+      Caption = 'Pesquisar'
+      TabOrder = 2
+    end
+  end
+  object DBGrid1: TDBGrid
+    Left = 448
+    Top = 328
+    Width = 320
+    Height = 120
+    TabOrder = 1
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -11
+    TitleFont.Name = 'Tahoma'
+    TitleFont.Style = []
+  end
+end

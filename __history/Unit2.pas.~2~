@@ -1,0 +1,41 @@
+unit Unit2;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.Grids, Vcl.DBGrids,
+  Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Mask, Vcl.DBCtrls;
+
+type
+  TfrmPessoas = class(TForm)
+    GroupBox1: TGroupBox;
+    lblEdtCod: TLabeledEdit;
+    lblEdtNome: TLabeledEdit;
+    btnPsq: TButton;
+    grdPessoas: TDBGrid;
+    pnlBotoes: TPanel;
+    btnNovo: TButton;
+    btnExcluir: TButton;
+    btnCancelar: TButton;
+    btnEditar: TButton;
+    edtCodPes: TDBEdit;
+    lblCodpes: TLabel;
+    edtNome: TDBEdit;
+    lblNome: TLabel;
+    DBEdit1: TDBEdit;
+    Label1: TLabel;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmPessoas: TfrmPessoas;
+
+implementation
+
+{$R *.dfm}
+
+end.

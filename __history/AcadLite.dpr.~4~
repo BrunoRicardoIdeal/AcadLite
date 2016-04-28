@@ -1,0 +1,18 @@
+program AcadLite;
+
+uses
+  Vcl.Forms,
+  uFrmPrinc in 'uFrmPrinc.pas' {Form1},
+  uFrmPessoas in 'uFrmPessoas.pas' {frmPessoas},
+  uDmPrincipal in 'uDmPrincipal.pas' {dmPrincipal: TDataModule};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TForm1, Form1);
+  Application.CreateForm(TfrmPessoas, frmPessoas);
+  Application.CreateForm(TdmPrincipal, dmPrincipal);
+  Application.Run;
+end.

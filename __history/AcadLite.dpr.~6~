@@ -1,0 +1,20 @@
+program AcadLite;
+
+uses
+  Vcl.Forms,
+  uFrmPrinc in 'uFrmPrinc.pas' {frmPrinc},
+  uFrmPessoas in 'uFrmPessoas.pas' {frmPessoas},
+  uDmPrincipal in 'uDmPrincipal.pas' {dmPrincipal: TDataModule},
+  Vcl.Themes,
+  Vcl.Styles;
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  TStyleManager.TrySetStyle('Tablet Light');
+  Application.CreateForm(TdmPrincipal, dmPrincipal);
+  Application.CreateForm(TfrmPrinc, frmPrinc);
+  Application.Run;
+end.

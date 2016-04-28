@@ -1,0 +1,169 @@
+object frmPessoas: TfrmPessoas
+  Left = 0
+  Top = 0
+  Caption = 'Pessoas'
+  ClientHeight = 697
+  ClientWidth = 600
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object lblCodpes: TLabel
+    Left = 19
+    Top = 371
+    Width = 33
+    Height = 13
+    Caption = 'C'#243'digo'
+  end
+  object lblNome: TLabel
+    Left = 17
+    Top = 398
+    Width = 27
+    Height = 13
+    Caption = 'Nome'
+  end
+  object Label1: TLabel
+    Left = 17
+    Top = 425
+    Width = 33
+    Height = 13
+    Caption = 'C'#243'digo'
+  end
+  object GroupBox1: TGroupBox
+    Left = 0
+    Top = 0
+    Width = 600
+    Height = 113
+    Align = alTop
+    Caption = 'Pesquisa'
+    TabOrder = 0
+    object lblEdtCod: TLabeledEdit
+      Left = 56
+      Top = 28
+      Width = 73
+      Height = 21
+      EditLabel.Width = 33
+      EditLabel.Height = 13
+      EditLabel.Caption = 'C'#243'digo'
+      LabelPosition = lpLeft
+      NumbersOnly = True
+      TabOrder = 0
+    end
+    object lblEdtNome: TLabeledEdit
+      Left = 56
+      Top = 55
+      Width = 321
+      Height = 21
+      EditLabel.Width = 27
+      EditLabel.Height = 13
+      EditLabel.Caption = 'Nome'
+      LabelPosition = lpLeft
+      NumbersOnly = True
+      TabOrder = 1
+    end
+    object btnPsq: TButton
+      Left = 54
+      Top = 82
+      Width = 75
+      Height = 25
+      Caption = 'Pesquisar'
+      TabOrder = 2
+    end
+  end
+  object grdPessoas: TDBGrid
+    Left = 0
+    Top = 113
+    Width = 600
+    Height = 240
+    Align = alTop
+    TabOrder = 1
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -11
+    TitleFont.Name = 'Tahoma'
+    TitleFont.Style = []
+  end
+  object pnlBotoes: TPanel
+    Left = 0
+    Top = 656
+    Width = 600
+    Height = 41
+    Align = alBottom
+    TabOrder = 2
+    ExplicitLeft = 216
+    ExplicitTop = 352
+    ExplicitWidth = 185
+    object btnNovo: TButton
+      Left = 1
+      Top = 1
+      Width = 75
+      Height = 39
+      Align = alLeft
+      Caption = 'Novo'
+      TabOrder = 0
+      ExplicitTop = 17
+    end
+    object btnExcluir: TButton
+      Left = 226
+      Top = 1
+      Width = 75
+      Height = 39
+      Align = alLeft
+      Caption = 'Excluir'
+      TabOrder = 1
+      ExplicitLeft = 272
+      ExplicitTop = 8
+      ExplicitHeight = 25
+    end
+    object btnCancelar: TButton
+      Left = 151
+      Top = 1
+      Width = 75
+      Height = 39
+      Align = alLeft
+      Caption = 'Cancelar'
+      TabOrder = 2
+      ExplicitLeft = 272
+      ExplicitTop = 8
+      ExplicitHeight = 25
+    end
+    object btnEditar: TButton
+      Left = 76
+      Top = 1
+      Width = 75
+      Height = 39
+      Align = alLeft
+      Caption = 'Editar'
+      TabOrder = 3
+      ExplicitLeft = 272
+      ExplicitTop = 8
+      ExplicitHeight = 25
+    end
+  end
+  object edtCodPes: TDBEdit
+    Left = 56
+    Top = 368
+    Width = 73
+    Height = 21
+    TabOrder = 3
+  end
+  object edtNome: TDBEdit
+    Left = 54
+    Top = 395
+    Width = 323
+    Height = 21
+    TabOrder = 4
+  end
+  object DBEdit1: TDBEdit
+    Left = 54
+    Top = 422
+    Width = 115
+    Height = 21
+    TabOrder = 5
+  end
+end

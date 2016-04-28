@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2016/04/27 00:24:09.000.752,=C:\Users\BrunoRicardo\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2016/04/27 00:27:35.000.182,C:\Users\BrunoRicardo\Documents\Embarcadero\Studio\Projects\AcadLite.dproj=C:\Users\BrunoRicardo\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+    <Transaction>2016/04/27 00:27:45.000.230,C:\Users\BrunoRicardo\Documents\Embarcadero\Studio\Projects\uFrmPrinc.pas=C:\Users\BrunoRicardo\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2016/04/27 00:27:45.000.230,C:\Users\BrunoRicardo\Documents\Embarcadero\Studio\Projects\uFrmPrinc.dfm=C:\Users\BrunoRicardo\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>2016/04/27 00:28:17.000.094,C:\Projetos\AcadLite\uFrmPrinc.dfm=C:\Users\BrunoRicardo\Documents\Embarcadero\Studio\Projects\uFrmPrinc.dfm</Transaction>
+    <Transaction>2016/04/27 00:28:17.000.094,C:\Projetos\AcadLite\uFrmPrinc.pas=C:\Users\BrunoRicardo\Documents\Embarcadero\Studio\Projects\uFrmPrinc.pas</Transaction>
+    <Transaction>2016/04/27 00:28:20.000.073,C:\Projetos\AcadLite\AcadLite.dproj=C:\Users\BrunoRicardo\Documents\Embarcadero\Studio\Projects\AcadLite.dproj</Transaction>
+    <Transaction>2016/04/27 00:28:56.000.266,=C:\Projetos\AcadLite\Unit2.pas</Transaction>
+    <Transaction>2016/04/27 00:43:37.000.138,C:\Projetos\AcadLite\uFrmPessoas.pas=C:\Projetos\AcadLite\Unit2.pas</Transaction>
+    <Transaction>2016/04/27 00:43:37.000.138,C:\Projetos\AcadLite\uFrmPessoas.dfm=C:\Projetos\AcadLite\Unit2.dfm</Transaction>
+    <Transaction>2016/04/27 09:37:22.000.224,=C:\Projetos\AcadLite\Unit1.pas</Transaction>
+    <Transaction>2016/04/27 09:37:58.000.708,C:\Projetos\AcadLite\Unit1.pas=C:\Projetos\AcadLite\uDmPrincipal.pas</Transaction>
+    <Transaction>2016/04/27 09:37:58.000.708,C:\Projetos\AcadLite\Unit1.dfm=C:\Projetos\AcadLite\uDmPrincipal.dfm</Transaction>
+    <Transaction>2016/04/27 12:56:22.000.910,=C:\Projetos\AcadLite\Unit1.pas</Transaction>
+    <Transaction>2016/04/27 12:58:02.000.497,C:\Projetos\AcadLite\Unit1.pas=C:\Projetos\AcadLite\uFrmEquip.pas</Transaction>
+    <Transaction>2016/04/27 12:58:02.000.497,C:\Projetos\AcadLite\Unit1.dfm=C:\Projetos\AcadLite\uFrmEquip.dfm</Transaction>
+    <Transaction>2016/04/27 14:16:40.000.522,=C:\Projetos\AcadLite\Unit1.pas</Transaction>
+    <Transaction>2016/04/27 14:21:09.000.576,C:\Projetos\AcadLite\Unit1.pas=C:\Projetos\AcadLite\uFrmTipoLanc.pas</Transaction>
+    <Transaction>2016/04/27 14:21:09.000.576,C:\Projetos\AcadLite\Unit1.dfm=C:\Projetos\AcadLite\uFrmTipoLanc.dfm</Transaction>
+    <Transaction>2016/04/27 15:42:35.000.812,=C:\Projetos\AcadLite\Unit1.pas</Transaction>
+    <Transaction>2016/04/27 15:43:16.000.909,C:\Projetos\AcadLite\Unit1.dfm=C:\Projetos\AcadLite\uFrmLancamentos.dfm</Transaction>
+    <Transaction>2016/04/27 15:43:16.000.909,C:\Projetos\AcadLite\Unit1.pas=C:\Projetos\AcadLite\uFrmLancamentos.pas</Transaction>
+  </Transactions>
+</BorlandProject>
