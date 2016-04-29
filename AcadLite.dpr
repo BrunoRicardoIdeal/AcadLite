@@ -10,7 +10,10 @@ uses
   uFrmEquip in 'uFrmEquip.pas' {frmEquip},
   uFrmTipoLanc in 'uFrmTipoLanc.pas' {frmTiposLanc},
   uFrmLancamentos in 'uFrmLancamentos.pas' {frmLancamentos},
-  uFrmRelatorios in 'uFrmRelatorios.pas' {frmRelatorios};
+  uFrmRelatorios in 'uFrmRelatorios.pas' {frmRelatorios},
+  uFrmRelPessoas in 'uFrmRelPessoas.pas' {frmRelPessoas},
+  uFrmRelEquip in 'uFrmRelEquip.pas' {frmRelEquip},
+  uFrmRelTpLanc in 'uFrmRelTpLanc.pas' {frmRelTpLanc};
 
 {$R *.res}
 
@@ -20,9 +23,5 @@ begin
   TStyleManager.TrySetStyle('Tablet Light');
   Application.CreateForm(TdmPrincipal, dmPrincipal);
   Application.CreateForm(TfrmPrinc, frmPrinc);
-  Application.CreateForm(TfrmEquip, frmEquip);
-  Application.CreateForm(TfrmTiposLanc, frmTiposLanc);
-  Application.CreateForm(TfrmLancamentos, frmLancamentos);
-  Application.CreateForm(TfrmRelatorios, frmRelatorios);
   Application.Run;
 end.

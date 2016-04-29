@@ -23,9 +23,6 @@ object frmRelatorios: TfrmRelatorios
     Height = 200
     Align = alClient
     TabOrder = 0
-    ExplicitTop = -495
-    ExplicitWidth = 145
-    ExplicitHeight = 695
     object btnPessoas: TButton
       Left = 1
       Top = 1
@@ -34,7 +31,7 @@ object frmRelatorios: TfrmRelatorios
       Align = alTop
       Caption = 'Pessoas'
       TabOrder = 0
-      ExplicitWidth = 143
+      OnClick = btnPessoasClick
     end
     object btnEquip: TButton
       Left = 1
@@ -44,7 +41,7 @@ object frmRelatorios: TfrmRelatorios
       Align = alTop
       Caption = 'Equipamentos'
       TabOrder = 1
-      ExplicitWidth = 143
+      OnClick = btnEquipClick
     end
     object btnTpLanc: TButton
       Left = 1
@@ -54,7 +51,7 @@ object frmRelatorios: TfrmRelatorios
       Align = alTop
       Caption = 'Tipos de Lan'#231'amentos'
       TabOrder = 2
-      ExplicitWidth = 143
+      OnClick = btnTpLancClick
     end
     object Button1: TButton
       Left = 1
@@ -64,7 +61,6 @@ object frmRelatorios: TfrmRelatorios
       Align = alTop
       Caption = 'Lan'#231'amentos'
       TabOrder = 3
-      ExplicitWidth = 143
     end
   end
 end

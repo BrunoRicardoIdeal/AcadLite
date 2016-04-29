@@ -14,6 +14,9 @@ type
     btnTpLanc: TButton;
     Button1: TButton;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure btnPessoasClick(Sender: TObject);
+    procedure btnEquipClick(Sender: TObject);
+    procedure btnTpLancClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -25,7 +28,36 @@ var
 
 implementation
 
+ uses uFrmRelPessoas, uFrmRelEquip,uFrmRelTpLanc;
+
 {$R *.dfm}
+
+procedure TfrmRelatorios.btnEquipClick(Sender: TObject);
+begin
+   if frmRelEquip = nil then
+  begin
+    Application.CreateForm(TfrmRelEquip,frmRelEquip);
+  end;
+  frmRelEquip.Show;
+end;
+
+procedure TfrmRelatorios.btnPessoasClick(Sender: TObject);
+begin
+  if frmRelPessoas = nil then
+  begin
+    Application.CreateForm(TfrmRelPessoas,frmRelPessoas);
+  end;
+  frmRelPessoas.Show;
+end;
+
+procedure TfrmRelatorios.btnTpLancClick(Sender: TObject);
+begin
+  if frmRelTpLanc = nil then
+  begin
+    Application.CreateForm(TfrmRelTpLanc,frmRelTpLanc);
+  end;
+  frmRelTpLanc.Show;
+end;
 
 procedure TfrmRelatorios.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
