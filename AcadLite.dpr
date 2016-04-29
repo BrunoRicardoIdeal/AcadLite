@@ -13,7 +13,8 @@ uses
   uFrmRelatorios in 'uFrmRelatorios.pas' {frmRelatorios},
   uFrmRelPessoas in 'uFrmRelPessoas.pas' {frmRelPessoas},
   uFrmRelEquip in 'uFrmRelEquip.pas' {frmRelEquip},
-  uFrmRelTpLanc in 'uFrmRelTpLanc.pas' {frmRelTpLanc};
+  uFrmRelTpLanc in 'uFrmRelTpLanc.pas' {frmRelTpLanc},
+  uFrmRelLanc in 'uFrmRelLanc.pas' {frmRelLanc};
 
 {$R *.res}
 

@@ -53,7 +53,7 @@ object frmRelatorios: TfrmRelatorios
       TabOrder = 2
       OnClick = btnTpLancClick
     end
-    object Button1: TButton
+    object btnLancamentos: TButton
       Left = 1
       Top = 151
       Width = 198
@@ -61,6 +61,7 @@ object frmRelatorios: TfrmRelatorios
       Align = alTop
       Caption = 'Lan'#231'amentos'
       TabOrder = 3
+      OnClick = btnLancamentosClick
     end
   end
 end

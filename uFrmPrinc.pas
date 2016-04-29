@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Menus,
-  Vcl.Imaging.pngimage;
+  Vcl.Imaging.pngimage, System.Actions, Vcl.ActnList;
 
 type
   TfrmPrinc = class(TForm)
@@ -16,11 +16,18 @@ type
     btnLancamentos: TButton;
     imgFundo: TImage;
     btnRelatorios: TButton;
-    procedure btnPessoasClick(Sender: TObject);
+    ActionList: TActionList;
+    AcPes: TAction;
+    acEquip: TAction;
+    AcTpLanc: TAction;
+    acLanc: TAction;
+    acRel: TAction;
     procedure btnEquipClick(Sender: TObject);
-    procedure btnTpLancClick(Sender: TObject);
-    procedure btnLancamentosClick(Sender: TObject);
-    procedure btnRelatoriosClick(Sender: TObject);
+    procedure AcPesExecute(Sender: TObject);
+    procedure acEquipExecute(Sender: TObject);
+    procedure AcTpLancExecute(Sender: TObject);
+    procedure acLancExecute(Sender: TObject);
+    procedure acRelExecute(Sender: TObject);
   private
     { Private declarations }
   public
@@ -35,7 +42,7 @@ implementation
     ,uFrmTipoLanc, uFrmLancamentos, uFrmRelatorios;
 {$R *.dfm}
 
-procedure TfrmPrinc.btnEquipClick(Sender: TObject);
+procedure TfrmPrinc.acEquipExecute(Sender: TObject);
 begin
  if frmEquip = nil then
  begin
@@ -44,7 +51,16 @@ begin
  frmEquip.Show;
 end;
 
-procedure TfrmPrinc.btnPessoasClick(Sender: TObject);
+procedure TfrmPrinc.acLancExecute(Sender: TObject);
+begin
+ if frmLancamentos = nil then
+ begin
+   Application.CreateForm(TfrmLancamentos,frmLancamentos);
+ end;
+ frmLancamentos.Show;
+end;
+
+procedure TfrmPrinc.AcPesExecute(Sender: TObject);
 begin
  if frmPessoas = nil then
  begin
@@ -53,7 +69,7 @@ begin
  frmPessoas.Show;
 end;
 
-procedure TfrmPrinc.btnRelatoriosClick(Sender: TObject);
+procedure TfrmPrinc.acRelExecute(Sender: TObject);
 begin
   if frmRelatorios = nil then
   begin
@@ -62,7 +78,7 @@ begin
   frmRelatorios.Show;
 end;
 
-procedure TfrmPrinc.btnTpLancClick(Sender: TObject);
+procedure TfrmPrinc.AcTpLancExecute(Sender: TObject);
 begin
  if frmTiposLanc = nil then
  begin
@@ -71,13 +87,13 @@ begin
  frmTiposLanc.Show;
 end;
 
-procedure TfrmPrinc.btnLancamentosClick(Sender: TObject);
+procedure TfrmPrinc.btnEquipClick(Sender: TObject);
 begin
- if frmLancamentos = nil then
+ if frmEquip = nil then
  begin
-   Application.CreateForm(TfrmLancamentos,frmLancamentos);
+   Application.CreateForm(TfrmEquip,frmEquip);
  end;
- frmLancamentos.Show;
+ frmEquip.Show;
 end;
 
 end.

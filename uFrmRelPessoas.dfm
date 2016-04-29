@@ -161,7 +161,6 @@ object frmRelPessoas: TfrmRelPessoas
     end
   end
   object qryPessoas: TFDQuery
-    Active = True
     Connection = dmPrincipal.MySQLConn
     SQL.Strings = (
       'Select * from pessoas')

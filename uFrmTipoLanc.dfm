@@ -242,22 +242,27 @@ object frmTiposLanc: TfrmTiposLanc
     Top = 168
     object acNovo: TAction
       Caption = 'Novo'
+      ShortCut = 112
       OnExecute = acNovoExecute
     end
     object acEditar: TAction
       Caption = 'Editar'
+      ShortCut = 113
       OnExecute = acEditarExecute
     end
     object acGravar: TAction
       Caption = 'Gravar'
+      ShortCut = 114
       OnExecute = acGravarExecute
     end
     object acCancelar: TAction
       Caption = 'Cancelar'
+      ShortCut = 115
       OnExecute = acCancelarExecute
     end
     object acExcluir: TAction
       Caption = 'Excluir'
+      ShortCut = 116
       OnExecute = acExcluirExecute
     end
     object acPesquisar: TAction

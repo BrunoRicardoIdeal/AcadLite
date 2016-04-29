@@ -14,6 +14,7 @@ type
     MySQLConn: TFDConnection;
     WaitCursor: TFDGUIxWaitCursor;
   private
+
     { Private declarations }
   public
     { Public declarations }
@@ -29,3 +30,4 @@ implementation
 {$R *.dfm}
 
 end.
+

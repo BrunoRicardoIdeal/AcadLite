@@ -64,7 +64,7 @@ type
     chkHabDtVenc: TCheckBox;
     dtVencIni: TDateTimePicker;
     dtVencFim: TDateTimePicker;
-    e: TLabel;
+    lblEDtVenc: TLabel;
     procedure acNovoExecute(Sender: TObject);
     procedure acEditarExecute(Sender: TObject);
     procedure acGravarExecute(Sender: TObject);
@@ -233,6 +233,7 @@ procedure TfrmLancamentos.chkHabDtVencClick(Sender: TObject);
 begin
  dtVencIni.Enabled := chkHabDtVenc.Checked;
  dtVencFim.Enabled := chkHabDtVenc.Checked;
+ lblEDtVenc.Enabled := chkHabDtVenc.Checked;
 end;
 
 procedure TfrmLancamentos.FormClose(Sender: TObject; var Action: TCloseAction);

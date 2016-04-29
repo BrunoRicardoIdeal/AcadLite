@@ -158,52 +158,91 @@ object frmPrinc: TfrmPrinc
       Top = 1
       Width = 143
       Height = 50
+      Hint = 'Cadastro de Pessoas'
+      Action = AcPes
       Align = alTop
-      Caption = 'Pessoas'
+      ParentShowHint = False
+      ShowHint = True
       TabOrder = 0
-      OnClick = btnPessoasClick
     end
     object btnEquip: TButton
       Left = 1
       Top = 51
       Width = 143
       Height = 50
+      Hint = 'Cadastro de Equipamentos'
+      Action = acEquip
       Align = alTop
-      Caption = 'Equipamentos'
+      ParentShowHint = False
+      ShowHint = True
       TabOrder = 1
-      OnClick = btnEquipClick
     end
     object btnTpLanc: TButton
       Left = 1
       Top = 101
       Width = 143
       Height = 50
+      Hint = 'Cadastro de Tipos de Lan'#231'amentos'
+      Action = AcTpLanc
       Align = alTop
-      Caption = 'Tipos de Lan'#231'amentos'
+      ParentShowHint = False
+      ShowHint = True
       TabOrder = 2
-      OnClick = btnTpLancClick
     end
     object btnLancamentos: TButton
       Left = 1
       Top = 151
       Width = 143
       Height = 50
+      Hint = 'Realizar Lan'#231'amentos'
+      Action = acLanc
       Align = alTop
-      Caption = 'Lan'#231'amentos'
+      ParentShowHint = False
+      ShowHint = True
       TabOrder = 3
-      OnClick = btnLancamentosClick
     end
     object btnRelatorios: TButton
       Left = 1
       Top = 201
       Width = 143
       Height = 50
+      Hint = 'Menu de Relat'#243'rios'
+      Action = acRel
       Align = alTop
-      Caption = 'Relat'#243'rios'
+      ParentShowHint = False
+      ShowHint = True
       TabOrder = 4
-      OnClick = btnRelatoriosClick
-      ExplicitLeft = -15
-      ExplicitTop = 257
+      ExplicitLeft = 2
+      ExplicitTop = 243
+    end
+  end
+  object ActionList: TActionList
+    Left = 384
+    Top = 176
+    object AcPes: TAction
+      Caption = 'Pessoas'
+      ShortCut = 112
+      OnExecute = AcPesExecute
+    end
+    object acEquip: TAction
+      Caption = 'Equipamentos'
+      ShortCut = 113
+      OnExecute = acEquipExecute
+    end
+    object AcTpLanc: TAction
+      Caption = 'Tipos de Lan'#231'amento'
+      ShortCut = 114
+      OnExecute = AcTpLancExecute
+    end
+    object acLanc: TAction
+      Caption = 'Lan'#231'amentos'
+      ShortCut = 115
+      OnExecute = acLancExecute
+    end
+    object acRel: TAction
+      Caption = 'Relat'#243'rios'
+      ShortCut = 116
+      OnExecute = acRelExecute
     end
   end
 end

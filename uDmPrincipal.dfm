@@ -5,11 +5,10 @@ object dmPrincipal: TdmPrincipal
   object MySQLConn: TFDConnection
     Params.Strings = (
       'Database=AcadLite'
-      'User_Name=admin'
-      'Password=root'
+      'User_Name=rise'
+      'Password=#rise2015'
       'Server=localhost'
       'DriverID=MySQL')
-    Connected = True
     Left = 88
     Top = 56
   end

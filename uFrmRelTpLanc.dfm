@@ -100,7 +100,6 @@ object frmRelTpLanc: TfrmRelTpLanc
     end
   end
   object qryTpLanc: TFDQuery
-    Active = True
     Connection = dmPrincipal.MySQLConn
     SQL.Strings = (
       'select * from tipos_lancamentos')
@@ -280,7 +279,7 @@ object frmRelTpLanc: TfrmRelTpLanc
           Font.Name = 'Arial'
           Font.Style = [fsBold]
           Memo.UTF8W = (
-            'Categoria')
+            'Descri'#231#227'o')
           ParentFont = False
         end
         object Memo3: TfrxMemoView
