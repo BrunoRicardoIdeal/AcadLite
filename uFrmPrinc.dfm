@@ -203,7 +203,7 @@ object frmPrinc: TfrmPrinc
     end
     object btnRelatorios: TButton
       Left = 1
-      Top = 201
+      Top = 251
       Width = 143
       Height = 50
       Hint = 'Menu de Relat'#243'rios'
@@ -212,6 +212,20 @@ object frmPrinc: TfrmPrinc
       ParentShowHint = False
       ShowHint = True
       TabOrder = 4
+      ExplicitTop = 201
+    end
+    object btnLancFixos: TButton
+      Left = 1
+      Top = 201
+      Width = 143
+      Height = 50
+      Action = acLancFixos
+      Align = alTop
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 5
+      ExplicitLeft = -4
+      ExplicitTop = 215
     end
   end
   object ActionList: TActionList
@@ -239,8 +253,13 @@ object frmPrinc: TfrmPrinc
     end
     object acRel: TAction
       Caption = 'Relat'#243'rios'
-      ShortCut = 116
+      ShortCut = 121
       OnExecute = acRelExecute
+    end
+    object acLancFixos: TAction
+      Caption = 'Lan'#231'amentos Fixos'
+      ShortCut = 116
+      OnExecute = acLancFixosExecute
     end
   end
 end

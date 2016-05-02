@@ -200,7 +200,6 @@ object frmTiposLanc: TfrmTiposLanc
       Height = 39
       Action = acCancelar
       Align = alLeft
-      Enabled = False
       TabOrder = 2
     end
     object btnEditar: TButton
@@ -219,7 +218,6 @@ object frmTiposLanc: TfrmTiposLanc
       Height = 39
       Action = acGravar
       Align = alLeft
-      Enabled = False
       TabOrder = 4
     end
   end
@@ -252,11 +250,13 @@ object frmTiposLanc: TfrmTiposLanc
     end
     object acGravar: TAction
       Caption = 'Gravar'
+      Enabled = False
       ShortCut = 114
       OnExecute = acGravarExecute
     end
     object acCancelar: TAction
       Caption = 'Cancelar'
+      Enabled = False
       ShortCut = 115
       OnExecute = acCancelarExecute
     end

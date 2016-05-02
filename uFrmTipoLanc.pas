@@ -3,7 +3,7 @@ unit uFrmTipoLanc;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Winapi.Windows,system.UITypes, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.ExtCtrls, System.Actions,
   Vcl.ActnList, Vcl.Mask, Vcl.DBCtrls, Vcl.Grids, Vcl.DBGrids, Vcl.StdCtrls,
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
@@ -68,21 +68,21 @@ implementation
 
 procedure TfrmTiposLanc.acCancelarExecute(Sender: TObject);
 begin
- btnGravar.Enabled := False;
- btnEditar.Enabled := True;
- btnExcluir.Enabled := True;
- btnNovo.Enabled := True;
- btnCancelar.Enabled := False;
+ acGravar.Enabled := False;
+ acEditar.Enabled := True;
+ acExcluir.Enabled := True;
+ acNovo.Enabled := True;
+ acCancelar.Enabled := False;
  qryTpLanc.Cancel;
 end;
 
 procedure TfrmTiposLanc.acEditarExecute(Sender: TObject);
 begin
- btnEditar.Enabled := False;
- btnExcluir.Enabled := False;
- btnNovo.Enabled := False;
- btnGravar.Enabled := True;
- btnCancelar.Enabled := True;
+ acEditar.Enabled := False;
+ acExcluir.Enabled := False;
+ acNovo.Enabled := False;
+ acGravar.Enabled := True;
+ acCancelar.Enabled := True;
  if not qryTpLanc.Active then
  begin
    qryTpLanc.Open();
@@ -110,11 +110,11 @@ begin
       ShowMessage('Não pode ser excluído pois existem lançamentos com esse tipo!');
       Exit;
     end;
-    btnEditar.Enabled := True;
-    btnExcluir.Enabled := True;
-    btnNovo.Enabled := True;
-    btnGravar.Enabled := False;
-    btnCancelar.Enabled := False;
+    acEditar.Enabled := True;
+    acExcluir.Enabled := True;
+    acNovo.Enabled := True;
+    acGravar.Enabled := False;
+    acCancelar.Enabled := False;
     qryTpLanc.Delete;
     qryTpLanc.Refresh;
    end;
@@ -128,11 +128,11 @@ begin
    if MessageDlg('Deseja realmente gravar?',TMsgDlgType.mtConfirmation
    ,mbYesNo,0) = mrYes then
    begin
-    btnGravar.Enabled := False;
-    btnEditar.Enabled := True;
-    btnExcluir.Enabled := True;
-    btnNovo.Enabled := True;
-    btnCancelar.Enabled := False;
+    acGravar.Enabled := False;
+    acEditar.Enabled := True;
+    acExcluir.Enabled := True;
+    acNovo.Enabled := True;
+    acCancelar.Enabled := False;
     qryTpLanc.Post;
    end;
 
@@ -141,11 +141,11 @@ end;
 
 procedure TfrmTiposLanc.acNovoExecute(Sender: TObject);
 begin
- btnEditar.Enabled := False;
- btnExcluir.Enabled := False;
- btnNovo.Enabled := False;
- btnGravar.Enabled := True;
- btnCancelar.Enabled := True;
+ acEditar.Enabled := False;
+ acExcluir.Enabled := False;
+ acNovo.Enabled := False;
+ acGravar.Enabled := True;
+ acCancelar.Enabled := True;
  if not qryTpLanc.Active then
  begin
    qryTpLanc.Open();
@@ -178,6 +178,7 @@ begin
  begin
    qryTpLanc.SQL.Add('AND LOWER(CATEGORIA) = ' + LowerCase(QuotedStr(cbCategoria.Text)));
  end;
+ qryTpLanc.SQL.Add('ORDER BY DESCRICAO');
  qryTpLanc.Open();
  if qryTpLanc.IsEmpty then
  begin

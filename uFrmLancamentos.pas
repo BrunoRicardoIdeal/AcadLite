@@ -3,7 +3,7 @@ unit uFrmLancamentos;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Winapi.Windows,System.UITypes, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,
   System.Actions, Vcl.ActnList, Data.DB, Vcl.Grids, Vcl.DBGrids, Vcl.DBCtrls,
   Vcl.Mask, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
@@ -65,6 +65,11 @@ type
     dtVencIni: TDateTimePicker;
     dtVencFim: TDateTimePicker;
     lblEDtVenc: TLabel;
+    edtValor: TDBEdit;
+    Label6: TLabel;
+    qryLancvalor: TFloatField;
+    qryLancfixo: TStringField;
+    DBCheckBox1: TDBCheckBox;
     procedure acNovoExecute(Sender: TObject);
     procedure acEditarExecute(Sender: TObject);
     procedure acGravarExecute(Sender: TObject);
@@ -95,21 +100,21 @@ implementation
 
 procedure TfrmLancamentos.acCancelarExecute(Sender: TObject);
 begin
- btnGravar.Enabled := False;
- btnEditar.Enabled := True;
- btnExcluir.Enabled := True;
- btnNovo.Enabled := True;
- btnCancelar.Enabled := False;
+ acGravar.Enabled := False;
+ acEditar.Enabled := True;
+ acExcluir.Enabled := True;
+ acNovo.Enabled := True;
+ acCancelar.Enabled := False;
  qryLanc.Cancel;
 end;
 
 procedure TfrmLancamentos.acEditarExecute(Sender: TObject);
 begin
- btnEditar.Enabled := False;
- btnExcluir.Enabled := False;
- btnNovo.Enabled := False;
- btnGravar.Enabled := True;
- btnCancelar.Enabled := True;
+ acEditar.Enabled := False;
+ acExcluir.Enabled := False;
+ acNovo.Enabled := False;
+ acGravar.Enabled := True;
+ acCancelar.Enabled := True;
  if not qryLanc.Active then
  begin
    qryLanc.Open();
@@ -132,11 +137,11 @@ begin
    if MessageDlg('Deseja realmente excluir?',TMsgDlgType.mtConfirmation
    ,mbYesNo,0) = mrYes then
    begin
-    btnEditar.Enabled := True;
-    btnExcluir.Enabled := True;
-    btnNovo.Enabled := True;
-    btnGravar.Enabled := False;
-    btnCancelar.Enabled := False;
+    acEditar.Enabled := True;
+    acExcluir.Enabled := True;
+    acNovo.Enabled := True;
+    acGravar.Enabled := False;
+    acCancelar.Enabled := False;
     qryLanc.Edit;
     qryLancdt_exclusao.AsDateTime := now;
     qryLanc.Post;
@@ -153,11 +158,11 @@ begin
    ,mbYesNo,0) = mrYes then
    begin
     ValidarPreench;
-    btnGravar.Enabled := False;
-    btnEditar.Enabled := True;
-    btnExcluir.Enabled := True;
-    btnNovo.Enabled := True;
-    btnCancelar.Enabled := False;
+    acGravar.Enabled := False;
+    acEditar.Enabled := True;
+    acExcluir.Enabled := True;
+    acNovo.Enabled := True;
+    acCancelar.Enabled := False;
     qryLanc.Post;
    end;
 
@@ -166,11 +171,11 @@ end;
 
 procedure TfrmLancamentos.acNovoExecute(Sender: TObject);
 begin
- btnEditar.Enabled := False;
- btnExcluir.Enabled := False;
- btnNovo.Enabled := False;
- btnGravar.Enabled := True;
- btnCancelar.Enabled := True;
+ acEditar.Enabled := False;
+ acExcluir.Enabled := False;
+ acNovo.Enabled := False;
+ acGravar.Enabled := True;
+ acCancelar.Enabled := True;
  if not qryLanc.Active then
  begin
    qryLanc.Open();
@@ -190,6 +195,8 @@ begin
  qryLanc.SQL.Add('       ,l.dt_vencimento');
  qryLanc.SQL.Add('       ,l.dt_exclusao');
  qryLanc.SQL.Add('       ,l.cod_tipo_lanc');
+ qryLanc.SQL.Add('       ,l.valor');
+ qryLanc.SQL.Add('       ,l.fixo');
  qryLanc.SQL.Add('       ,tl.descricao tipo_lanc_desc');
  qryLanc.SQL.Add('       ,tl.categoria');
  qryLanc.SQL.Add('from lancamentos l , tipos_lancamentos tl');
@@ -221,6 +228,7 @@ begin
  begin
   qryLanc.SQL.Add('and l.dt_exclusao is null');
  end;
+ qryLanc.SQL.Add('order by l.descricao');
  qryLanc.Open();
  if qryLanc.IsEmpty then
  begin
@@ -291,8 +299,8 @@ begin
      cbLkpTipoLanc.SetFocus;
    end;
    Abort;
- end;
- if qryLancdt_vencimento.IsNull then
+ end
+ else if qryLancdt_vencimento.IsNull then
  begin
    ShowMessage('Informe uma data de vencimento!');
    if edtDtVenc.CanFocus then
@@ -300,7 +308,27 @@ begin
      edtDtVenc.SetFocus;
    end;
    Abort;
+ end
+ else if qryLancdt_vencimento.AsDateTime <= date then
+ begin
+   ShowMessage('A data de vencimento deve ser maior do que hoje!');
+   if edtDtVenc.CanFocus then
+   begin
+     edtDtVenc.SetFocus;
+   end;
+   Abort;
+ end
+ else if qryLancvalor.AsFloat <= 0 then
+ begin
+   ShowMessage('O valor do lançamento deve ser maior do que 0!');
+   if edtValor.CanFocus then
+   begin
+     edtValor.SetFocus;
+   end;
+   Abort;
  end;
+
+
 
 end;
 

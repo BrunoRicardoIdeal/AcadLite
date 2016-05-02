@@ -239,6 +239,7 @@ object frmRelLanc: TfrmRelLanc
       '      ,l.dt_vencimento'
       '      ,l.dt_exclusao'
       '      ,l.cod_tipo_lanc'
+      '      ,l.valor'
       '      ,tl.descricao tipo_lanc_desc'
       '      ,tl.categoria'
       'from lancamentos l , tipos_lancamentos tl'
@@ -293,6 +294,12 @@ object frmRelLanc: TfrmRelLanc
       AutoGenerateValue = arDefault
       FieldName = 'dt_exclusao'
       Origin = 'dt_exclusao'
+    end
+    object qryLancvalor: TFloatField
+      AutoGenerateValue = arDefault
+      FieldName = 'valor'
+      Origin = 'valor'
+      currency = True
     end
   end
   object frxLancamentos: TfrxReport
@@ -402,6 +409,24 @@ object frmRelLanc: TfrmRelLanc
           Memo.UTF8W = (
             '[frxDBLancamentos."dt_vencimento"]')
         end
+        object Memo24: TfrxMemoView
+          Left = 944.882500000000000000
+          Top = 3.779530000000000000
+          Width = 98.267780000000000000
+          Height = 18.897650000000000000
+          DataField = 'valor'
+          DataSet = frxDBLancamentos
+          DataSetName = 'frxDBLancamentos'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            '[frxDBLancamentos."valor"]')
+          ParentFont = False
+        end
       end
       object PageFooter1: TfrxPageFooter
         FillType = ftBrush
@@ -446,6 +471,34 @@ object frmRelLanc: TfrmRelLanc
           HAlign = haRight
           Memo.UTF8W = (
             'Quantidade Total:')
+          ParentFont = False
+        end
+        object Memo27: TfrxMemoView
+          Left = 850.394250000000000000
+          Width = 94.488250000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Total Geral:')
+          ParentFont = False
+        end
+        object SysMemo5: TfrxSysMemoView
+          Left = 945.662030000000000000
+          Width = 98.267780000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            '[SUM(<frxDBLancamentos."valor">,MasterData1)]')
           ParentFont = False
         end
       end
@@ -758,6 +811,21 @@ object frmRelLanc: TfrmRelLanc
             'Dt. Vencimento')
           ParentFont = False
         end
+        object Memo25: TfrxMemoView
+          Left = 944.882500000000000000
+          Top = 185.196970000000000000
+          Width = 86.929190000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          HAlign = haCenter
+          Memo.UTF8W = (
+            'Valor')
+          ParentFont = False
+        end
       end
       object GroupHeader1: TfrxGroupHeader
         FillType = ftBrush
@@ -836,12 +904,52 @@ object frmRelLanc: TfrmRelLanc
           Color = clBlack
           Diagonal = True
         end
+        object SysMemo4: TfrxSysMemoView
+          Left = 944.882500000000000000
+          Top = 15.118120000000000000
+          Width = 98.267780000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            '[SUM(<frxDBLancamentos."valor">,MasterData1)]')
+          ParentFont = False
+        end
+        object Memo26: TfrxMemoView
+          Left = 850.394250000000000000
+          Top = 15.118120000000000000
+          Width = 94.488250000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Total:')
+          ParentFont = False
+        end
       end
     end
   end
   object frxDBLancamentos: TfrxDBDataset
     UserName = 'frxDBLancamentos'
     CloseDataSource = False
+    FieldAliases.Strings = (
+      'cod_lanc=cod_lanc'
+      'descricao=descricao'
+      'dt_lanc=dt_lanc'
+      'dt_vencimento=dt_vencimento'
+      'cod_tipo_lanc=cod_tipo_lanc'
+      'tipo_lanc_desc=tipo_lanc_desc'
+      'categoria=categoria'
+      'dt_exclusao=dt_exclusao'
+      'valor=valor')
     DataSet = qryLanc
     BCDToCurrency = False
     Left = 240

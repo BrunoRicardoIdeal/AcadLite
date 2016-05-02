@@ -50,6 +50,7 @@ type
     chkHabDtLanc: TCheckBox;
     frxLancamentos: TfrxReport;
     frxDBLancamentos: TfrxDBDataset;
+    qryLancvalor: TFloatField;
     procedure FormCreate(Sender: TObject);
     procedure chkAtivarTpLancClick(Sender: TObject);
     procedure acLimparExecute(Sender: TObject);
@@ -113,6 +114,7 @@ begin
  qryLanc.SQL.Add('       ,l.dt_vencimento');
  qryLanc.SQL.Add('       ,l.dt_exclusao');
  qryLanc.SQL.Add('       ,l.cod_tipo_lanc');
+ qryLanc.SQL.Add('       ,l.valor');
  qryLanc.SQL.Add('       ,tl.descricao tipo_lanc_desc');
  qryLanc.SQL.Add('       ,tl.categoria');
  qryLanc.SQL.Add('from lancamentos l , tipos_lancamentos tl');

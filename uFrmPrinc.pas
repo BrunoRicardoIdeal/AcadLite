@@ -22,12 +22,15 @@ type
     AcTpLanc: TAction;
     acLanc: TAction;
     acRel: TAction;
+    btnLancFixos: TButton;
+    acLancFixos: TAction;
     procedure btnEquipClick(Sender: TObject);
     procedure AcPesExecute(Sender: TObject);
     procedure acEquipExecute(Sender: TObject);
     procedure AcTpLancExecute(Sender: TObject);
     procedure acLancExecute(Sender: TObject);
     procedure acRelExecute(Sender: TObject);
+    procedure acLancFixosExecute(Sender: TObject);
   private
     { Private declarations }
   public
@@ -38,7 +41,7 @@ var
   frmPrinc: TfrmPrinc;
 
 implementation
-    uses ufrmPessoas,uFrmEquip
+    uses ufrmPessoas,uFrmEquip, uFrmLancFixos
     ,uFrmTipoLanc, uFrmLancamentos, uFrmRelatorios;
 {$R *.dfm}
 
@@ -58,6 +61,15 @@ begin
    Application.CreateForm(TfrmLancamentos,frmLancamentos);
  end;
  frmLancamentos.Show;
+end;
+
+procedure TfrmPrinc.acLancFixosExecute(Sender: TObject);
+begin
+ if frmLancFixos = nil then
+ begin
+   Application.CreateForm(TfrmLancFixos,frmLancFixos);
+ end;
+ frmLancFixos.Show;
 end;
 
 procedure TfrmPrinc.AcPesExecute(Sender: TObject);

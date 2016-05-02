@@ -14,7 +14,8 @@ uses
   uFrmRelPessoas in 'uFrmRelPessoas.pas' {frmRelPessoas},
   uFrmRelEquip in 'uFrmRelEquip.pas' {frmRelEquip},
   uFrmRelTpLanc in 'uFrmRelTpLanc.pas' {frmRelTpLanc},
-  uFrmRelLanc in 'uFrmRelLanc.pas' {frmRelLanc};
+  uFrmRelLanc in 'uFrmRelLanc.pas' {frmRelLanc},
+  uFrmLancFixos in 'uFrmLancFixos.pas' {frmLancFixos};
 
 {$R *.res}
 
@@ -24,5 +25,6 @@ begin
   TStyleManager.TrySetStyle('Tablet Light');
   Application.CreateForm(TdmPrincipal, dmPrincipal);
   Application.CreateForm(TfrmPrinc, frmPrinc);
+  Application.CreateForm(TfrmLancFixos, frmLancFixos);
   Application.Run;
 end.

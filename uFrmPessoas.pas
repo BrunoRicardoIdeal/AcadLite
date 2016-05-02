@@ -81,21 +81,21 @@ uses uDmprincipal;
 
 procedure TfrmPessoas.acCancelarExecute(Sender: TObject);
 begin
- btnGravar.Enabled := False;
- btnEditar.Enabled := True;
- btnExcluir.Enabled := True;
- btnNovo.Enabled := True;
- btnCancelar.Enabled := False;
+ acGravar.Enabled := False;
+ acEditar.Enabled := True;
+ acExcluir.Enabled := True;
+ acNovo.Enabled := True;
+ acCancelar.Enabled := False;
  qryPessoas.Cancel;
 end;
 
 procedure TfrmPessoas.acEditarExecute(Sender: TObject);
 begin
- btnEditar.Enabled := False;
- btnExcluir.Enabled := False;
- btnNovo.Enabled := False;
- btnGravar.Enabled := True;
- btnCancelar.Enabled := True;
+ acEditar.Enabled := False;
+ acExcluir.Enabled := False;
+ acNovo.Enabled := False;
+ acGravar.Enabled := True;
+ acCancelar.Enabled := True;
  if not qryPessoas.Active then
  begin
    qryPessoas.Open();
@@ -118,11 +118,11 @@ begin
    if MessageDlg('Deseja realmente excluir?',TMsgDlgType.mtConfirmation
    ,mbYesNo,0) = mrYes then
    begin
-    btnEditar.Enabled := True;
-    btnExcluir.Enabled := True;
-    btnNovo.Enabled := True;
-    btnGravar.Enabled := False;
-    btnCancelar.Enabled := False;
+    acEditar.Enabled := True;
+    acExcluir.Enabled := True;
+    acNovo.Enabled := True;
+    acGravar.Enabled := False;
+    acCancelar.Enabled := False;
     qryPessoas.Delete;
     qryPessoas.Refresh;
    end;
@@ -136,11 +136,11 @@ begin
    if MessageDlg('Deseja realmente gravar?',TMsgDlgType.mtConfirmation
    ,mbYesNo,0) = mrYes then
    begin
-    btnGravar.Enabled := False;
-    btnEditar.Enabled := True;
-    btnExcluir.Enabled := True;
-    btnNovo.Enabled := True;
-    btnCancelar.Enabled := False;
+    acGravar.Enabled := False;
+    acEditar.Enabled := True;
+    acExcluir.Enabled := True;
+    acNovo.Enabled := True;
+    acCancelar.Enabled := False;
     qryPessoas.Post;
    end;
 
@@ -149,11 +149,11 @@ end;
 
 procedure TfrmPessoas.acNovoExecute(Sender: TObject);
 begin
- btnEditar.Enabled := False;
- btnExcluir.Enabled := False;
- btnNovo.Enabled := False;
- btnGravar.Enabled := True;
- btnCancelar.Enabled := True;
+ acEditar.Enabled := False;
+ acExcluir.Enabled := False;
+ acNovo.Enabled := False;
+ acGravar.Enabled := True;
+ acCancelar.Enabled := True;
  if not qryPessoas.Active then
  begin
    qryPessoas.Open();
@@ -190,7 +190,9 @@ begin
  begin
    qryPessoas.SQL.Add('AND LOWER(TIPO) = ' + LowerCase(QuotedStr(cbTipo.Text)));
  end;
+ qryPessoas.SQL.Add('ORDER BY NOME');
  qryPessoas.Open();
+
  if qryPessoas.IsEmpty then
  begin
    ShowMessage('Nada encontrado');

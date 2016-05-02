@@ -9,6 +9,7 @@ object dmPrincipal: TdmPrincipal
       'Password=#rise2015'
       'Server=localhost'
       'DriverID=MySQL')
+    Connected = True
     Left = 88
     Top = 56
   end
