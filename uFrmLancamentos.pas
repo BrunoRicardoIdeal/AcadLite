@@ -283,7 +283,7 @@ end;
 
 procedure TfrmLancamentos.ValidarPreench;
 begin
- if cbLkpTipoLanc.Text = EmptyStr then
+ if qryLanccod_tipo_lanc.IsNull   then
  begin
    ShowMessage('Informe um tipo de lançamento!');
    if cbLkpTipoLanc.CanFocus then
@@ -292,13 +292,14 @@ begin
    end;
    Abort;
  end;
- if edtDtVenc.Text = EmptyStr then
+ if qryLancdt_vencimento.IsNull then
  begin
    ShowMessage('Informe uma data de vencimento!');
    if edtDtVenc.CanFocus then
    begin
      edtDtVenc.SetFocus;
    end;
+   Abort;
  end;
 
 end;

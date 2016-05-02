@@ -14,7 +14,7 @@ type
     btnEquip: TButton;
     btnTpLanc: TButton;
     btnLancamentos: TButton;
-    imgFundo: TImage;
+    brunori: TImage;
     btnRelatorios: TButton;
     ActionList: TActionList;
     AcPes: TAction;

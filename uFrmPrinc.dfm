@@ -15,7 +15,7 @@ object frmPrinc: TfrmPrinc
   WindowState = wsMaximized
   PixelsPerInch = 96
   TextHeight = 13
-  object imgFundo: TImage
+  object brunori: TImage
     Left = 145
     Top = 0
     Width = 617
@@ -212,8 +212,6 @@ object frmPrinc: TfrmPrinc
       ParentShowHint = False
       ShowHint = True
       TabOrder = 4
-      ExplicitLeft = 2
-      ExplicitTop = 243
     end
   end
   object ActionList: TActionList
