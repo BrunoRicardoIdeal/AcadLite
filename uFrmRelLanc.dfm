@@ -61,7 +61,6 @@ object frmRelLanc: TfrmRelLanc
       Action = acEmitir
       Align = alRight
       TabOrder = 0
-      ExplicitLeft = 414
     end
     object btnLimpar: TButton
       Left = 333
@@ -232,7 +231,6 @@ object frmRelLanc: TfrmRelLanc
     end
   end
   object qryLanc: TFDQuery
-    Active = True
     Connection = dmPrincipal.MySQLConn
     SQL.Strings = (
       'select l.cod_lanc '

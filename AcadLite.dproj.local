@@ -40,6 +40,7 @@
     <Transaction>2016/04/29 09:25:08.000.420,C:\Projetos\AcadLite\Unit1.pas=C:\Projetos\AcadLite\uFrmLanc.pas</Transaction>
     <Transaction>2016/04/29 09:48:28.000.085,C:\Projetos\AcadLite\uFrmLanc.dfm=C:\Projetos\AcadLite\uFrmRelLanc.dfm</Transaction>
     <Transaction>2016/04/29 09:48:28.000.084,C:\Projetos\AcadLite\uFrmLanc.pas=C:\Projetos\AcadLite\uFrmRelLanc.pas</Transaction>
+    <Transaction>2016/04/29 17:26:07.000.329,=C:\Projetos\AcadLite\Unit1.pas</Transaction>
   </Transactions>
 	<ProjectSortOrder AutoSort="0" SortType="0">
     <File Path="uDmPrincipal.pas"/>

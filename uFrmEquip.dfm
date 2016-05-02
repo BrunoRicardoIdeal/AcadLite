@@ -212,7 +212,7 @@ object frmEquip: TfrmEquip
     Height = 21
     DataField = 'nome'
     DataSource = dsEquip
-    TabOrder = 4
+    TabOrder = 5
   end
   object dbRgTipo: TDBRadioGroup
     Left = 65
@@ -227,7 +227,7 @@ object frmEquip: TfrmEquip
       'Ergometria'
       'Muscula'#231#227'o'
       'Outro')
-    TabOrder = 5
+    TabOrder = 6
   end
   object edtCadastro: TDBEdit
     Left = 194
@@ -237,7 +237,7 @@ object frmEquip: TfrmEquip
     DataField = 'dt_cadastro'
     DataSource = dsEquip
     Enabled = False
-    TabOrder = 6
+    TabOrder = 4
   end
   object AcList: TActionList
     Left = 384

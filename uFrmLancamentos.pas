@@ -78,6 +78,7 @@ type
     procedure chkHabDtVencClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
   private
+   procedure ValidarPreench;
     { Private declarations }
   public
     { Public declarations }
@@ -151,6 +152,7 @@ begin
    if MessageDlg('Deseja realmente gravar?',TMsgDlgType.mtConfirmation
    ,mbYesNo,0) = mrYes then
    begin
+    ValidarPreench;
     btnGravar.Enabled := False;
     btnEditar.Enabled := True;
     btnExcluir.Enabled := True;
@@ -275,6 +277,28 @@ begin
   finally
     lqry.Free;
   end;
+ end;
+
+end;
+
+procedure TfrmLancamentos.ValidarPreench;
+begin
+ if cbLkpTipoLanc.Text = EmptyStr then
+ begin
+   ShowMessage('Informe um tipo de lançamento!');
+   if cbLkpTipoLanc.CanFocus then
+   begin
+     cbLkpTipoLanc.SetFocus;
+   end;
+   Abort;
+ end;
+ if edtDtVenc.Text = EmptyStr then
+ begin
+   ShowMessage('Informe uma data de vencimento!');
+   if edtDtVenc.CanFocus then
+   begin
+     edtDtVenc.SetFocus;
+   end;
  end;
 
 end;

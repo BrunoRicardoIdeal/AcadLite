@@ -17,11 +17,9 @@ type
     cbTipo: TComboBox;
     Label4: TLabel;
     dtNascFim: TDateTimePicker;
-    e: TLabel;
+    lblEData: TLabel;
     dtNascIni: TDateTimePicker;
     chkHabDtNasc: TCheckBox;
-    lblEdtTelefone: TLabeledEdit;
-    lblEdtCelular: TLabeledEdit;
     pnlBotoes: TPanel;
     btnEmitir: TButton;
     btnLimpar: TButton;
@@ -39,6 +37,10 @@ type
     qryPessoascelular: TStringField;
     qryPessoastipo: TStringField;
     qryPessoasdt_cadastro: TDateTimeField;
+    Label1: TLabel;
+    maskEdtTel: TMaskEdit;
+    maskEdtCel: TMaskEdit;
+    Label2: TLabel;
     procedure chkHabDtNascClick(Sender: TObject);
     procedure acLimparExecute(Sender: TObject);
     procedure acEmitirExecute(Sender: TObject);
@@ -46,6 +48,8 @@ type
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
+   const
+    TRIM_MASK_TEL = '(  )';
    procedure Limpar;
    procedure Emitir;
     { Private declarations }
@@ -76,6 +80,7 @@ procedure TfrmRelPessoas.chkHabDtNascClick(Sender: TObject);
 begin
  dtNascIni.Enabled := chkHabDtNasc.Checked;
  dtNascFim.Enabled := chkHabDtNasc.Checked;
+ lblEData.Enabled := chkHabDtNasc.Checked;
 end;
 
 procedure TfrmRelPessoas.Emitir;
@@ -111,13 +116,13 @@ begin
    qryPessoas.ParamByName('DTINI').AsDate := dtNascIni.Date;
    qryPessoas.ParamByName('DTFIM').AsDate := dtNascFim.Date;
  end;
- if lblEdtTelefone.Text <> '' then
+ if trim(maskEdtTel.Text) <> TRIM_MASK_TEL then
  begin
-   qryPessoas.SQL.Add('AND TELEFONE =' + QuotedStr(lblEdtTelefone.Text));
+   qryPessoas.SQL.Add('AND TELEFONE =' + QuotedStr(maskEdtTel.Text));
  end;
- if lblEdtCelular.Text <> '' then
+ if trim(maskEdtCel.Text) <> TRIM_MASK_TEL then
  begin
-   qryPessoas.SQL.Add('AND CELULAR =' + QuotedStr(lblEdtCelular.Text));
+   qryPessoas.SQL.Add('AND CELULAR =' + QuotedStr(maskEdtCel.Text));
  end;
  qryPessoas.Open();
  if qryPessoas.IsEmpty then
@@ -184,16 +189,16 @@ begin
    else
    if lnome = 'memofiltrotel'then
    begin
-      if lblEdtTelefone.Text <> '' then
+      if Trim(maskEdtTel.Text) <> TRIM_MASK_TEL then
       begin
-        lMemo.Text := lblEdtTelefone.Text;
+        lMemo.Text := maskEdtTel.Text;
       end;
    end;
    if lnome = 'memofiltrocel'then
    begin
-      if lblEdtCelular.Text <> '' then
+      if Trim(maskEdtCel.Text) <> TRIM_MASK_TEL then
       begin
-        lMemo.Text := lblEdtCelular.Text;
+        lMemo.Text := maskEdtCel.Text;
       end;
    end;
  end;
@@ -205,13 +210,14 @@ procedure TfrmRelPessoas.Limpar;
 begin
  lblEdtCod.Clear;
  lblEdtNome.Clear;
- lblEdtTelefone.Clear;
- lblEdtCelular.Clear;
+ maskEdtCel.Clear;
+ maskEdtTel.Clear;
  chkHabDtNasc.Checked := False;
  dtNascFim.Enabled := False;
  dtNascIni.Enabled := False;
  dtNascIni.Date := Date;
  dtNascFim.Date := Date;
+ lblEData.Enabled := False;
  cbTipo.ItemIndex := 0;
 end;
 

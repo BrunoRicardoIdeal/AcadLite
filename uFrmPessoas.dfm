@@ -200,7 +200,7 @@ object frmPessoas: TfrmPessoas
     Width = 800
     Height = 41
     Align = alBottom
-    TabOrder = 2
+    TabOrder = 10
     object btnNovo: TButton
       Left = 1
       Top = 1
@@ -257,7 +257,7 @@ object frmPessoas: TfrmPessoas
     DataField = 'cod_pessoa'
     DataSource = dsPessoas
     Enabled = False
-    TabOrder = 3
+    TabOrder = 2
   end
   object edtNome: TDBEdit
     Left = 65
@@ -327,7 +327,7 @@ object frmPessoas: TfrmPessoas
     DataField = 'dt_cadastro'
     DataSource = dsPessoas
     Enabled = False
-    TabOrder = 10
+    TabOrder = 3
   end
   object AcList: TActionList
     Left = 296
@@ -398,13 +398,15 @@ object frmPessoas: TfrmPessoas
       AutoGenerateValue = arDefault
       FieldName = 'telefone'
       Origin = 'telefone'
-      Size = 12
+      EditMask = '(99) 9999999999;1;_'
+      Size = 13
     end
     object qryPessoascelular: TStringField
       AutoGenerateValue = arDefault
       FieldName = 'celular'
       Origin = 'celular'
-      Size = 12
+      EditMask = '(99) 9999999999;1;_'
+      Size = 13
     end
     object qryPessoastipo: TStringField
       AutoGenerateValue = arDefault

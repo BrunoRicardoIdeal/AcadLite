@@ -290,7 +290,7 @@ object frmLancamentos: TfrmLancamentos
     DataField = 'cod_lanc'
     DataSource = dsLanc
     Enabled = False
-    TabOrder = 3
+    TabOrder = 4
   end
   object edtDtLanc: TDBEdit
     Left = 214
@@ -300,7 +300,7 @@ object frmLancamentos: TfrmLancamentos
     DataField = 'dt_lanc'
     DataSource = dsLanc
     Enabled = False
-    TabOrder = 4
+    TabOrder = 5
   end
   object edtDescricao: TDBEdit
     Left = 79
@@ -309,21 +309,24 @@ object frmLancamentos: TfrmLancamentos
     Height = 21
     DataField = 'descricao'
     DataSource = dsLanc
-    TabOrder = 5
+    TabOrder = 8
   end
   object dbRgCat: TDBRadioGroup
     Left = 557
     Top = 408
     Width = 86
     Height = 74
+    Hint = 'Representa a categoria do tipo de lan'#231'amento'
     Caption = 'Categoria'
     DataField = 'categoria'
     DataSource = dsLanc
-    Enabled = False
     Items.Strings = (
       'Receita'
       'Despesa')
-    TabOrder = 6
+    ParentShowHint = False
+    ReadOnly = True
+    ShowHint = True
+    TabOrder = 7
   end
   object edtDtVenc: TDBEdit
     Left = 79
@@ -332,7 +335,7 @@ object frmLancamentos: TfrmLancamentos
     Height = 21
     DataField = 'dt_vencimento'
     DataSource = dsLanc
-    TabOrder = 7
+    TabOrder = 9
   end
   object cbLkpTipoLanc: TDBLookupComboBox
     Left = 79
@@ -344,7 +347,7 @@ object frmLancamentos: TfrmLancamentos
     KeyField = 'cod_tipo_lanc'
     ListField = 'descricao'
     ListSource = dsTipoLanc
-    TabOrder = 8
+    TabOrder = 3
   end
   object edtDtExclusao: TDBEdit
     Left = 425
@@ -354,7 +357,7 @@ object frmLancamentos: TfrmLancamentos
     DataField = 'dt_exclusao'
     DataSource = dsLanc
     Enabled = False
-    TabOrder = 9
+    TabOrder = 6
   end
   object AcList: TActionList
     Left = 384

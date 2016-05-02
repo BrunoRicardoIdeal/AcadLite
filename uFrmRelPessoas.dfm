@@ -24,12 +24,27 @@ object frmRelPessoas: TfrmRelPessoas
     Height = 13
     Caption = 'Tipo'
   end
-  object e: TLabel
+  object lblEData: TLabel
     Left = 273
     Top = 112
     Width = 6
     Height = 13
     Caption = 'e'
+    Enabled = False
+  end
+  object Label1: TLabel
+    Left = 9
+    Top = 130
+    Width = 42
+    Height = 13
+    Caption = 'Telefone'
+  end
+  object Label2: TLabel
+    Left = 18
+    Top = 156
+    Width = 33
+    Height = 13
+    Caption = 'Celular'
   end
   object lblEdtNome: TLabeledEdit
     Left = 56
@@ -93,34 +108,10 @@ object frmRelPessoas: TfrmRelPessoas
     Left = 56
     Top = 107
     Width = 123
-    Height = 17
+    Height = 21
     Caption = 'Dt. Nascimento entre'
     TabOrder = 3
     OnClick = chkHabDtNascClick
-  end
-  object lblEdtTelefone: TLabeledEdit
-    Left = 55
-    Top = 131
-    Width = 121
-    Height = 21
-    EditLabel.Width = 42
-    EditLabel.Height = 13
-    EditLabel.Caption = 'Telefone'
-    LabelPosition = lpLeft
-    NumbersOnly = True
-    TabOrder = 6
-  end
-  object lblEdtCelular: TLabeledEdit
-    Left = 55
-    Top = 156
-    Width = 121
-    Height = 21
-    EditLabel.Width = 33
-    EditLabel.Height = 13
-    EditLabel.Caption = 'Celular'
-    LabelPosition = lpLeft
-    NumbersOnly = True
-    TabOrder = 7
   end
   object pnlBotoes: TPanel
     Left = 0
@@ -147,6 +138,26 @@ object frmRelPessoas: TfrmRelPessoas
       Align = alRight
       TabOrder = 1
     end
+  end
+  object maskEdtTel: TMaskEdit
+    Left = 56
+    Top = 127
+    Width = 119
+    Height = 21
+    EditMask = '(99) 9999999999;1;_'
+    MaxLength = 15
+    TabOrder = 6
+    Text = '(  )           '
+  end
+  object maskEdtCel: TMaskEdit
+    Left = 56
+    Top = 153
+    Width = 119
+    Height = 21
+    EditMask = '(99) 9999999999;1;_'
+    MaxLength = 15
+    TabOrder = 7
+    Text = '(  )           '
   end
   object ActionList: TActionList
     Left = 232

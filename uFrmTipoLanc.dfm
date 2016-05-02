@@ -106,7 +106,7 @@ object frmTiposLanc: TfrmTiposLanc
     Align = alTop
     DataSource = dsTpLanc
     Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
-    TabOrder = 1
+    TabOrder = 5
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
     TitleFont.Height = -11
@@ -147,7 +147,7 @@ object frmTiposLanc: TfrmTiposLanc
     DataField = 'cod_tipo_lanc'
     DataSource = dsTpLanc
     Enabled = False
-    TabOrder = 2
+    TabOrder = 1
   end
   object edtCadastro: TDBEdit
     Left = 194
@@ -157,7 +157,7 @@ object frmTiposLanc: TfrmTiposLanc
     DataField = 'dt_cadastro'
     DataSource = dsTpLanc
     Enabled = False
-    TabOrder = 3
+    TabOrder = 2
   end
   object edtDescricao: TDBEdit
     Left = 65
@@ -166,7 +166,7 @@ object frmTiposLanc: TfrmTiposLanc
     Height = 21
     DataField = 'descricao'
     DataSource = dsTpLanc
-    TabOrder = 4
+    TabOrder = 3
   end
   object pnlBotoes: TPanel
     Left = 0
@@ -174,7 +174,7 @@ object frmTiposLanc: TfrmTiposLanc
     Width = 800
     Height = 41
     Align = alBottom
-    TabOrder = 5
+    TabOrder = 6
     object btnNovo: TButton
       Left = 1
       Top = 1
@@ -235,7 +235,7 @@ object frmTiposLanc: TfrmTiposLanc
     Items.Strings = (
       'Receita'
       'Despesa')
-    TabOrder = 6
+    TabOrder = 4
   end
   object AcList: TActionList
     Left = 384
