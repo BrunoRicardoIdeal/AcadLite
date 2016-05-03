@@ -110,11 +110,6 @@ end;
 
 procedure TfrmLancamentos.acEditarExecute(Sender: TObject);
 begin
- acEditar.Enabled := False;
- acExcluir.Enabled := False;
- acNovo.Enabled := False;
- acGravar.Enabled := True;
- acCancelar.Enabled := True;
  if not qryLanc.Active then
  begin
    qryLanc.Open();
@@ -128,6 +123,12 @@ begin
    ShowMessage('Selecione alguém pra editar');
    Exit;
  end;
+ acEditar.Enabled := False;
+ acExcluir.Enabled := False;
+ acNovo.Enabled := False;
+ acGravar.Enabled := True;
+ acCancelar.Enabled := True;
+
 end;
 
 procedure TfrmLancamentos.acExcluirExecute(Sender: TObject);
@@ -164,6 +165,7 @@ begin
     acNovo.Enabled := True;
     acCancelar.Enabled := False;
     qryLanc.Post;
+    qryLanc.Refresh;
    end;
 
  end;

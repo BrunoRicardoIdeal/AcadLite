@@ -79,11 +79,6 @@ end;
 
 procedure TfrmEquip.acEditarExecute(Sender: TObject);
 begin
- acEditar.Enabled := False;
- acExcluir.Enabled := False;
- acNovo.Enabled := False;
- acGravar.Enabled := True;
- acCancelar.Enabled := True;
  if not qryEquip.Active then
  begin
    qryEquip.Open();
@@ -97,6 +92,12 @@ begin
    ShowMessage('Selecione alguém pra editar');
    Exit;
  end;
+ acEditar.Enabled := False;
+ acExcluir.Enabled := False;
+ acNovo.Enabled := False;
+ acGravar.Enabled := True;
+ acCancelar.Enabled := True;
+
 end;
 
 procedure TfrmEquip.acExcluirExecute(Sender: TObject);
@@ -130,6 +131,7 @@ begin
     acNovo.Enabled := True;
     acCancelar.Enabled := False;
     qryEquip.Post;
+    qryEquip.Refresh;
    end;
 
  end;

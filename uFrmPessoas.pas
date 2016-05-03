@@ -91,11 +91,6 @@ end;
 
 procedure TfrmPessoas.acEditarExecute(Sender: TObject);
 begin
- acEditar.Enabled := False;
- acExcluir.Enabled := False;
- acNovo.Enabled := False;
- acGravar.Enabled := True;
- acCancelar.Enabled := True;
  if not qryPessoas.Active then
  begin
    qryPessoas.Open();
@@ -109,6 +104,12 @@ begin
    ShowMessage('Selecione alguém pra editar');
    Exit;
  end;
+ acEditar.Enabled := False;
+ acExcluir.Enabled := False;
+ acNovo.Enabled := False;
+ acGravar.Enabled := True;
+ acCancelar.Enabled := True;
+
 end;
 
 procedure TfrmPessoas.acExcluirExecute(Sender: TObject);
@@ -142,6 +143,7 @@ begin
     acNovo.Enabled := True;
     acCancelar.Enabled := False;
     qryPessoas.Post;
+    qryPessoas.Refresh;
    end;
 
  end;

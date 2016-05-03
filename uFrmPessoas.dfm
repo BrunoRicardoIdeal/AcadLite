@@ -366,7 +366,7 @@ object frmPessoas: TfrmPessoas
     Connection = dmPrincipal.MySQLConn
     SQL.Strings = (
       'select * from pessoas')
-    Left = 424
+    Left = 416
     Top = 232
     object qryPessoascod_pessoa: TFDAutoIncField
       FieldName = 'cod_pessoa'

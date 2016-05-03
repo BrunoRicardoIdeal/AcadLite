@@ -223,7 +223,6 @@ object frmLancamentos: TfrmLancamentos
       Action = acGravar
       Align = alLeft
       TabOrder = 4
-      ExplicitLeft = 145
     end
   end
   object grLanc: TDBGrid
