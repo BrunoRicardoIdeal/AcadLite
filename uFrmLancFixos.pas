@@ -61,6 +61,9 @@ type
     qryLancFixosvalor: TFloatField;
     edtValor: TDBEdit;
     Label6: TLabel;
+    edtValorTotal: TDBEdit;
+    Label7: TLabel;
+    qryLancFixosAggValorTotal: TAggregateField;
     procedure acNovoExecute(Sender: TObject);
     procedure acEditarExecute(Sender: TObject);
     procedure acGravarExecute(Sender: TObject);

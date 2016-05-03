@@ -161,6 +161,7 @@ object frmPrinc: TfrmPrinc
       Hint = 'Cadastro de Pessoas'
       Action = AcPes
       Align = alTop
+      Caption = '&Pessoas'
       ParentShowHint = False
       ShowHint = True
       TabOrder = 0
@@ -173,6 +174,7 @@ object frmPrinc: TfrmPrinc
       Hint = 'Cadastro de Equipamentos'
       Action = acEquip
       Align = alTop
+      Caption = '&Equipamentos'
       ParentShowHint = False
       ShowHint = True
       TabOrder = 1
@@ -185,6 +187,7 @@ object frmPrinc: TfrmPrinc
       Hint = 'Cadastro de Tipos de Lan'#231'amentos'
       Action = AcTpLanc
       Align = alTop
+      Caption = '&Tipos de Lan'#231'amento'
       ParentShowHint = False
       ShowHint = True
       TabOrder = 2
@@ -197,6 +200,7 @@ object frmPrinc: TfrmPrinc
       Hint = 'Realizar Lan'#231'amentos'
       Action = acLanc
       Align = alTop
+      Caption = '&Lan'#231'amentos'
       ParentShowHint = False
       ShowHint = True
       TabOrder = 3
@@ -209,23 +213,23 @@ object frmPrinc: TfrmPrinc
       Hint = 'Menu de Relat'#243'rios'
       Action = acRel
       Align = alTop
+      Caption = '&Relat'#243'rios'
       ParentShowHint = False
       ShowHint = True
       TabOrder = 4
-      ExplicitTop = 201
     end
     object btnLancFixos: TButton
       Left = 1
       Top = 201
       Width = 143
       Height = 50
+      Hint = 'Cadastrar lan'#231'amentos a serem gerados automaticamente'
       Action = acLancFixos
       Align = alTop
+      Caption = 'Lan'#231'amentos &Fixos'
       ParentShowHint = False
       ShowHint = True
       TabOrder = 5
-      ExplicitLeft = -4
-      ExplicitTop = 215
     end
   end
   object ActionList: TActionList

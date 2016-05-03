@@ -70,6 +70,9 @@ type
     qryLancvalor: TFloatField;
     qryLancfixo: TStringField;
     DBCheckBox1: TDBCheckBox;
+    edtValorTotal: TDBEdit;
+    Label7: TLabel;
+    qryLancAggValorTotal: TAggregateField;
     procedure acNovoExecute(Sender: TObject);
     procedure acEditarExecute(Sender: TObject);
     procedure acGravarExecute(Sender: TObject);

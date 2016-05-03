@@ -19,52 +19,59 @@ object frmLancamentos: TfrmLancamentos
   TextHeight = 13
   object lblCodpes: TLabel
     Left = 40
-    Top = 436
+    Top = 452
     Width = 33
     Height = 13
     Caption = 'C'#243'digo'
   end
   object Label5: TLabel
     Left = 164
-    Top = 436
+    Top = 452
     Width = 44
     Height = 13
     Caption = 'Dt. Lanc.'
   end
   object lblDesc: TLabel
     Left = 27
-    Top = 463
+    Top = 479
     Width = 46
     Height = 13
     Caption = 'Descri'#231#227'o'
   end
   object Label1: TLabel
     Left = 24
-    Top = 408
+    Top = 424
     Width = 49
     Height = 13
     Caption = 'Tipo Lanc.'
   end
   object Label2: TLabel
     Left = 3
-    Top = 490
+    Top = 506
     Width = 70
     Height = 13
     Caption = 'Dt.Vencimento'
   end
   object Label3: TLabel
     Left = 362
-    Top = 436
+    Top = 452
     Width = 57
     Height = 13
     Caption = 'Dt.Exclus'#227'o'
   end
   object Label6: TLabel
     Left = 49
-    Top = 515
+    Top = 531
     Width = 24
     Height = 13
     Caption = 'Valor'
+  end
+  object Label7: TLabel
+    Left = 292
+    Top = 389
+    Width = 51
+    Height = 13
+    Caption = 'Valor Total'
   end
   object GroupBox1: TGroupBox
     Left = 0
@@ -139,7 +146,12 @@ object frmLancamentos: TfrmLancamentos
       Top = 82
       Width = 117
       Height = 17
+      Hint = 
+        'Se marcado, mostra somente lan'#231'amentos exclu'#237'dos. Se desmarcado,' +
+        ' somente n'#227'o exclu'#237'dos.'
       Caption = 'Somente Exclu'#237'dos'
+      ParentShowHint = False
+      ShowHint = True
       TabOrder = 3
     end
     object chkHabDtVenc: TCheckBox
@@ -229,7 +241,7 @@ object frmLancamentos: TfrmLancamentos
     Left = 0
     Top = 161
     Width = 800
-    Height = 238
+    Height = 224
     Align = alTop
     DataSource = dsLanc
     Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
@@ -301,7 +313,7 @@ object frmLancamentos: TfrmLancamentos
   end
   object edtCodLanc: TDBEdit
     Left = 79
-    Top = 433
+    Top = 449
     Width = 73
     Height = 21
     DataField = 'cod_lanc'
@@ -311,7 +323,7 @@ object frmLancamentos: TfrmLancamentos
   end
   object edtDtLanc: TDBEdit
     Left = 214
-    Top = 433
+    Top = 449
     Width = 127
     Height = 21
     DataField = 'dt_lanc'
@@ -321,7 +333,7 @@ object frmLancamentos: TfrmLancamentos
   end
   object edtDescricao: TDBEdit
     Left = 79
-    Top = 460
+    Top = 476
     Width = 472
     Height = 21
     DataField = 'descricao'
@@ -330,7 +342,7 @@ object frmLancamentos: TfrmLancamentos
   end
   object dbRgCat: TDBRadioGroup
     Left = 557
-    Top = 408
+    Top = 424
     Width = 86
     Height = 74
     Hint = 'Representa a categoria do tipo de lan'#231'amento'
@@ -347,7 +359,7 @@ object frmLancamentos: TfrmLancamentos
   end
   object edtDtVenc: TDBEdit
     Left = 79
-    Top = 487
+    Top = 503
     Width = 90
     Height = 21
     DataField = 'dt_vencimento'
@@ -356,7 +368,7 @@ object frmLancamentos: TfrmLancamentos
   end
   object cbLkpTipoLanc: TDBLookupComboBox
     Left = 79
-    Top = 405
+    Top = 421
     Width = 472
     Height = 21
     DataField = 'cod_tipo_lanc'
@@ -368,7 +380,7 @@ object frmLancamentos: TfrmLancamentos
   end
   object edtDtExclusao: TDBEdit
     Left = 425
-    Top = 433
+    Top = 449
     Width = 126
     Height = 21
     DataField = 'dt_exclusao'
@@ -378,7 +390,7 @@ object frmLancamentos: TfrmLancamentos
   end
   object edtValor: TDBEdit
     Left = 79
-    Top = 512
+    Top = 528
     Width = 90
     Height = 21
     DataField = 'valor'
@@ -387,7 +399,7 @@ object frmLancamentos: TfrmLancamentos
   end
   object DBCheckBox1: TDBCheckBox
     Left = 185
-    Top = 491
+    Top = 507
     Width = 97
     Height = 17
     Hint = 'Indica se foi gerado a partir de um la'#231'amento fixo cadastrado'
@@ -400,9 +412,18 @@ object frmLancamentos: TfrmLancamentos
     ValueChecked = 'S'
     ValueUnchecked = 'N'
   end
+  object edtValorTotal: TDBEdit
+    Left = 346
+    Top = 386
+    Width = 90
+    Height = 21
+    DataField = 'AggValorTotal'
+    DataSource = dsLanc
+    TabOrder = 12
+  end
   object AcList: TActionList
-    Left = 384
-    Top = 168
+    Left = 680
+    Top = 184
     object acNovo: TAction
       Caption = 'Novo'
       ShortCut = 112
@@ -438,6 +459,7 @@ object frmLancamentos: TfrmLancamentos
   object qryLanc: TFDQuery
     AfterOpen = qryLancAfterOpen
     AfterClose = qryLancAfterClose
+    AggregatesActive = True
     Connection = dmPrincipal.MySQLConn
     SQL.Strings = (
       'select l.cod_lanc '
@@ -452,8 +474,8 @@ object frmLancamentos: TfrmLancamentos
       '      ,tl.categoria'
       'from lancamentos l , tipos_lancamentos tl'
       'where l.cod_tipo_lanc = tl.cod_tipo_lanc')
-    Left = 392
-    Top = 304
+    Left = 552
+    Top = 240
     object qryLanccod_lanc: TFDAutoIncField
       FieldName = 'cod_lanc'
       Origin = 'cod_lanc'
@@ -518,20 +540,28 @@ object frmLancamentos: TfrmLancamentos
       FixedChar = True
       Size = 1
     end
+    object qryLancAggValorTotal: TAggregateField
+      FieldName = 'AggValorTotal'
+      ReadOnly = True
+      Active = True
+      currency = True
+      DisplayName = ''
+      Expression = 'sum(valor)'
+    end
   end
   object dsLanc: TDataSource
     AutoEdit = False
     DataSet = qryLanc
-    Left = 456
-    Top = 312
+    Left = 712
+    Top = 184
   end
   object qryTipoLanc: TFDQuery
     Connection = dmPrincipal.MySQLConn
     SQL.Strings = (
       'select cod_tipo_lanc, descricao'
       'from tipos_lancamentos')
-    Left = 192
-    Top = 288
+    Left = 672
+    Top = 304
     object qryTipoLanccod_tipo_lanc: TFDAutoIncField
       FieldName = 'cod_tipo_lanc'
       Origin = 'cod_tipo_lanc'
@@ -547,7 +577,7 @@ object frmLancamentos: TfrmLancamentos
   end
   object dsTipoLanc: TDataSource
     DataSet = qryTipoLanc
-    Left = 256
-    Top = 304
+    Left = 672
+    Top = 240
   end
 end

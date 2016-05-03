@@ -17,42 +17,42 @@ object frmLancFixos: TfrmLancFixos
   TextHeight = 13
   object Label1: TLabel
     Left = 24
-    Top = 368
+    Top = 381
     Width = 49
     Height = 13
     Caption = 'Tipo Lanc.'
   end
   object lblCodpes: TLabel
     Left = 40
-    Top = 396
+    Top = 409
     Width = 33
     Height = 13
     Caption = 'C'#243'digo'
   end
   object lblDesc: TLabel
     Left = 27
-    Top = 423
+    Top = 436
     Width = 46
     Height = 13
     Caption = 'Descri'#231#227'o'
   end
   object Label2: TLabel
     Left = 28
-    Top = 450
+    Top = 463
     Width = 45
     Height = 13
     Caption = 'Dt. Inicial'
   end
   object Label3: TLabel
     Left = 58
-    Top = 477
+    Top = 490
     Width = 15
     Height = 13
     Caption = 'Dia'
   end
   object Label5: TLabel
     Left = 158
-    Top = 479
+    Top = 492
     Width = 371
     Height = 13
     Caption = 
@@ -67,10 +67,17 @@ object frmLancFixos: TfrmLancFixos
   end
   object Label6: TLabel
     Left = 49
-    Top = 501
+    Top = 514
     Width = 24
     Height = 13
     Caption = 'Valor'
+  end
+  object Label7: TLabel
+    Left = 204
+    Top = 354
+    Width = 51
+    Height = 13
+    Caption = 'Valor Total'
   end
   object GroupBox1: TGroupBox
     Left = 0
@@ -163,8 +170,14 @@ object frmLancFixos: TfrmLancFixos
       end
       item
         Expanded = False
+        FieldName = 'valor'
+        Title.Caption = 'Valor'
+        Visible = True
+      end
+      item
+        Expanded = False
         FieldName = 'dt_ini'
-        Title.Caption = 'dt. Inicial'
+        Title.Caption = 'Dt. Inicial'
         Visible = True
       end
       item
@@ -189,7 +202,7 @@ object frmLancFixos: TfrmLancFixos
   end
   object cbLkpTipoLanc: TDBLookupComboBox
     Left = 79
-    Top = 365
+    Top = 378
     Width = 472
     Height = 21
     DataField = 'cod_tipo_lanc'
@@ -201,7 +214,7 @@ object frmLancFixos: TfrmLancFixos
   end
   object edtCodLanc: TDBEdit
     Left = 79
-    Top = 393
+    Top = 406
     Width = 73
     Height = 21
     DataField = 'cod_lanc_fixo'
@@ -211,7 +224,7 @@ object frmLancFixos: TfrmLancFixos
   end
   object edtDescricao: TDBEdit
     Left = 79
-    Top = 420
+    Top = 433
     Width = 472
     Height = 21
     DataField = 'descricao'
@@ -220,7 +233,7 @@ object frmLancFixos: TfrmLancFixos
   end
   object dbRgCat: TDBRadioGroup
     Left = 557
-    Top = 368
+    Top = 381
     Width = 86
     Height = 74
     Hint = 'Representa a categoria do tipo de lan'#231'amento'
@@ -237,7 +250,7 @@ object frmLancFixos: TfrmLancFixos
   end
   object edtDtIni: TDBEdit
     Left = 79
-    Top = 447
+    Top = 460
     Width = 73
     Height = 21
     DataField = 'dt_ini'
@@ -246,7 +259,7 @@ object frmLancFixos: TfrmLancFixos
   end
   object edtDia: TDBEdit
     Left = 79
-    Top = 474
+    Top = 487
     Width = 73
     Height = 21
     Hint = 'Dia do m'#234's para a gera'#231#227'o autom'#225'tica'
@@ -311,12 +324,21 @@ object frmLancFixos: TfrmLancFixos
   end
   object edtValor: TDBEdit
     Left = 79
-    Top = 498
+    Top = 511
     Width = 90
     Height = 21
     DataField = 'valor'
     DataSource = dsLancFixos
     TabOrder = 8
+  end
+  object edtValorTotal: TDBEdit
+    Left = 258
+    Top = 351
+    Width = 90
+    Height = 21
+    DataField = 'AggValorTotal'
+    DataSource = dsLancFixos
+    TabOrder = 10
   end
   object qryTipoLanc: TFDQuery
     Connection = dmPrincipal.MySQLConn
@@ -340,8 +362,8 @@ object frmLancFixos: TfrmLancFixos
   end
   object dsTipoLanc: TDataSource
     DataSet = qryTipoLanc
-    Left = 256
-    Top = 304
+    Left = 304
+    Top = 208
   end
   object AcList: TActionList
     Left = 384
@@ -381,6 +403,7 @@ object frmLancFixos: TfrmLancFixos
   object qryLancFixos: TFDQuery
     AfterOpen = qryLancFixosAfterOpen
     AfterClose = qryLancFixosAfterClose
+    AggregatesActive = True
     Connection = dmPrincipal.MySQLConn
     SQL.Strings = (
       'select lf.cod_lanc_fixo,'
@@ -443,6 +466,14 @@ object frmLancFixos: TfrmLancFixos
       FieldName = 'valor'
       Origin = 'valor'
       currency = True
+    end
+    object qryLancFixosAggValorTotal: TAggregateField
+      FieldName = 'AggValorTotal'
+      ReadOnly = True
+      Active = True
+      currency = True
+      DisplayName = ''
+      Expression = 'sum(valor)'
     end
   end
   object dsLancFixos: TDataSource

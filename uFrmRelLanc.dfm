@@ -61,7 +61,6 @@ object frmRelLanc: TfrmRelLanc
       Action = acEmitir
       Align = alRight
       TabOrder = 0
-      ExplicitLeft = 409
     end
     object btnLimpar: TButton
       Left = 333
@@ -910,6 +909,9 @@ object frmRelLanc: TfrmRelLanc
           Top = 15.118120000000000000
           Width = 98.267780000000000000
           Height = 18.897650000000000000
+          DisplayFormat.DecimalSeparator = ','
+          DisplayFormat.ThousandSeparator = '.'
+          DisplayFormat.FormatStr = '##0.00'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -13
