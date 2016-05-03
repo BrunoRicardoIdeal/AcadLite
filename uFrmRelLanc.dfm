@@ -61,6 +61,7 @@ object frmRelLanc: TfrmRelLanc
       Action = acEmitir
       Align = alRight
       TabOrder = 0
+      ExplicitLeft = 409
     end
     object btnLimpar: TButton
       Left = 333

@@ -86,7 +86,6 @@ begin
  begin
    qryEquip.SQL.Add('AND LOWER(TIPO) = ' + LowerCase(QuotedStr(cbTipo.Text)));
  end;
-
  qryEquip.Open();
  if qryEquip.IsEmpty then
  begin

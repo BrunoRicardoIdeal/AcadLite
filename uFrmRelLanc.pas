@@ -156,6 +156,7 @@ begin
  begin
   qryLanc.SQL.Add('and l.dt_exclusao is null');
  end;
+ qryLanc.SQL.Add('ORDER BY COD_TIPO_LANC');
  qryLanc.Open();
  if qryLanc.IsEmpty then
  begin

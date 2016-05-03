@@ -100,6 +100,7 @@ object frmRelEquip: TfrmRelEquip
     end
   end
   object qryEquip: TFDQuery
+    Active = True
     Connection = dmPrincipal.MySQLConn
     SQL.Strings = (
       'select * from equipamentos')
@@ -138,8 +139,8 @@ object frmRelEquip: TfrmRelEquip
     PreviewOptions.Zoom = 1.000000000000000000
     PrintOptions.Printer = 'Default'
     PrintOptions.PrintOnSheet = 0
-    ReportOptions.CreateDate = 42488.806165925930000000
-    ReportOptions.LastChange = 42488.806165925930000000
+    ReportOptions.CreateDate = 42488.806165925900000000
+    ReportOptions.LastChange = 42488.806165925900000000
     ScriptLanguage = 'PascalScript'
     ScriptText.Strings = (
       'begin'
@@ -196,9 +197,9 @@ object frmRelEquip: TfrmRelEquip
         end
         object Memo8: TfrxMemoView
           Left = 71.811070000000000000
-          Top = 3.779530000000000000
-          Width = 370.393940000000000000
-          Height = 18.897650000000000000
+          Top = 6.907416896551720000
+          Width = 631.181510000000000000
+          Height = 19.549293103448300000
           DataField = 'nome'
           DataSet = frxDBEquip
           DataSetName = 'frxDBEquip'
@@ -206,7 +207,7 @@ object frmRelEquip: TfrmRelEquip
             '[frxDBEquip."nome"]')
         end
         object Memo9: TfrxMemoView
-          Left = 457.323130000000000000
+          Left = 710.551640000000000000
           Top = 3.779530000000000000
           Width = 120.944960000000000000
           Height = 18.897650000000000000
@@ -217,7 +218,7 @@ object frmRelEquip: TfrmRelEquip
             '[frxDBEquip."tipo"]')
         end
         object Memo4: TfrxMemoView
-          Left = 585.827150000000000000
+          Left = 839.055660000000000000
           Top = 3.779530000000000000
           Width = 162.519790000000000000
           Height = 18.897650000000000000
@@ -271,8 +272,8 @@ object frmRelEquip: TfrmRelEquip
         object Memo2: TfrxMemoView
           Left = 71.811070000000000000
           Top = 158.740260000000000000
-          Width = 370.393940000000000000
-          Height = 18.897650000000000000
+          Width = 631.181510000000000000
+          Height = 19.549293103448300000
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -13
@@ -283,7 +284,7 @@ object frmRelEquip: TfrmRelEquip
           ParentFont = False
         end
         object Memo3: TfrxMemoView
-          Left = 457.323130000000000000
+          Left = 710.551640000000000000
           Top = 158.740260000000000000
           Width = 120.944960000000000000
           Height = 18.897650000000000000
@@ -421,7 +422,7 @@ object frmRelEquip: TfrmRelEquip
           ParentFont = False
         end
         object Memo5: TfrxMemoView
-          Left = 585.827150000000000000
+          Left = 839.055660000000000000
           Top = 158.740260000000000000
           Width = 120.944960000000000000
           Height = 18.897650000000000000
