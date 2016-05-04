@@ -77,7 +77,7 @@ object frmUsuarios: TfrmUsuarios
     Width = 800
     Height = 41
     Align = alBottom
-    TabOrder = 1
+    TabOrder = 6
     object btnNovo: TButton
       Left = 1
       Top = 1
@@ -132,7 +132,7 @@ object frmUsuarios: TfrmUsuarios
     Align = alTop
     DataSource = dsPessoas
     Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
-    TabOrder = 2
+    TabOrder = 1
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
     TitleFont.Height = -11
@@ -169,7 +169,7 @@ object frmUsuarios: TfrmUsuarios
     DataField = 'id'
     DataSource = dsPessoas
     Enabled = False
-    TabOrder = 4
+    TabOrder = 2
   end
   object lblEdtNovaSenha: TLabeledEdit
     Left = 129
@@ -181,7 +181,7 @@ object frmUsuarios: TfrmUsuarios
     EditLabel.Caption = 'Nova Senha'
     LabelPosition = lpLeft
     PasswordChar = '*'
-    TabOrder = 5
+    TabOrder = 4
   end
   object lblEdtConfNovaSenha: TLabeledEdit
     Left = 129
@@ -193,7 +193,7 @@ object frmUsuarios: TfrmUsuarios
     EditLabel.Caption = 'Confirmar Nova Senha'
     LabelPosition = lpLeft
     PasswordChar = '*'
-    TabOrder = 6
+    TabOrder = 5
   end
   object AcList: TActionList
     Left = 240
