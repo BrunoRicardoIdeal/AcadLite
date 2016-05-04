@@ -73,6 +73,7 @@ type
     procedure qryLancFixosAfterClose(DataSet: TDataSet);
     procedure qryLancFixosAfterOpen(DataSet: TDataSet);
     procedure qryLancFixoscod_tipo_lancChange(Sender: TField);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
    procedure validarPreench;
     { Private declarations }
@@ -211,6 +212,12 @@ begin
    Exit;
  end;
 
+end;
+
+procedure TfrmLancFixos.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+ frmLancFixos := nil;
+ action := cafree;
 end;
 
 procedure TfrmLancFixos.qryLancFixosAfterClose(DataSet: TDataSet);

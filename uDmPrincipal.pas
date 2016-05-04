@@ -13,10 +13,20 @@ type
   TdmPrincipal = class(TDataModule)
     MySQLConn: TFDConnection;
     WaitCursor: TFDGUIxWaitCursor;
+    procedure DataModuleCreate(Sender: TObject);
   private
+
+   procedure CriaUsuarioAdmin;
 
     { Private declarations }
   public
+   const
+    USER_ADMIN = 'Admin';
+    PAS_ADMIN = '#Admin123';
+   var
+    user : string;
+    isAdmin : boolean;
+
     { Public declarations }
   end;
 
@@ -28,6 +38,33 @@ implementation
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
 {$R *.dfm}
+
+procedure TdmPrincipal.CriaUsuarioAdmin;
+var
+ lQryCria : TFdQuery;
+begin
+  lQryCria := TFDQuery.Create(nil);
+  try
+   lQryCria.Connection := dmPrincipal.MySQLConn;
+   lQryCria.SQL.Add('SELECT ID,NOME,SENHA,ADMIN FROM USUARIOS WHERE ADMIN = ''S''');
+   lQryCria.Open();
+   if lQryCria.IsEmpty then
+   begin
+     lQryCria.Append;
+     lQryCria.FieldByName('NOME').AsString := USER_ADMIN;
+     lQryCria.FieldByName('SENHA').AsString := PAS_ADMIN;
+     lQryCria.FieldByName('ADMIN').AsString := 'S';
+     lQryCria.Post;
+   end;
+  finally
+    lQryCria.Free;
+  end;
+end;
+
+procedure TdmPrincipal.DataModuleCreate(Sender: TObject);
+begin
+ CriaUsuarioAdmin;
+end;
 
 end.
 

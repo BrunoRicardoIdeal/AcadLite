@@ -15,7 +15,9 @@ uses
   uFrmRelEquip in 'uFrmRelEquip.pas' {frmRelEquip},
   uFrmRelTpLanc in 'uFrmRelTpLanc.pas' {frmRelTpLanc},
   uFrmRelLanc in 'uFrmRelLanc.pas' {frmRelLanc},
-  uFrmLancFixos in 'uFrmLancFixos.pas' {frmLancFixos};
+  uFrmLancFixos in 'uFrmLancFixos.pas' {frmLancFixos},
+  uFrmUsuarios in 'uFrmUsuarios.pas' {frmUsuarios},
+  uFrmLogin in 'uFrmLogin.pas' {frmLogin};
 
 {$R *.res}
 
@@ -25,6 +27,5 @@ begin
   TStyleManager.TrySetStyle('Tablet Light');
   Application.CreateForm(TdmPrincipal, dmPrincipal);
   Application.CreateForm(TfrmPrinc, frmPrinc);
-  Application.CreateForm(TfrmLancFixos, frmLancFixos);
   Application.Run;
 end.
