@@ -231,6 +231,7 @@ object frmRelLanc: TfrmRelLanc
     end
   end
   object qryLanc: TFDQuery
+    Active = True
     Connection = dmPrincipal.MySQLConn
     SQL.Strings = (
       'select l.cod_lanc '
@@ -431,7 +432,7 @@ object frmRelLanc: TfrmRelLanc
       object PageFooter1: TfrxPageFooter
         FillType = ftBrush
         Height = 22.677180000000000000
-        Top = 480.000310000000000000
+        Top = 623.622450000000000000
         Width = 1046.929810000000000000
         object SysMemo1: TfrxSysMemoView
           Left = 480.000310000000000000
@@ -445,60 +446,6 @@ object frmRelLanc: TfrmRelLanc
           HAlign = haRight
           Memo.UTF8W = (
             '[PAGE#] of [TOTALPAGES#]')
-          ParentFont = False
-        end
-        object SysMemo2: TfrxSysMemoView
-          Left = 128.504020000000000000
-          Width = 117.165430000000000000
-          Height = 18.897650000000000000
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Arial'
-          Font.Style = []
-          Memo.UTF8W = (
-            '[COUNT(MasterData1)]')
-          ParentFont = False
-        end
-        object Memo22: TfrxMemoView
-          Width = 124.724490000000000000
-          Height = 18.897650000000000000
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Arial'
-          Font.Style = [fsBold]
-          HAlign = haRight
-          Memo.UTF8W = (
-            'Quantidade Total:')
-          ParentFont = False
-        end
-        object Memo27: TfrxMemoView
-          Left = 850.394250000000000000
-          Width = 94.488250000000000000
-          Height = 18.897650000000000000
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Arial'
-          Font.Style = [fsBold]
-          HAlign = haRight
-          Memo.UTF8W = (
-            'Total Geral:')
-          ParentFont = False
-        end
-        object SysMemo5: TfrxSysMemoView
-          Left = 945.662030000000000000
-          Width = 98.267780000000000000
-          Height = 18.897650000000000000
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Arial'
-          Font.Style = []
-          HAlign = haRight
-          Memo.UTF8W = (
-            '[SUM(<frxDBLancamentos."valor">,MasterData1)]')
           ParentFont = False
         end
       end
@@ -923,9 +870,9 @@ object frmRelLanc: TfrmRelLanc
           ParentFont = False
         end
         object Memo26: TfrxMemoView
-          Left = 850.394250000000000000
+          Left = 899.528140000000000000
           Top = 15.118120000000000000
-          Width = 94.488250000000000000
+          Width = 45.354360000000000000
           Height = 18.897650000000000000
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -935,6 +882,100 @@ object frmRelLanc: TfrmRelLanc
           HAlign = haRight
           Memo.UTF8W = (
             'Total:')
+          ParentFont = False
+        end
+        object Shape2: TfrxShapeView
+          Left = 895.748610000000000000
+          Top = 14.118120000000000000
+          Width = 151.181200000000000000
+          Height = 18.897650000000000000
+          Shape = skRoundRectangle
+        end
+      end
+      object ReportSummary1: TfrxReportSummary
+        FillType = ftBrush
+        Height = 120.944960000000000000
+        Top = 480.000310000000000000
+        Width = 1046.929810000000000000
+        object Shape1: TfrxShapeView
+          Left = 11.338590000000000000
+          Top = 32.015770000000000000
+          Width = 226.771800000000000000
+          Height = 68.031540000000000000
+          Shape = skRoundRectangle
+        end
+        object SysMemo2: TfrxSysMemoView
+          Left = 105.826840000000000000
+          Top = 45.354360000000000000
+          Width = 117.165430000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            '[COUNT(MasterData1)]')
+          ParentFont = False
+        end
+        object Memo22: TfrxMemoView
+          Left = -22.677180000000000000
+          Top = 45.354360000000000000
+          Width = 124.724490000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Quantidade:')
+          ParentFont = False
+        end
+        object Memo27: TfrxMemoView
+          Left = 7.559060000000000000
+          Top = 68.031540000000000000
+          Width = 94.488250000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Valor:')
+          ParentFont = False
+        end
+        object SysMemo5: TfrxSysMemoView
+          Left = 102.826840000000000000
+          Top = 68.031540000000000000
+          Width = 120.944960000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            '[SUM(<frxDBLancamentos."valor">,MasterData1)]')
+          ParentFont = False
+        end
+        object Memo28: TfrxMemoView
+          Left = 13.897650000000000000
+          Top = 15.118120000000000000
+          Width = 86.929190000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Memo.UTF8W = (
+            'Totais:')
           ParentFont = False
         end
       end
