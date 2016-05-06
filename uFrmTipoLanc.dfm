@@ -300,6 +300,13 @@ object frmTiposLanc: TfrmTiposLanc
       Origin = 'dt_cadastro'
       ReadOnly = True
     end
+    object qryTpLancpadrao: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'padrao'
+      Origin = 'padrao'
+      FixedChar = True
+      Size = 1
+    end
   end
   object dsTpLanc: TDataSource
     AutoEdit = False

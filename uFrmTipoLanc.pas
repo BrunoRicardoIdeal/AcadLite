@@ -45,6 +45,7 @@ type
     qryTpLancdescricao: TStringField;
     qryTpLanccategoria: TStringField;
     qryTpLancdt_cadastro: TDateTimeField;
+    qryTpLancpadrao: TStringField;
     procedure acNovoExecute(Sender: TObject);
     procedure acEditarExecute(Sender: TObject);
     procedure acGravarExecute(Sender: TObject);
@@ -78,6 +79,12 @@ end;
 
 procedure TfrmTiposLanc.acEditarExecute(Sender: TObject);
 begin
+ if qryTpLancpadrao.AsString = 'S' then
+ begin
+   ShowMessage('Não é possível editar um tipo de lançamento padrão!');
+   Abort;
+ end;
+
  if not qryTpLanc.Active then
  begin
    qryTpLanc.Open();
@@ -101,6 +108,11 @@ end;
 
 procedure TfrmTiposLanc.acExcluirExecute(Sender: TObject);
 begin
+ if qryTpLancpadrao.AsString = 'S' then
+  begin
+    ShowMessage('Não é possível excluir um tipo de lançamento padrão!');
+    Abort;
+  end;
   if not qryTpLanc.IsEmpty then
   begin
    if MessageDlg('Deseja realmente excluir?',TMsgDlgType.mtConfirmation
@@ -164,6 +176,7 @@ begin
  qryTpLanc.SQL.Add('SELECT COD_TIPO_LANC');
  qryTpLanc.SQL.Add('       ,DESCRICAO');
  qryTpLanc.SQL.Add('       ,DT_CADASTRO');
+ qryTpLanc.SQL.Add('       ,PADRAO');
  qryTpLanc.SQL.Add('       ,CATEGORIA');
  qryTpLanc.SQL.Add('FROM TIPOS_LANCAMENTOS');
  qryTpLanc.SQL.Add('WHERE 1=1');
@@ -196,8 +209,12 @@ begin
   lQry := TFDQuery.Create(Self);
   try
     lQry.Connection := dmPrincipal.MySQLConn;
-    lQry.SQL.Add('SELECT COD_LANC');
+    lQry.SQL.Add('SELECT VALOR');
     lQry.SQL.Add('FROM LANCAMENTOS');
+    lQry.SQL.Add('WHERE COD_TIPO_LANC = ' + IntToStr(pCodTipo));
+    lQry.SQL.Add('UNION');
+    lQry.SQL.Add('SELECT VALOR');
+    lQry.SQL.Add('FROM LANCAMENTOS_FIXOS');
     lQry.SQL.Add('WHERE COD_TIPO_LANC = ' + IntToStr(pCodTipo));
     lQry.SQL.Add('LIMIT 1');
     lQry.Open();
