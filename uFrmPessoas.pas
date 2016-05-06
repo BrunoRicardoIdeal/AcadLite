@@ -57,6 +57,9 @@ type
     edtCadastro: TDBEdit;
     Label5: TLabel;
     qryPessoasdt_cadastro: TDateTimeField;
+    qryPessoasinadimplente: TBooleanField;
+    Label6: TLabel;
+    shpRed: TShape;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure acNovoExecute(Sender: TObject);
     procedure acEditarExecute(Sender: TObject);
@@ -64,6 +67,9 @@ type
     procedure acCancelarExecute(Sender: TObject);
     procedure acExcluirExecute(Sender: TObject);
     procedure acPesquisarExecute(Sender: TObject);
+    procedure qryPessoasCalcFields(DataSet: TDataSet);
+    procedure grdPessoasDrawColumnCell(Sender: TObject; const Rect: TRect;
+      DataCol: Integer; Column: TColumn; State: TGridDrawState);
   private
     { Private declarations }
   public
@@ -206,6 +212,25 @@ procedure TfrmPessoas.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
  frmPessoas := nil;
  Action :=caFree;
+end;
+
+procedure TfrmPessoas.grdPessoasDrawColumnCell(Sender: TObject;
+  const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
+begin
+ if qryPessoasinadimplente.AsBoolean then
+ begin
+   grdPessoas.Canvas.Font.Color := clRed;
+   grdPessoas.DefaultDrawDataCell(Rect, grdPessoas.columns[datacol].field, State);
+ end;
+end;
+
+procedure TfrmPessoas.qryPessoasCalcFields(DataSet: TDataSet);
+begin
+ if qryPessoastipo.AsString = 'Aluno' then
+ begin
+   qryPessoasinadimplente.AsBoolean
+    := dmPrincipal.isInadimp(qryPessoascod_pessoa.AsInteger);
+ end;
 end;
 
 end.

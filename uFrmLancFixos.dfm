@@ -74,8 +74,8 @@ object frmLancFixos: TfrmLancFixos
     Caption = 'Valor'
   end
   object Label7: TLabel
-    Left = 204
-    Top = 354
+    Left = 652
+    Top = 356
     Width = 51
     Height = 13
     Caption = 'Valor Total'
@@ -333,8 +333,8 @@ object frmLancFixos: TfrmLancFixos
     TabOrder = 8
   end
   object edtValorTotal: TDBEdit
-    Left = 258
-    Top = 351
+    Left = 706
+    Top = 353
     Width = 90
     Height = 21
     DataField = 'AggValorTotal'

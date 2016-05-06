@@ -67,6 +67,20 @@ object frmPessoas: TfrmPessoas
     Height = 13
     Caption = 'Dt. Cadastro'
   end
+  object Label6: TLabel
+    Left = 724
+    Top = 361
+    Width = 67
+    Height = 13
+    Caption = 'Inadimplentes'
+  end
+  object shpRed: TShape
+    Left = 698
+    Top = 359
+    Width = 20
+    Height = 20
+    Brush.Color = clRed
+  end
   object GroupBox1: TGroupBox
     Left = 0
     Top = 0
@@ -143,6 +157,7 @@ object frmPessoas: TfrmPessoas
     TitleFont.Height = -11
     TitleFont.Name = 'Tahoma'
     TitleFont.Style = []
+    OnDrawColumnCell = grdPessoasDrawColumnCell
     Columns = <
       item
         Expanded = False
@@ -363,6 +378,7 @@ object frmPessoas: TfrmPessoas
     end
   end
   object qryPessoas: TFDQuery
+    OnCalcFields = qryPessoasCalcFields
     Connection = dmPrincipal.MySQLConn
     SQL.Strings = (
       'select * from pessoas')
@@ -419,6 +435,11 @@ object frmPessoas: TfrmPessoas
       FieldName = 'dt_cadastro'
       Origin = 'dt_cadastro'
       ReadOnly = True
+    end
+    object qryPessoasinadimplente: TBooleanField
+      FieldKind = fkCalculated
+      FieldName = 'inadimplente'
+      Calculated = True
     end
   end
   object dsPessoas: TDataSource

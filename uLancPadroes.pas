@@ -2,13 +2,9 @@ unit uLancPadroes;
 
 interface
 
- uses sysutils, Types, System.Generics.Collections;
+ uses sysutils, Types, System.Generics.Collections,uConstantes;
 
-    const
-     {Lancamentos padroes}
-    LANC_MENS_ALUNO = 'Mensalidade de Aluno';
-    LANC_AGUA = 'Conta de Água';
-    LANC_LUZ = 'Conta de Luz';
+
 
  type TLanc = class(tObject)
 

@@ -18,7 +18,9 @@ uses
   uFrmLancFixos in 'uFrmLancFixos.pas' {frmLancFixos},
   uFrmUsuarios in 'uFrmUsuarios.pas' {frmUsuarios},
   uFrmLogin in 'uFrmLogin.pas' {frmLogin},
-  uLancPadroes in 'uLancPadroes.pas';
+  uLancPadroes in 'uLancPadroes.pas',
+  uFrmMensalidades in 'uFrmMensalidades.pas' {frmMensalidades},
+  uConstantes in 'uConstantes.pas';
 
 {$R *.res}
 

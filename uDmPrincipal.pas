@@ -29,6 +29,9 @@ type
     user : string;
     isAdmin : boolean;
     { Public declarations }
+
+    function getCodTpLanc(pDesc : String):integer;
+    function isInadimp(pCodAluno : integer) : boolean;
   end;
 
 var
@@ -67,6 +70,22 @@ begin
  CriaUsuarioAdmin;
  InserirTpLancPadroes;
 
+end;
+
+function TdmPrincipal.getCodTpLanc(pDesc: String): integer;
+var
+ lQrySelect : TFdQuery;
+begin
+  lQrySelect := TFdQuery.Create(self);
+  try
+   lQrySelect.Connection := MySQLConn;
+   lQrySelect.SQL.Add('SELECT COD_TIPO_LANC FROM TIPOS_LANCAMENTOS');
+   lQrySelect.SQL.Add('WHERE LOWER(DESCRICAO)=' + QuotedStr(LowerCase(pDesc)));
+   lQrySelect.Open();
+   result := lQrySelect.FieldByName('COD_TIPO_LANC').AsInteger;
+  finally
+   lQrySelect.Free;
+  end;
 end;
 
 procedure TdmPrincipal.InserirTpLancPadroes;
@@ -124,6 +143,24 @@ begin
   finally
     lQrySelect.Free;
     lLancPad.Free;
+  end;
+end;
+
+function TdmPrincipal.isInadimp(pCodAluno: integer): boolean;
+var
+ lQrySelect : TFdQuery;
+begin
+  lQrySelect := TFdQuery.Create(self);
+  try
+   lQrySelect.Connection := MySQLConn;
+   lQrySelect.SQL.Add('SELECT COD_MENSALIDADE FROM MENSALIDADES');
+   lQrySelect.SQL.Add('WHERE COD_ALUNO = ' + InTtoStr(pCodAluno));
+   lQrySelect.SQL.Add('AND ( ( DT_RECEBIMENTO IS NULL) AND (DT_VENCIMENTO < CURDATE()) )');
+   lQrySelect.SQL.Add('LIMIT 1');
+   lQrySelect.Open();
+   result := not lQrySelect.IsEmpty;
+  finally
+   lQrySelect.Free;
   end;
 end;
 

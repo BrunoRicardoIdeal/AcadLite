@@ -29,6 +29,8 @@ type
     acLancFixos: TAction;
     btnUsu: TButton;
     acUsuarios: TAction;
+    btnMensalidades: TButton;
+    acMensalidades: TAction;
     procedure btnEquipClick(Sender: TObject);
     procedure AcPesExecute(Sender: TObject);
     procedure acEquipExecute(Sender: TObject);
@@ -38,6 +40,7 @@ type
     procedure acLancFixosExecute(Sender: TObject);
     procedure acUsuariosExecute(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure acMensalidadesExecute(Sender: TObject);
   private
    procedure EfetuarLogin;
     { Private declarations }
@@ -53,7 +56,7 @@ implementation
          uFrmLancFixos,uDmPrincipal,
          uFrmTipoLanc,uFrmUsuarios,
          uFrmLancamentos, uFrmRelatorios,
-         uFrmLogin;
+         uFrmLogin,ufrmMensalidades;
 {$R *.dfm}
 
 procedure TfrmPrinc.acEquipExecute(Sender: TObject);
@@ -81,6 +84,15 @@ begin
    Application.CreateForm(TfrmLancFixos,frmLancFixos);
  end;
  frmLancFixos.Show;
+end;
+
+procedure TfrmPrinc.acMensalidadesExecute(Sender: TObject);
+begin
+ if frmMensalidades = nil then
+ begin
+   Application.CreateForm(TfrmMensalidades,frmMensalidades);
+ end;
+ frmMensalidades.Show;
 end;
 
 procedure TfrmPrinc.AcPesExecute(Sender: TObject);

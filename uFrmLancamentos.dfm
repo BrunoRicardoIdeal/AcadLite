@@ -19,55 +19,55 @@ object frmLancamentos: TfrmLancamentos
   TextHeight = 13
   object lblCodpes: TLabel
     Left = 40
-    Top = 452
+    Top = 428
     Width = 33
     Height = 13
     Caption = 'C'#243'digo'
   end
   object Label5: TLabel
     Left = 164
-    Top = 452
+    Top = 428
     Width = 44
     Height = 13
     Caption = 'Dt. Lanc.'
   end
   object lblDesc: TLabel
     Left = 27
-    Top = 479
+    Top = 455
     Width = 46
     Height = 13
     Caption = 'Descri'#231#227'o'
   end
   object Label1: TLabel
     Left = 24
-    Top = 424
+    Top = 400
     Width = 49
     Height = 13
     Caption = 'Tipo Lanc.'
   end
   object Label2: TLabel
     Left = 3
-    Top = 506
+    Top = 482
     Width = 70
     Height = 13
     Caption = 'Dt.Vencimento'
   end
   object Label3: TLabel
     Left = 362
-    Top = 452
+    Top = 428
     Width = 57
     Height = 13
     Caption = 'Dt.Exclus'#227'o'
   end
   object Label6: TLabel
     Left = 49
-    Top = 531
+    Top = 507
     Width = 24
     Height = 13
     Caption = 'Valor'
   end
   object Label7: TLabel
-    Left = 292
+    Left = 652
     Top = 389
     Width = 51
     Height = 13
@@ -313,7 +313,7 @@ object frmLancamentos: TfrmLancamentos
   end
   object edtCodLanc: TDBEdit
     Left = 79
-    Top = 449
+    Top = 425
     Width = 73
     Height = 21
     DataField = 'cod_lanc'
@@ -323,7 +323,7 @@ object frmLancamentos: TfrmLancamentos
   end
   object edtDtLanc: TDBEdit
     Left = 214
-    Top = 449
+    Top = 425
     Width = 127
     Height = 21
     DataField = 'dt_lanc'
@@ -333,7 +333,7 @@ object frmLancamentos: TfrmLancamentos
   end
   object edtDescricao: TDBEdit
     Left = 79
-    Top = 476
+    Top = 452
     Width = 472
     Height = 21
     DataField = 'descricao'
@@ -342,7 +342,7 @@ object frmLancamentos: TfrmLancamentos
   end
   object dbRgCat: TDBRadioGroup
     Left = 557
-    Top = 424
+    Top = 400
     Width = 86
     Height = 74
     Hint = 'Representa a categoria do tipo de lan'#231'amento'
@@ -359,7 +359,7 @@ object frmLancamentos: TfrmLancamentos
   end
   object edtDtVenc: TDBEdit
     Left = 79
-    Top = 503
+    Top = 479
     Width = 90
     Height = 21
     DataField = 'dt_vencimento'
@@ -368,7 +368,7 @@ object frmLancamentos: TfrmLancamentos
   end
   object cbLkpTipoLanc: TDBLookupComboBox
     Left = 79
-    Top = 421
+    Top = 397
     Width = 472
     Height = 21
     DataField = 'cod_tipo_lanc'
@@ -380,7 +380,7 @@ object frmLancamentos: TfrmLancamentos
   end
   object edtDtExclusao: TDBEdit
     Left = 425
-    Top = 449
+    Top = 425
     Width = 126
     Height = 21
     DataField = 'dt_exclusao'
@@ -390,7 +390,7 @@ object frmLancamentos: TfrmLancamentos
   end
   object edtValor: TDBEdit
     Left = 79
-    Top = 528
+    Top = 504
     Width = 90
     Height = 21
     DataField = 'valor'
@@ -399,7 +399,7 @@ object frmLancamentos: TfrmLancamentos
   end
   object DBCheckBox1: TDBCheckBox
     Left = 185
-    Top = 507
+    Top = 483
     Width = 97
     Height = 17
     Hint = 'Indica se foi gerado a partir de um la'#231'amento fixo cadastrado'
@@ -413,7 +413,7 @@ object frmLancamentos: TfrmLancamentos
     ValueUnchecked = 'N'
   end
   object edtValorTotal: TDBEdit
-    Left = 346
+    Left = 706
     Top = 386
     Width = 90
     Height = 21
