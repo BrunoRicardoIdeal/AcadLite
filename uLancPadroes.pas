@@ -22,7 +22,7 @@ interface
   public
    function GetLista : TList<TLanc>;
    constructor Create;
-   destructor Destroy;
+   destructor Destroy;override;
 
  end;
 

@@ -32,7 +32,7 @@ var
 
 implementation
   uses
-   uFrmPrinc;
+   uFrmPrinc,uConstantes;
 
  {$R *.dfm}
 
@@ -40,7 +40,7 @@ procedure TfrmLogin.btnEntrarClick(Sender: TObject);
 begin
  if not TentarLogin(lblEdtUsu.Text,lblEdtSenha.Text) then
  begin
-   ShowMessage('Usuário ou senha incorretos!');
+   MessageBox(0, 'Usuário ou senha incorretos', 'Erro', MB_ICONERROR or MB_OK);
    Abort;
  end
  else
@@ -81,8 +81,13 @@ begin
     else
     begin
       result := True;
-      dmPrincipal.user := lQryLog.FieldByName('NOME').AsString;
+      dmPrincipal.NomeUsuario := lQryLog.FieldByName('NOME').AsString;
       dmPrincipal.isAdmin := lQryLog.FieldByName('ADMIN').AsString = 'S';
+      dmPrincipal.CodUsuario := lQryLog.FieldByName('ID').AsInteger;
+      if dmPrincipal.CodUsuario > 0 then
+      begin
+       dmPrincipal.salvarLog(dmPrincipal.CodUsuario,OP_LOGIN,dmPrincipal.nomePC);
+      end;
     end;
 
   finally

@@ -7,18 +7,24 @@ uses
   FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf, FireDAC.Stan.Def,
   FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys, FireDAC.VCLUI.Wait,
   FireDAC.Comp.UI, Data.DB, FireDAC.Comp.Client, FireDAC.Phys.MySQL,uLancPadroes,
-  FireDAC.Phys.MySQLDef;
+  FireDAC.Phys.MySQLDef, FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf,
+  FireDAC.DApt, FireDAC.Comp.DataSet;
 
 type
   TdmPrincipal = class(TDataModule)
     MySQLConn: TFDConnection;
     WaitCursor: TFDGUIxWaitCursor;
+    qryLog: TFDQuery;
+    qryLogid: TFDAutoIncField;
+    qryLogcod_usuario: TIntegerField;
+    qryLogcomputador: TStringField;
+    qryLogoperacao: TStringField;
     procedure DataModuleCreate(Sender: TObject);
   private
 
    procedure CriaUsuarioAdmin;
    procedure InserirTpLancPadroes;
-
+   function GetNomePC: String;
     { Private declarations }
   public
    const
@@ -26,18 +32,25 @@ type
     USER_ADMIN = 'Admin';
     PAS_ADMIN = '#Admin123';
    var
-    user : string;
+    NomeUsuario : string;
+    CodUsuario : integer;
     isAdmin : boolean;
+    nomePC : string;
     { Public declarations }
-
+    procedure salvarLog(pCodUsu : integer; pOperacao : string;pComputador : string);
     function getCodTpLanc(pDesc : String):integer;
     function isInadimp(pCodAluno : integer) : boolean;
+
+
   end;
 
 var
   dmPrincipal: TdmPrincipal;
 
 implementation
+
+uses
+  Winapi.Windows;
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
@@ -69,6 +82,7 @@ procedure TdmPrincipal.DataModuleCreate(Sender: TObject);
 begin
  CriaUsuarioAdmin;
  InserirTpLancPadroes;
+ nomePC := GetNomePC;
 
 end;
 
@@ -162,6 +176,34 @@ begin
   finally
    lQrySelect.Free;
   end;
+end;
+
+function TdmPrincipal.GetNomePC: String;
+var
+  lpBuffer : PChar;
+  nSize : DWord;
+const
+  Buff_Size = MAX_COMPUTERNAME_LENGTH + 1;
+begin
+  nSize := Buff_Size;
+  lpBuffer := StrAlloc(Buff_Size);
+  GetComputerName(lpBuffer,nSize);
+  Result := String(lpBuffer);
+  StrDispose(lpBuffer);
+end;
+
+procedure TdmPrincipal.salvarLog( pCodUsu: integer; pOperacao, pComputador: string);
+begin
+ if not qryLog.Active then
+ begin
+   qryLog.Open();
+ end;
+ qryLog.Append;
+ qryLogcod_usuario.AsInteger := pCodUsu;
+ qryLogcomputador.AsString := pComputador;
+ qryLogoperacao.AsString := pOperacao;
+ qryLog.Post;
+
 end;
 
 end.

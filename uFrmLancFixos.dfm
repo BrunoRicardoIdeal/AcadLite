@@ -406,6 +406,8 @@ object frmLancFixos: TfrmLancFixos
     AfterClose = qryLancFixosAfterClose
     AggregatesActive = True
     Connection = dmPrincipal.MySQLConn
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
     SQL.Strings = (
       'select lf.cod_lanc_fixo,'
       '       lf.descricao,'

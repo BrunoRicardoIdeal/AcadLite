@@ -78,6 +78,12 @@ type
     dtVencIni: TDateTimePicker;
     chkHabDtVenc: TCheckBox;
     rgInad: TRadioGroup;
+    qryMensalidadeVENCIDA: TBooleanField;
+    shpREd: TShape;
+    Label10: TLabel;
+    acBtnReceber: TAction;
+    btnReplicar: TButton;
+    acReplicar: TAction;
     procedure acNovoExecute(Sender: TObject);
     procedure acEditarExecute(Sender: TObject);
     procedure acGravarExecute(Sender: TObject);
@@ -86,10 +92,15 @@ type
     procedure acPesquisarExecute(Sender: TObject);
     procedure qryMensalidadeAfterOpen(DataSet: TDataSet);
     procedure qryMensalidadeAfterClose(DataSet: TDataSet);
-    procedure btnReceberClick(Sender: TObject);
     procedure edtValorRecebidoExit(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure chkHabDtVencClick(Sender: TObject);
+    procedure qryMensalidadeCalcFields(DataSet: TDataSet);
+    procedure grdMensDrawColumnCell(Sender: TObject; const Rect: TRect;
+      DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure acBtnReceberExecute(Sender: TObject);
+    procedure edtValorRecebidoKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
   private
     procedure EfetuarRecebimento;
     { Private declarations }
@@ -103,6 +114,36 @@ var
 implementation
 
 {$R *.dfm}
+
+procedure TfrmMensalidades.acBtnReceberExecute(Sender: TObject);
+begin
+  if not qryMensalidade.IsEmpty then
+  begin
+   if qryMensalidade.State in dsEditModes then
+   begin
+     MessageBox(0, 'Não é possível receber com a mensalidade em edição! Antes salve ou cancele!'
+        , 'Erro', MB_ICONERROR or MB_OK);
+     Abort;
+   end;
+   if qryMensalidadeVALOR_RECEBIDO.AsFloat > 0 then
+   begin
+     MessageBox(0, 'Essa mensalidade já foi recebida' , 'Erro', MB_ICONERROR or MB_OK);
+     Abort;
+   end;
+   qryMensalidade.Edit;
+   edtValorRecebido.Enabled := True;
+   if edtValorRecebido.CanFocus then
+   begin
+    edtValorRecebido.SetFocus;
+   end;
+   btnReceber.Enabled := false;
+  end
+  else
+  begin
+    MessageBox(0, 'Selecione alguma mensalidade para receber', 'Atenção', MB_ICONWARNING or MB_OK);
+    Abort;
+  end;
+end;
 
 procedure TfrmMensalidades.acCancelarExecute(Sender: TObject);
 begin
@@ -126,7 +167,7 @@ begin
  end
  else
  begin
-   ShowMessage('Selecione alguém pra editar');
+   MessageBox(0, 'Selecione um registro para editar!', 'Atenção', MB_ICONWARNING or MB_OK);
    Exit;
  end;
  acEditar.Enabled := False;
@@ -143,10 +184,9 @@ begin
   begin
    if qryMensalidadeVALOR_RECEBIDO.AsFloat > 0  then
    begin
-     ShowMessage('Não é possível excluir mensalidade já recebida!');
+     MessageBox(0, 'Não é possível excluir mensalidade já recebida', 'Erro', MB_ICONERROR or MB_OK);
      Abort;
    end;
-
    if MessageDlg('Deseja realmente excluir?',TMsgDlgType.mtConfirmation
    ,mbYesNo,0) = mrYes then
    begin
@@ -167,13 +207,24 @@ begin
  begin
    if qryMensalidadeDT_VENCIMENTO.IsNull then
    begin
-     ShowMessage('Informe a data de vencimento!');
+     MessageBox(0, 'Informe a data de vencimento', 'Atenção', MB_ICONWARNING or MB_OK);
      if edtDtVencimento.CanFocus then
      begin
        edtDtVencimento.SetFocus;
      end;
      abort;
    end;
+   if qryMensalidadeDT_VENCIMENTO.AsDateTime < Date then
+   begin
+     MessageBox(0, 'A data de vencimento deve ser maior do que a data de hoje!',
+      'Atenção', MB_ICONWARNING or MB_OK);
+     if edtDtVencimento.CanFocus then
+     begin
+       edtDtVencimento.SetFocus;
+     end;
+     Abort;
+   end;
+
    if MessageDlg('Deseja realmente gravar?',TMsgDlgType.mtConfirmation
    ,mbYesNo,0) = mrYes then
    begin
@@ -259,38 +310,9 @@ begin
 
  if qryMensalidade.IsEmpty then
  begin
-   ShowMessage('Nada encontrado');
+   MessageBox(0, 'Nada encontrado', 'Informação', MB_ICONINFORMATION or MB_OK);
    Exit;
  end;
-end;
-
-procedure TfrmMensalidades.btnReceberClick(Sender: TObject);
-begin
-  if not qryMensalidade.IsEmpty then
-  begin
-   if qryMensalidade.State in dsEditModes then
-   begin
-     ShowMessage('Não é possível receber com a mensalidade em edição! Antes salve ou cancele!');
-     Abort;
-   end;
-   if qryMensalidadeVALOR_RECEBIDO.AsFloat > 0 then
-   begin
-     ShowMessage('Essa mensalidade já foi recebida!');
-     Abort;
-   end;
-   qryMensalidade.Edit;
-   edtValorRecebido.Enabled := True;
-   if edtValorRecebido.CanFocus then
-   begin
-    edtValorRecebido.SetFocus;
-   end;
-   btnReceber.Enabled := false;
-  end
-  else
-  begin
-    ShowMessage('Selecione alguém para receber!');
-    Abort;
-  end;
 end;
 
 procedure TfrmMensalidades.chkHabDtVencClick(Sender: TObject);
@@ -306,6 +328,15 @@ begin
   EfetuarRecebimento;
   edtValorRecebido.Enabled := False;
   qryMensalidade.Cancel;
+end;
+
+procedure TfrmMensalidades.edtValorRecebidoKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+ if key = vkreturn then
+ begin
+   Perform(WM_NEXTDLGCTL, 0, 0);
+ end;
 end;
 
 procedure TfrmMensalidades.EfetuarRecebimento;
@@ -343,7 +374,7 @@ begin
       dmPrincipal.MySQLConn.StartTransaction;
       qryInsereLanc.ExecSQL;
       dmPrincipal.MySQLConn.Commit;
-      ShowMessage('Mensalidade recebida e lançamento de Receita gerado com Sucesso!');
+      MessageBox(0, 'Mensalidade Recebida.'+#13+#10+'Lançamento de Receita gerado com sucesso.', 'Informação', MB_ICONINFORMATION or MB_OK);
     end;
   end;
 end;
@@ -365,6 +396,16 @@ begin
  qryAlunos.EnableControls;
 end;
 
+procedure TfrmMensalidades.grdMensDrawColumnCell(Sender: TObject;
+  const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
+begin
+ if qryMensalidadeVENCIDA.AsBoolean then
+ begin
+   grdMens.Canvas.Font.Color := clRed;
+   grdMens.DefaultDrawDataCell(Rect, grdMens.columns[datacol].field, State);
+ end;
+end;
+
 procedure TfrmMensalidades.qryMensalidadeAfterClose(DataSet: TDataSet);
 begin
  qryAlunos.Close;
@@ -373,6 +414,13 @@ end;
 procedure TfrmMensalidades.qryMensalidadeAfterOpen(DataSet: TDataSet);
 begin
  qryAlunos.Open();
+end;
+
+procedure TfrmMensalidades.qryMensalidadeCalcFields(DataSet: TDataSet);
+begin
+  qryMensalidadeVENCIDA.AsBoolean
+      := (qryMensalidadeDT_VENCIMENTO.AsDateTime < Date) and
+         (qryMensalidadeDT_RECEBIMENTO.IsNull);
 end;
 
 end.

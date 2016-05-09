@@ -67,11 +67,25 @@ object frmLancamentos: TfrmLancamentos
     Caption = 'Valor'
   end
   object Label7: TLabel
-    Left = 652
+    Left = 653
     Top = 389
     Width = 51
     Height = 13
     Caption = 'Valor Total'
+  end
+  object Label8: TLabel
+    Left = 655
+    Top = 416
+    Width = 49
+    Height = 13
+    Caption = 'Total Rec.'
+  end
+  object Label9: TLabel
+    Left = 649
+    Top = 443
+    Width = 55
+    Height = 13
+    Caption = 'Total Desp.'
   end
   object GroupBox1: TGroupBox
     Left = 0
@@ -191,6 +205,7 @@ object frmLancamentos: TfrmLancamentos
     Height = 41
     Align = alBottom
     TabOrder = 9
+    ExplicitLeft = -4
     object btnNovo: TButton
       Left = 1
       Top = 1
@@ -417,9 +432,30 @@ object frmLancamentos: TfrmLancamentos
     Top = 386
     Width = 90
     Height = 21
+    TabStop = False
     DataField = 'AggValorTotal'
     DataSource = dsLanc
     TabOrder = 12
+  end
+  object edtTotReceita: TDBEdit
+    Left = 706
+    Top = 413
+    Width = 90
+    Height = 21
+    TabStop = False
+    DataField = 'AggTotalRec'
+    DataSource = dsLanc
+    TabOrder = 13
+  end
+  object edtTotDesp: TDBEdit
+    Left = 706
+    Top = 440
+    Width = 90
+    Height = 21
+    TabStop = False
+    DataField = 'AggTotalDesp'
+    DataSource = dsLanc
+    TabOrder = 14
   end
   object AcList: TActionList
     Left = 680
@@ -461,6 +497,8 @@ object frmLancamentos: TfrmLancamentos
     AfterClose = qryLancAfterClose
     AggregatesActive = True
     Connection = dmPrincipal.MySQLConn
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
     SQL.Strings = (
       'select l.cod_lanc '
       '      ,l.descricao'
@@ -472,6 +510,14 @@ object frmLancamentos: TfrmLancamentos
       '      ,l.fixo'
       '      ,tl.descricao tipo_lanc_desc'
       '      ,tl.categoria'
+      '      ,case tl.categoria '
+      #9#9'  when  '#39'Receita'#39' then l.valor '
+      #9#9'  else  0 '
+      #9#9' end valor_receita'
+      #9#9',case tl.categoria '
+      #9#9'  when  '#39'Despesa'#39' then l.valor '
+      #9#9'  else  0 '
+      #9#9' end valor_despesa  '
       'from lancamentos l , tipos_lancamentos tl'
       'where l.cod_tipo_lanc = tl.cod_tipo_lanc')
     Left = 552
@@ -540,6 +586,20 @@ object frmLancamentos: TfrmLancamentos
       FixedChar = True
       Size = 1
     end
+    object qryLancvalor_receita: TFloatField
+      AutoGenerateValue = arDefault
+      FieldName = 'valor_receita'
+      Origin = 'valor_receita'
+      ProviderFlags = []
+      ReadOnly = True
+    end
+    object qryLancvalor_despesa: TFloatField
+      AutoGenerateValue = arDefault
+      FieldName = 'valor_despesa'
+      Origin = 'valor_despesa'
+      ProviderFlags = []
+      ReadOnly = True
+    end
     object qryLancAggValorTotal: TAggregateField
       FieldName = 'AggValorTotal'
       ReadOnly = True
@@ -547,6 +607,20 @@ object frmLancamentos: TfrmLancamentos
       currency = True
       DisplayName = ''
       Expression = 'sum(valor)'
+    end
+    object qryLancAggTotalRec: TAggregateField
+      FieldName = 'AggTotalRec'
+      Active = True
+      currency = True
+      DisplayName = ''
+      Expression = 'SUM(VALOR_RECEITA)'
+    end
+    object qryLancAggTotalDesp: TAggregateField
+      FieldName = 'AggTotalDesp'
+      Active = True
+      currency = True
+      DisplayName = ''
+      Expression = 'SUM(VALOR_DESPESA)'
     end
   end
   object dsLanc: TDataSource
@@ -559,7 +633,8 @@ object frmLancamentos: TfrmLancamentos
     Connection = dmPrincipal.MySQLConn
     SQL.Strings = (
       'select cod_tipo_lanc, descricao'
-      'from tipos_lancamentos')
+      'from tipos_lancamentos'
+      'order by descricao')
     Left = 672
     Top = 304
     object qryTipoLanccod_tipo_lanc: TFDAutoIncField

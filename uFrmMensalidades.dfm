@@ -86,6 +86,20 @@ object frmMensalidades: TfrmMensalidades
     Height = 13
     Caption = 'Total Recebido'
   end
+  object shpREd: TShape
+    Left = 485
+    Top = 400
+    Width = 20
+    Height = 20
+    Brush.Color = clRed
+  end
+  object Label10: TLabel
+    Left = 511
+    Top = 404
+    Width = 42
+    Height = 13
+    Caption = 'Vencidas'
+  end
   object gbPsq: TGroupBox
     Left = 0
     Top = 0
@@ -220,6 +234,7 @@ object frmMensalidades: TfrmMensalidades
     TitleFont.Height = -11
     TitleFont.Name = 'Tahoma'
     TitleFont.Style = []
+    OnDrawColumnCell = grdMensDrawColumnCell
     Columns = <
       item
         Expanded = False
@@ -325,6 +340,18 @@ object frmMensalidades: TfrmMensalidades
       Align = alLeft
       TabOrder = 4
     end
+    object btnReplicar: TButton
+      Left = 724
+      Top = 1
+      Width = 75
+      Height = 39
+      Action = acReplicar
+      Align = alRight
+      TabOrder = 5
+      ExplicitLeft = 688
+      ExplicitTop = 24
+      ExplicitHeight = 25
+    end
   end
   object edtCadastro: TDBEdit
     Left = 248
@@ -396,15 +423,16 @@ object frmMensalidades: TfrmMensalidades
     Enabled = False
     TabOrder = 8
     OnExit = edtValorRecebidoExit
+    OnKeyDown = edtValorRecebidoKeyDown
   end
   object btnReceber: TButton
     Left = 365
     Top = 490
     Width = 114
     Height = 25
-    Caption = 'Receber'
+    Action = acBtnReceber
     TabOrder = 9
-    OnClick = btnReceberClick
+    TabStop = False
   end
   object edtDtVencimento: TDBEdit
     Left = 96
@@ -420,6 +448,7 @@ object frmMensalidades: TfrmMensalidades
     Top = 397
     Width = 88
     Height = 21
+    TabStop = False
     DataField = 'AGGVLTOTAL'
     DataSource = dsMensalidade
     TabOrder = 12
@@ -429,13 +458,14 @@ object frmMensalidades: TfrmMensalidades
     Top = 424
     Width = 88
     Height = 21
+    TabStop = False
     DataField = 'AGGVLREC'
     DataSource = dsMensalidade
     TabOrder = 13
   end
   object AcList: TActionList
-    Left = 176
-    Top = 216
+    Left = 664
+    Top = 464
     object acNovo: TAction
       Caption = 'Novo'
       ShortCut = 112
@@ -467,10 +497,20 @@ object frmMensalidades: TfrmMensalidades
       Caption = 'Pesquisar'
       OnExecute = acPesquisarExecute
     end
+    object acBtnReceber: TAction
+      Caption = 'Receber'
+      ShortCut = 16466
+      OnExecute = acBtnReceberExecute
+    end
+    object acReplicar: TAction
+      Caption = 'Replicar'
+      ShortCut = 16452
+    end
   end
   object qryMensalidade: TFDQuery
     AfterOpen = qryMensalidadeAfterOpen
     AfterClose = qryMensalidadeAfterClose
+    OnCalcFields = qryMensalidadeCalcFields
     AggregatesActive = True
     Connection = dmPrincipal.MySQLConn
     SQL.Strings = (
@@ -539,6 +579,11 @@ object frmMensalidades: TfrmMensalidades
       Required = True
       EditMask = '99/99/9999;1;_'
     end
+    object qryMensalidadeVENCIDA: TBooleanField
+      FieldKind = fkCalculated
+      FieldName = 'VENCIDA'
+      Calculated = True
+    end
     object qryMensalidadeAGGVLTOTAL: TAggregateField
       FieldName = 'AGGVLTOTAL'
       Active = True
@@ -566,7 +611,8 @@ object frmMensalidades: TfrmMensalidades
       'SELECT COD_PESSOA'
       '       ,NOME'
       'FROM PESSOAS'
-      'WHERE TIPO = '#39'Aluno'#39)
+      'WHERE TIPO = '#39'Aluno'#39
+      'order by nome')
     Left = 232
     Top = 200
     object qryAlunosCOD_PESSOA: TFDAutoIncField

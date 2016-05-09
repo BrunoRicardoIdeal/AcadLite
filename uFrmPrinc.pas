@@ -8,7 +8,7 @@ uses
   Vcl.Imaging.pngimage, System.Actions, Vcl.ActnList, FireDAC.Stan.Intf,
   FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
-  Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client;
+  Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.ComCtrls;
 
 type
   TfrmPrinc = class(TForm)
@@ -31,6 +31,7 @@ type
     acUsuarios: TAction;
     btnMensalidades: TButton;
     acMensalidades: TAction;
+    SBPrinc: TStatusBar;
     procedure btnEquipClick(Sender: TObject);
     procedure AcPesExecute(Sender: TObject);
     procedure acEquipExecute(Sender: TObject);
@@ -41,8 +42,12 @@ type
     procedure acUsuariosExecute(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure acMensalidadesExecute(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormCreate(Sender: TObject);
   private
    procedure EfetuarLogin;
+   procedure ConfStatusBar;
+   procedure DesAtivAc(pEnabled : boolean);
     { Private declarations }
   public
     { Public declarations }
@@ -56,7 +61,8 @@ implementation
          uFrmLancFixos,uDmPrincipal,
          uFrmTipoLanc,uFrmUsuarios,
          uFrmLancamentos, uFrmRelatorios,
-         uFrmLogin,ufrmMensalidades;
+         uFrmLogin,ufrmMensalidades,
+         uConstantes;
 {$R *.dfm}
 
 procedure TfrmPrinc.acEquipExecute(Sender: TObject);
@@ -134,7 +140,8 @@ begin
  end
  else
  begin
-   ShowMessage('Faça login como Administrador Master para poder ter acesso!');
+   MessageBox(0, 'Faça login como Administrador Master para poder ter acesso!'
+      , 'Atenção', MB_ICONWARNING or MB_OK);
    Exit;
  end;
 end;
@@ -150,6 +157,25 @@ end;
 
 
 
+procedure TfrmPrinc.ConfStatusBar;
+begin
+ SBPrinc.Panels[0].Text := 'Usuário: ' + UpperCase(dmPrincipal.NomeUsuario);
+ SBPrinc.Panels[1].Text := 'Computador: ' + dmPrincipal.nomePC;
+end;
+
+procedure TfrmPrinc.DesAtivAc(pEnabled: boolean);
+var
+ i : integer;
+begin
+ for I := 0 to ActionList.ActionCount - 1 do
+ begin
+  ActionList.Actions[i].Enabled := pEnabled;
+ end;
+
+
+
+end;
+
 procedure TfrmPrinc.EfetuarLogin;
 begin
  if frmLogin = nil then
@@ -157,11 +183,31 @@ begin
    Application.CreateForm(TfrmLogin,frmLogin);
  end;
  frmLogin.ShowModal;
+ if dmPrincipal.CodUsuario <= 0  then
+ begin
+   Close;
+ end;
+end;
+
+procedure TfrmPrinc.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+ if dmPrincipal.CodUsuario > 0 then
+ begin
+  dmPrincipal.salvarLog(dmPrincipal.CodUsuario,OP_LOGOUT,dmPrincipal.nomePC);
+ end;
+end;
+
+procedure TfrmPrinc.FormCreate(Sender: TObject);
+begin
+
+  DesAtivAc(False);
 end;
 
 procedure TfrmPrinc.FormShow(Sender: TObject);
 begin
  EfetuarLogin;
+ ConfStatusBar;
+ DesAtivAc(True);
 end;
 
 end.

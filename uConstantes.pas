@@ -8,6 +8,10 @@ interface
     LANC_AGUA = 'Conta de Água';
     LANC_LUZ = 'Conta de Luz';
 
+    {operacoes}
+    OP_LOGIN = 'Login';
+    OP_LOGOUT = 'Logout';
+
 implementation
 
 end.

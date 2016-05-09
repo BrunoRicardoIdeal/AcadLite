@@ -81,7 +81,7 @@ procedure TfrmTiposLanc.acEditarExecute(Sender: TObject);
 begin
  if qryTpLancpadrao.AsString = 'S' then
  begin
-   ShowMessage('Não é possível editar um tipo de lançamento padrão!');
+   MessageBox(0, 'Não é possível editar um tipo de lançamento padrão', 'Erro', MB_ICONERROR or MB_OK);
    Abort;
  end;
 
@@ -95,7 +95,7 @@ begin
  end
  else
  begin
-   ShowMessage('Selecione alguém pra editar');
+   MessageBox(0, 'Selecione um registro para editar!', 'Atenção', MB_ICONWARNING or MB_OK);
    Exit;
  end;
  acEditar.Enabled := False;
@@ -110,7 +110,7 @@ procedure TfrmTiposLanc.acExcluirExecute(Sender: TObject);
 begin
  if qryTpLancpadrao.AsString = 'S' then
   begin
-    ShowMessage('Não é possível excluir um tipo de lançamento padrão!');
+    MessageBox(0, 'Não é possível excluir um tipo de lançamento padrão', 'Atenção', MB_ICONWARNING or MB_OK);
     Abort;
   end;
   if not qryTpLanc.IsEmpty then
@@ -120,7 +120,7 @@ begin
    begin
     if ExisteLancamento(qryTpLanccod_tipo_lanc.AsInteger) then
     begin
-      ShowMessage('Não pode ser excluído pois existem lançamentos com esse tipo!');
+      MessageBox(0, 'Não pode ser excluído pois existem lançamentos com esse tipo', 'Atenção', MB_ICONWARNING or MB_OK);
       Exit;
     end;
     acEditar.Enabled := True;
@@ -189,6 +189,7 @@ begin
  begin
    qryTpLanc.SQL.Add('AND LOWER(DESCRICAO)  LIKE '+ QuotedStr('%' + LowerCase(lblEdtDesc.Text)+'%') );
  end;
+
  if cbCategoria.ItemIndex > 0 then
  begin
    qryTpLanc.SQL.Add('AND LOWER(CATEGORIA) = ' + LowerCase(QuotedStr(cbCategoria.Text)));
@@ -197,7 +198,7 @@ begin
  qryTpLanc.Open();
  if qryTpLanc.IsEmpty then
  begin
-   ShowMessage('Nada encontrado');
+   MessageBox(0, 'Nada encontrado', 'Informação', MB_ICONINFORMATION or MB_OK);
    Exit;
  end;
 end;

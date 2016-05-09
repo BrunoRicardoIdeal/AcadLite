@@ -89,7 +89,7 @@ begin
  qryEquip.Open();
  if qryEquip.IsEmpty then
  begin
-   ShowMessage('Nada encontrado');
+   MessageBox(0, 'Nada encontrado', 'Informação', MB_ICONINFORMATION or MB_OK);
    Exit;
  end
  else

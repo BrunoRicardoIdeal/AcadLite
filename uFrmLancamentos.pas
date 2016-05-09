@@ -73,6 +73,14 @@ type
     edtValorTotal: TDBEdit;
     Label7: TLabel;
     qryLancAggValorTotal: TAggregateField;
+    edtTotReceita: TDBEdit;
+    Label8: TLabel;
+    edtTotDesp: TDBEdit;
+    Label9: TLabel;
+    qryLancvalor_receita: TFloatField;
+    qryLancvalor_despesa: TFloatField;
+    qryLancAggTotalRec: TAggregateField;
+    qryLancAggTotalDesp: TAggregateField;
     procedure acNovoExecute(Sender: TObject);
     procedure acEditarExecute(Sender: TObject);
     procedure acGravarExecute(Sender: TObject);
@@ -123,7 +131,7 @@ begin
  end
  else
  begin
-   ShowMessage('Selecione alguém pra editar');
+   MessageBox(0, 'Selecione um registro para editar!', 'Atenção', MB_ICONWARNING or MB_OK);
    Exit;
  end;
  acEditar.Enabled := False;
@@ -204,6 +212,14 @@ begin
  qryLanc.SQL.Add('       ,l.fixo');
  qryLanc.SQL.Add('       ,tl.descricao tipo_lanc_desc');
  qryLanc.SQL.Add('       ,tl.categoria');
+ qryLanc.SQL.Add('       ,case tl.categoria');
+ qryLanc.SQL.Add('          when  ''Receita'' then l.valor');
+ qryLanc.SQL.Add('          else  0');
+ qryLanc.SQL.Add('        end valor_receita');
+ qryLanc.SQL.Add('       ,case tl.categoria');
+ qryLanc.SQL.Add('          when  ''Despesa'' then l.valor');
+ qryLanc.SQL.Add('          else  0');
+ qryLanc.SQL.Add('        end valor_despesa');
  qryLanc.SQL.Add('from lancamentos l , tipos_lancamentos tl');
  qryLanc.SQL.Add('where l.cod_tipo_lanc = tl.cod_tipo_lanc');
  if lblEdtCod.Text <> '' then
@@ -237,7 +253,7 @@ begin
  qryLanc.Open();
  if qryLanc.IsEmpty then
  begin
-   ShowMessage('Nada encontrado');
+   MessageBox(0, 'Nada encontrado', 'Informação', MB_ICONWARNING or MB_OK);
    Exit;
  end;
 
@@ -298,7 +314,7 @@ procedure TfrmLancamentos.ValidarPreench;
 begin
  if qryLanccod_tipo_lanc.IsNull   then
  begin
-   ShowMessage('Informe um tipo de lançamento!');
+   MessageBox(0, 'Informe um tipo de lançamento', 'Atenção', MB_ICONWARNING or MB_OK);
    if cbLkpTipoLanc.CanFocus then
    begin
      cbLkpTipoLanc.SetFocus;
@@ -307,7 +323,7 @@ begin
  end
  else if qryLancdt_vencimento.IsNull then
  begin
-   ShowMessage('Informe uma data de vencimento!');
+   MessageBox(0, 'Informe uma data de vencimento', 'Atenção', MB_ICONWARNING or MB_OK);
    if edtDtVenc.CanFocus then
    begin
      edtDtVenc.SetFocus;
@@ -316,7 +332,7 @@ begin
  end
  else if qryLancdt_vencimento.AsDateTime <= date then
  begin
-   ShowMessage('A data de vencimento deve ser maior do que hoje!');
+   MessageBox(0, 'A data de vencimento deve ser maior do que hoje', 'Atenção', MB_ICONWARNING or MB_OK);
    if edtDtVenc.CanFocus then
    begin
      edtDtVenc.SetFocus;
@@ -325,7 +341,7 @@ begin
  end
  else if qryLancvalor.AsFloat <= 0 then
  begin
-   ShowMessage('O valor do lançamento deve ser maior do que 0!');
+   MessageBox(0, 'O valor do lançamento deve ser maior do que 0', 'Atenção', MB_ICONWARNING or MB_OK);
    if edtValor.CanFocus then
    begin
      edtValor.SetFocus;

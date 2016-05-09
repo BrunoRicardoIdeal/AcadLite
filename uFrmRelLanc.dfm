@@ -52,7 +52,7 @@ object frmRelLanc: TfrmRelLanc
     Width = 484
     Height = 41
     Align = alBottom
-    TabOrder = 12
+    TabOrder = 11
     object btnEmitir: TButton
       Left = 408
       Top = 1
@@ -101,7 +101,7 @@ object frmRelLanc: TfrmRelLanc
     Width = 117
     Height = 17
     Caption = 'Somente Exclu'#237'dos'
-    TabOrder = 5
+    TabOrder = 4
   end
   object chkHabDtVenc: TCheckBox
     Left = 72
@@ -109,7 +109,7 @@ object frmRelLanc: TfrmRelLanc
     Width = 123
     Height = 17
     Caption = 'Dt. Vencimento entre'
-    TabOrder = 6
+    TabOrder = 5
     OnClick = chkHabDtVencClick
   end
   object dtVencIni: TDateTimePicker
@@ -120,7 +120,7 @@ object frmRelLanc: TfrmRelLanc
     Date = 42487.935495578710000000
     Time = 42487.935495578710000000
     Enabled = False
-    TabOrder = 7
+    TabOrder = 6
   end
   object dtVencFim: TDateTimePicker
     Left = 303
@@ -130,7 +130,7 @@ object frmRelLanc: TfrmRelLanc
     Date = 42487.935495578710000000
     Time = 42487.935495578710000000
     Enabled = False
-    TabOrder = 8
+    TabOrder = 7
   end
   object cbCategoria: TComboBox
     Left = 72
@@ -146,22 +146,12 @@ object frmRelLanc: TfrmRelLanc
       'Despesa'
       'Receita')
   end
-  object chkAtivarTpLanc: TCheckBox
-    Left = 402
-    Top = 112
-    Width = 97
-    Height = 17
-    Caption = 'Ativar'
-    TabOrder = 4
-    OnClick = chkAtivarTpLancClick
-  end
   object cbTpLanc: TComboBox
     Left = 72
     Top = 110
     Width = 314
     Height = 22
     Style = csOwnerDrawFixed
-    Enabled = False
     TabOrder = 3
   end
   object DtLancFim: TDateTimePicker
@@ -172,7 +162,7 @@ object frmRelLanc: TfrmRelLanc
     Date = 42487.935495578710000000
     Time = 42487.935495578710000000
     Enabled = False
-    TabOrder = 11
+    TabOrder = 10
   end
   object DtLAncIni: TDateTimePicker
     Left = 200
@@ -182,7 +172,7 @@ object frmRelLanc: TfrmRelLanc
     Date = 42487.935495578710000000
     Time = 42487.935495578710000000
     Enabled = False
-    TabOrder = 10
+    TabOrder = 9
   end
   object chkHabDtLanc: TCheckBox
     Left = 72
@@ -190,12 +180,12 @@ object frmRelLanc: TfrmRelLanc
     Width = 123
     Height = 17
     Caption = 'Dt. Lan'#231'amento entre'
-    TabOrder = 9
+    TabOrder = 8
     OnClick = chkHabDtLancClick
   end
   object ActionList: TActionList
-    Left = 248
-    Top = 16
+    Left = 440
+    Top = 232
     object acLimpar: TAction
       Caption = 'Limpar'
       OnExecute = acLimparExecute
@@ -207,14 +197,15 @@ object frmRelLanc: TfrmRelLanc
   end
   object dsTipoLanc: TDataSource
     DataSet = qryTipoLanc
-    Left = 400
-    Top = 190
+    Left = 128
+    Top = 254
   end
   object qryTipoLanc: TFDQuery
     Connection = dmPrincipal.MySQLConn
     SQL.Strings = (
       'select cod_tipo_lanc, descricao'
-      'from tipos_lancamentos')
+      'from tipos_lancamentos'
+      'order by descricao')
     Left = 344
     Top = 246
     object qryTipoLanccod_tipo_lanc: TFDAutoIncField
@@ -241,8 +232,17 @@ object frmRelLanc: TfrmRelLanc
       '      ,l.dt_exclusao'
       '      ,l.cod_tipo_lanc'
       '      ,l.valor'
+      '      ,l.fixo'
       '      ,tl.descricao tipo_lanc_desc'
       '      ,tl.categoria'
+      '      ,case tl.categoria '
+      #9#9'  when  '#39'Receita'#39' then l.valor '
+      #9#9'  else  0 '
+      #9#9' end valor_receita'
+      #9#9',case tl.categoria '
+      #9#9'  when  '#39'Despesa'#39' then l.valor '
+      #9#9'  else  0 '
+      #9#9' end valor_despesa  '
       'from lancamentos l , tipos_lancamentos tl'
       'where l.cod_tipo_lanc = tl.cod_tipo_lanc')
     Left = 400
@@ -302,6 +302,27 @@ object frmRelLanc: TfrmRelLanc
       Origin = 'valor'
       currency = True
     end
+    object qryLancfixo: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'fixo'
+      Origin = 'fixo'
+      FixedChar = True
+      Size = 1
+    end
+    object qryLancvalor_receita: TFloatField
+      AutoGenerateValue = arDefault
+      FieldName = 'valor_receita'
+      Origin = 'valor_receita'
+      ProviderFlags = []
+      ReadOnly = True
+    end
+    object qryLancvalor_despesa: TFloatField
+      AutoGenerateValue = arDefault
+      FieldName = 'valor_despesa'
+      Origin = 'valor_despesa'
+      ProviderFlags = []
+      ReadOnly = True
+    end
   end
   object frxLancamentos: TfrxReport
     Version = '5.5'
@@ -318,6 +339,7 @@ object frmRelLanc: TfrmRelLanc
       'begin'
       ''
       'end.')
+    OnBeforePrint = frxLancamentosBeforePrint
     Left = 200
     Top = 240
     Datasets = <
@@ -350,7 +372,7 @@ object frmRelLanc: TfrmRelLanc
         RowCount = 0
         object Memo7: TfrxMemoView
           Left = 7.559060000000000000
-          Top = 3.779530000000000000
+          Top = 3.779530000000022000
           Width = 52.913420000000000000
           Height = 18.897650000000000000
           DataField = 'cod_lanc'
@@ -368,7 +390,7 @@ object frmRelLanc: TfrmRelLanc
         end
         object Memo8: TfrxMemoView
           Left = 71.811070000000000000
-          Top = 3.779530000000000000
+          Top = 3.779530000000022000
           Width = 423.307360000000000000
           Height = 18.897650000000000000
           DataField = 'descricao'
@@ -379,7 +401,7 @@ object frmRelLanc: TfrmRelLanc
         end
         object Memo9: TfrxMemoView
           Left = 503.236550000000000000
-          Top = 3.779530000000000000
+          Top = 3.779530000000022000
           Width = 120.944960000000000000
           Height = 18.897650000000000000
           DataField = 'categoria'
@@ -390,7 +412,7 @@ object frmRelLanc: TfrmRelLanc
         end
         object Memo4: TfrxMemoView
           Left = 629.299630000000000000
-          Top = 3.779530000000000000
+          Top = 3.779530000000022000
           Width = 132.283550000000000000
           Height = 18.897650000000000000
           DataField = 'dt_lanc'
@@ -401,7 +423,7 @@ object frmRelLanc: TfrmRelLanc
         end
         object Memo18: TfrxMemoView
           Left = 765.803650000000000000
-          Top = 3.779530000000000000
+          Top = 3.779530000000022000
           Width = 177.637910000000000000
           Height = 18.897650000000000000
           DataField = 'dt_vencimento'
@@ -412,7 +434,7 @@ object frmRelLanc: TfrmRelLanc
         end
         object Memo24: TfrxMemoView
           Left = 944.882500000000000000
-          Top = 3.779530000000000000
+          Top = 3.779530000000022000
           Width = 98.267780000000000000
           Height = 18.897650000000000000
           DataField = 'valor'
@@ -499,7 +521,7 @@ object frmRelLanc: TfrmRelLanc
         end
         object Memo13: TfrxMemoView
           Left = 377.953000000000000000
-          Top = 7.559060000000000000
+          Top = 7.559059999999999000
           Width = 359.055350000000000000
           Height = 26.456710000000000000
           Font.Charset = DEFAULT_CHARSET
@@ -514,7 +536,7 @@ object frmRelLanc: TfrmRelLanc
         end
         object Memo14: TfrxMemoView
           Left = 7.559060000000000000
-          Top = 34.015770000000000000
+          Top = 34.015770000000010000
           Width = 94.488250000000000000
           Height = 18.897650000000000000
           Font.Charset = DEFAULT_CHARSET
@@ -730,7 +752,7 @@ object frmRelLanc: TfrmRelLanc
             'Dt. Lanc.:')
           ParentFont = False
         end
-        object Memo12: TfrxMemoView
+        object MemoFiltroDtLanc: TfrxMemoView
           Left = 212.094620000000000000
           Top = 144.622140000000000000
           Width = 287.244280000000000000
@@ -817,7 +839,7 @@ object frmRelLanc: TfrmRelLanc
         Width = 1046.929810000000000000
         object SysMemo3: TfrxSysMemoView
           Left = 105.826840000000000000
-          Top = 6.220470000000000000
+          Top = 6.220469999999977000
           Width = 60.472480000000000000
           Height = 18.897650000000000000
           Font.Charset = DEFAULT_CHARSET
@@ -831,7 +853,7 @@ object frmRelLanc: TfrmRelLanc
         end
         object Memo23: TfrxMemoView
           Left = 7.559060000000000000
-          Top = 6.220470000000000000
+          Top = 6.220469999999977000
           Width = 94.488250000000000000
           Height = 18.897650000000000000
           Font.Charset = DEFAULT_CHARSET
@@ -853,7 +875,7 @@ object frmRelLanc: TfrmRelLanc
         end
         object SysMemo4: TfrxSysMemoView
           Left = 944.882500000000000000
-          Top = 15.118120000000000000
+          Top = 15.118119999999980000
           Width = 98.267780000000000000
           Height = 18.897650000000000000
           DisplayFormat.DecimalSeparator = ','
@@ -871,7 +893,7 @@ object frmRelLanc: TfrmRelLanc
         end
         object Memo26: TfrxMemoView
           Left = 899.528140000000000000
-          Top = 15.118120000000000000
+          Top = 15.118119999999980000
           Width = 45.354360000000000000
           Height = 18.897650000000000000
           Font.Charset = DEFAULT_CHARSET
@@ -886,7 +908,7 @@ object frmRelLanc: TfrmRelLanc
         end
         object Shape2: TfrxShapeView
           Left = 895.748610000000000000
-          Top = 14.118120000000000000
+          Top = 14.118119999999980000
           Width = 151.181200000000000000
           Height = 18.897650000000000000
           Shape = skRoundRectangle
@@ -899,14 +921,14 @@ object frmRelLanc: TfrmRelLanc
         Width = 1046.929810000000000000
         object Shape1: TfrxShapeView
           Left = 11.338590000000000000
-          Top = 32.015770000000000000
-          Width = 226.771800000000000000
+          Top = 32.015769999999970000
+          Width = 483.779840000000000000
           Height = 68.031540000000000000
           Shape = skRoundRectangle
         end
         object SysMemo2: TfrxSysMemoView
           Left = 105.826840000000000000
-          Top = 45.354360000000000000
+          Top = 45.354360000000040000
           Width = 117.165430000000000000
           Height = 18.897650000000000000
           Font.Charset = DEFAULT_CHARSET
@@ -921,7 +943,7 @@ object frmRelLanc: TfrmRelLanc
         end
         object Memo22: TfrxMemoView
           Left = -22.677180000000000000
-          Top = 45.354360000000000000
+          Top = 45.354360000000040000
           Width = 124.724490000000000000
           Height = 18.897650000000000000
           Font.Charset = DEFAULT_CHARSET
@@ -936,7 +958,7 @@ object frmRelLanc: TfrmRelLanc
         end
         object Memo27: TfrxMemoView
           Left = 7.559060000000000000
-          Top = 68.031540000000000000
+          Top = 68.031540000000060000
           Width = 94.488250000000000000
           Height = 18.897650000000000000
           Font.Charset = DEFAULT_CHARSET
@@ -951,7 +973,7 @@ object frmRelLanc: TfrmRelLanc
         end
         object SysMemo5: TfrxSysMemoView
           Left = 102.826840000000000000
-          Top = 68.031540000000000000
+          Top = 68.031540000000060000
           Width = 120.944960000000000000
           Height = 18.897650000000000000
           Font.Charset = DEFAULT_CHARSET
@@ -966,7 +988,7 @@ object frmRelLanc: TfrmRelLanc
         end
         object Memo28: TfrxMemoView
           Left = 13.897650000000000000
-          Top = 15.118120000000000000
+          Top = 15.118119999999980000
           Width = 86.929190000000000000
           Height = 18.897650000000000000
           Font.Charset = DEFAULT_CHARSET
@@ -976,6 +998,66 @@ object frmRelLanc: TfrmRelLanc
           Font.Style = [fsBold]
           Memo.UTF8W = (
             'Totais:')
+          ParentFont = False
+        end
+        object Memo12: TfrxMemoView
+          Left = 238.110390000000000000
+          Top = 45.354360000000040000
+          Width = 94.488250000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Receita:')
+          ParentFont = False
+        end
+        object SysMemo6: TfrxSysMemoView
+          Left = 333.378170000000000000
+          Top = 45.354360000000040000
+          Width = 120.944960000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            '[SUM(<frxDBLancamentos."valor_receita">,MasterData1)]')
+          ParentFont = False
+        end
+        object Memo30: TfrxMemoView
+          Left = 238.110390000000000000
+          Top = 68.031540000000060000
+          Width = 94.488250000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Despesa:')
+          ParentFont = False
+        end
+        object SysMemo7: TfrxSysMemoView
+          Left = 333.378170000000000000
+          Top = 68.031540000000060000
+          Width = 120.944960000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            '[SUM(<frxDBLancamentos."valor_despesa">,MasterData1)]')
           ParentFont = False
         end
       end
@@ -993,10 +1075,13 @@ object frmRelLanc: TfrmRelLanc
       'tipo_lanc_desc=tipo_lanc_desc'
       'categoria=categoria'
       'dt_exclusao=dt_exclusao'
-      'valor=valor')
+      'valor=valor'
+      'fixo=fixo'
+      'valor_receita=valor_receita'
+      'valor_despesa=valor_despesa')
     DataSet = qryLanc
     BCDToCurrency = False
-    Left = 240
-    Top = 184
+    Left = 280
+    Top = 264
   end
 end

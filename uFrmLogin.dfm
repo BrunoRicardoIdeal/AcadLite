@@ -173,7 +173,7 @@ object frmLogin: TfrmLogin
     Caption = 'Entrar'
     TabOrder = 2
     OnClick = btnEntrarClick
-    ExplicitTop = 150
+    ExplicitTop = 187
   end
   object btnFechar: TButton
     Left = 0
@@ -184,6 +184,5 @@ object frmLogin: TfrmLogin
     Caption = 'Fechar'
     TabOrder = 3
     OnClick = btnFecharClick
-    ExplicitTop = 190
   end
 end

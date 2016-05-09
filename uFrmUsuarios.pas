@@ -4,7 +4,7 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, System.Actions,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, System.Actions,System.UITypes,
   Vcl.ActnList, Vcl.StdCtrls, Data.DB, Vcl.Grids, Vcl.DBGrids, Vcl.Mask,
   Vcl.DBCtrls, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
@@ -94,7 +94,7 @@ begin
  end
  else
  begin
-   ShowMessage('Selecione alguém pra editar');
+   MessageBox(0, 'Selecione um registro para editar!', 'Atenção', MB_ICONWARNING or MB_OK);
    Exit;
  end;
  acEditar.Enabled := False;
@@ -195,7 +195,7 @@ begin
 
  if qryUsuarios.IsEmpty then
  begin
-   ShowMessage('Nada encontrado');
+   MessageBox(0, 'Nada encontrado', 'Informação', MB_ICONINFORMATION or MB_OK);
    Exit;
  end;
 end;
@@ -219,7 +219,8 @@ begin
  lisAdm := qryUsuariosadmin.AsString = 'S';
  if lisAdm then
  begin
-   ShowMessage('Credenciais de Administrador Master não podem ser alteradas!');
+   MessageBox(0, 'Credenciais de Administrador Master não podem ser alteradas'
+      , 'Atenção', MB_ICONWARNING or MB_OK);
    Abort;
  end;
 end;
@@ -228,7 +229,7 @@ procedure TfrmUsuarios.ValidaPreench;
 begin
   if LowerCase(lblEdtNovaSenha.Text) <> LowerCase(lblEdtConfNovaSenha.Text) then
   begin
-    ShowMessage('As senhas não conferem !');
+    MessageBox(0, 'As senhas não conferem', 'Erro', MB_ICONERROR or MB_OK);
     if lblEdtNovaSenha.CanFocus then
     begin
       lblEdtNovaSenha.SetFocus;

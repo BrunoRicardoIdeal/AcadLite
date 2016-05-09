@@ -33,7 +33,6 @@ type
     qryTipoLanccod_tipo_lanc: TFDAutoIncField;
     qryTipoLancdescricao: TStringField;
     Label1: TLabel;
-    chkAtivarTpLanc: TCheckBox;
     cbTpLanc: TComboBox;
     qryLanc: TFDQuery;
     qryLanccod_lanc: TFDAutoIncField;
@@ -51,12 +50,15 @@ type
     frxLancamentos: TfrxReport;
     frxDBLancamentos: TfrxDBDataset;
     qryLancvalor: TFloatField;
+    qryLancfixo: TStringField;
+    qryLancvalor_receita: TFloatField;
+    qryLancvalor_despesa: TFloatField;
     procedure FormCreate(Sender: TObject);
-    procedure chkAtivarTpLancClick(Sender: TObject);
     procedure acLimparExecute(Sender: TObject);
     procedure chkHabDtLancClick(Sender: TObject);
     procedure chkHabDtVencClick(Sender: TObject);
     procedure acEmitirExecute(Sender: TObject);
+    procedure frxLancamentosBeforePrint(Sender: TfrxReportComponent);
   private
     procedure PreenCbTpLanc;
     procedure Limpar;
@@ -84,12 +86,6 @@ procedure TfrmRelLanc.acLimparExecute(Sender: TObject);
 begin
  Limpar;
 end;
-
-procedure TfrmRelLanc.chkAtivarTpLancClick(Sender: TObject);
-begin
-  cbTpLanc.Enabled := chkAtivarTpLanc.Checked;
-end;
-
 procedure TfrmRelLanc.chkHabDtLancClick(Sender: TObject);
 begin
  DtLAncIni.Enabled := chkHabDtLanc.Checked;
@@ -117,6 +113,14 @@ begin
  qryLanc.SQL.Add('       ,l.valor');
  qryLanc.SQL.Add('       ,tl.descricao tipo_lanc_desc');
  qryLanc.SQL.Add('       ,tl.categoria');
+ qryLanc.SQL.Add('       ,case tl.categoria');
+ qryLanc.SQL.Add('          when  ''Receita'' then l.valor');
+ qryLanc.SQL.Add('          else  0');
+ qryLanc.SQL.Add('        end valor_receita');
+ qryLanc.SQL.Add('       ,case tl.categoria');
+ qryLanc.SQL.Add('          when  ''Despesa'' then l.valor');
+ qryLanc.SQL.Add('          else  0');
+ qryLanc.SQL.Add('        end valor_despesa');
  qryLanc.SQL.Add('from lancamentos l , tipos_lancamentos tl');
  qryLanc.SQL.Add('where l.cod_tipo_lanc = tl.cod_tipo_lanc');
  if lblEdtCod.Text <> '' then
@@ -144,7 +148,7 @@ begin
  end;
  if chkHabDtLanc.Checked then
  begin
-   qryLanc.SQL.Add('and l.dt_lanc between :dtinilanc and :dtfimlanc');
+   qryLanc.SQL.Add('and CAST(l.dt_lanc  AS date) between :dtinilanc and :dtfimlanc');
    qryLanc.ParamByName('dtinilanc').AsDate := DtLAncIni.Date;
    qryLanc.ParamByName('dtfimlanc').AsDate := DtLancFim.Date;
  end;
@@ -160,7 +164,7 @@ begin
  qryLanc.Open();
  if qryLanc.IsEmpty then
  begin
-   ShowMessage('Nada encontrado');
+   MessageBox(0, 'Nada encontrado', 'Informação', MB_ICONINFORMATION or MB_OK);
    Exit;
  end
  else
@@ -175,6 +179,71 @@ procedure TfrmRelLanc.FormCreate(Sender: TObject);
 begin
   PreenCbTpLanc;
   Limpar;
+end;
+
+procedure TfrmRelLanc.frxLancamentosBeforePrint(Sender: TfrxReportComponent);
+var
+ lnome : string;
+ lMemo : TfrxMemoView;
+begin
+ if Sender is TfrxMemoView then
+ begin
+   lMemo := Sender as TfrxMemoView;
+   lnome := LowerCase(Sender.Name);
+   if lnome = 'memofiltrocod'then
+   begin
+      if lblEdtCod.Text <> '' then
+      begin
+        lMemo.Text := lblEdtCod.Text;
+      end;
+   end
+   else
+   if lnome = 'memofiltrodesc'then
+   begin
+      if lblEdtDesc.Text <> '' then
+      begin
+        lMemo.Text := lblEdtDesc.Text;
+      end;
+   end
+   else
+   if lnome = 'memofiltrocat'then
+   begin
+     lMemo.Text := cbCategoria.Text;
+   end
+   else
+   if lnome = 'memofiltrotplanc'then
+   begin
+     lMemo.Text := cbTpLanc.Text;
+   end
+   else
+   if lnome = 'memofiltrosome'then
+   begin
+     if chkExcluidos.Checked then
+     begin
+      lMemo.Text := 'Sim';
+     end;
+   end
+   else
+   if lnome = 'memofiltrodtvenc'then
+   begin
+    if chkHabDtVenc.Checked then
+    begin
+     lMemo.Text := FormatDateTime('dd/mm/yyyy',dtVencIni.Date) + ' a '
+                    + FormatDateTime('dd/mm/yyyy',dtVencFim.Date) ;
+    end;
+   end
+   else
+   if lnome = 'memofiltrodtlanc'then
+   begin
+    if chkHabDtLanc.Checked then
+    begin
+     lMemo.Text := FormatDateTime('dd/mm/yyyy',DtLAncIni.Date) + ' a '
+                    + FormatDateTime('dd/mm/yyyy',dtLancFim.Date) ;
+    end;
+   end;
+
+ end;
+
 end;
 
 procedure TfrmRelLanc.Limpar;

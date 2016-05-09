@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Data.DB,
-  FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
+  FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,System.UITypes,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
   FireDAC.Stan.Async, FireDAC.DApt, Vcl.DBCtrls, Vcl.Mask, System.Actions,
   Vcl.ActnList, FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.Grids,
@@ -117,7 +117,7 @@ begin
  end
  else
  begin
-   ShowMessage('Selecione alguém pra editar');
+   MessageBox(0, 'Selecione um registro para editar!', 'Atenção', MB_ICONWARNING or MB_OK);
    acCancelarExecute(Sender);
    Exit;
  end;
@@ -208,7 +208,7 @@ begin
  qryLancFixos.Open();
  if qryLancFixos.IsEmpty then
  begin
-   ShowMessage('Nada encontrado');
+   MessageBox(0, 'Nada encontrado', 'Informação', MB_ICONINFORMATION or MB_OK);
    Exit;
  end;
 
@@ -255,7 +255,7 @@ procedure TfrmLancFixos.validarPreench;
 begin
  if qryLancFixosdt_ini.IsNull then
  begin
-   ShowMessage('Preencha a data de início!');
+   MessageBox(0, 'Preencha a data de início', 'Atenção', MB_ICONWARNING or MB_OK);
    if edtDtIni.CanFocus then
    begin
      edtDtIni.SetFocus;
@@ -264,7 +264,7 @@ begin
  end
  else if qryLancFixosdt_ini.AsDateTime <= date then
  begin
-   ShowMessage('A data inicial deve ser maior do que hoje!');
+   MessageBox(0, 'A data inicial deve ser maior do que hoje', 'Atenção', MB_ICONWARNING or MB_OK);
    if edtDtIni.CanFocus then
    begin
      edtDtIni.SetFocus;
@@ -273,25 +273,25 @@ begin
  end
  else if qryLancFixosdia.IsNull then
  begin
-     ShowMessage('Especifique em qual dia do mês serão gerados os lançamentos!');
-     if edtDia.CanFocus then
-     begin
-       edtDia.SetFocus;
-     end;
-     Abort;
+   MessageBox(0, 'Especifique em qual dia do mês serão gerados os lançamentos', 'Atenção', MB_ICONWARNING or MB_OK);
+   if edtDia.CanFocus then
+   begin
+     edtDia.SetFocus;
+   end;
+   Abort;
  end
  else if (qryLancFixosdia.AsInteger <= 0) or (qryLancFixosdia.AsInteger > 31) then
  begin
-     ShowMessage('O dia deve estar entre 1 e 31!');
-     if edtDia.CanFocus then
-     begin
-       edtDia.SetFocus;
-     end;
-     Abort;
+   MessageBox(0, 'O dia deve estar entre 1 e 31', 'Atenção', MB_ICONWARNING or MB_OK);
+   if edtDia.CanFocus then
+   begin
+     edtDia.SetFocus;
+   end;
+   Abort;
  end
  else if qryLancFixosvalor.AsFloat <= 0 then
  begin
-  ShowMessage('O valor do lançamento deve ser maior do que 0!');
+  MessageBox(0, 'O valor do lançamento deve ser maior do que 0', 'Atenção', MB_ICONWARNING or MB_OK);
   if edtValor.CanFocus then
   begin
     edtValor.SetFocus;

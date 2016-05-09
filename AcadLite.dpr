@@ -20,7 +20,9 @@ uses
   uFrmLogin in 'uFrmLogin.pas' {frmLogin},
   uLancPadroes in 'uLancPadroes.pas',
   uFrmMensalidades in 'uFrmMensalidades.pas' {frmMensalidades},
-  uConstantes in 'uConstantes.pas';
+  uConstantes in 'uConstantes.pas',
+  uFrmRelMens in 'uFrmRelMens.pas' {frmRelMens},
+  uFrmReplicarMens in '__history\uFrmReplicarMens.pas' {frmRepMens};
 
 {$R *.res}
 
