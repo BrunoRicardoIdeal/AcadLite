@@ -87,75 +87,75 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="uFrmPrinc.pas">
-            <Form>frmPrinc</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
-        <DCCReference Include="uFrmPessoas.pas">
-            <Form>frmPessoas</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
-        <DCCReference Include="uDmPrincipal.pas">
+        <DCCReference Include="Class\uConstantes.pas"/>
+        <DCCReference Include="Class\uLancPadroes.pas"/>
+        <DCCReference Include="Forms\uDmPrincipal.pas">
             <Form>dmPrincipal</Form>
             <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
-        <DCCReference Include="uFrmEquip.pas">
+        <DCCReference Include="Forms\uFrmPrinc.pas">
+            <Form>frmPrinc</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Forms\uFrmEquip.pas">
             <Form>frmEquip</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="uFrmTipoLanc.pas">
-            <Form>frmTiposLanc</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
-        <DCCReference Include="uFrmLancamentos.pas">
+        <DCCReference Include="Forms\uFrmLancamentos.pas">
             <Form>frmLancamentos</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="uFrmRelatorios.pas">
-            <Form>frmRelatorios</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
-        <DCCReference Include="uFrmRelPessoas.pas">
-            <Form>frmRelPessoas</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
-        <DCCReference Include="uFrmRelEquip.pas">
-            <Form>frmRelEquip</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
-        <DCCReference Include="uFrmRelTpLanc.pas">
-            <Form>frmRelTpLanc</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
-        <DCCReference Include="uFrmRelLanc.pas">
-            <Form>frmRelLanc</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
-        <DCCReference Include="uFrmLancFixos.pas">
+        <DCCReference Include="Forms\uFrmLancFixos.pas">
             <Form>frmLancFixos</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="uFrmUsuarios.pas">
-            <Form>frmUsuarios</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
-        <DCCReference Include="uFrmLogin.pas">
+        <DCCReference Include="Forms\uFrmLogin.pas">
             <Form>frmLogin</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="uLancPadroes.pas"/>
-        <DCCReference Include="uFrmMensalidades.pas">
+        <DCCReference Include="Forms\uFrmMensalidades.pas">
             <Form>frmMensalidades</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="uConstantes.pas"/>
-        <DCCReference Include="uFrmRelMens.pas">
+        <DCCReference Include="Forms\uFrmPessoas.pas">
+            <Form>frmPessoas</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Forms\uFrmRelatorios.pas">
+            <Form>frmRelatorios</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Forms\uFrmRelEquip.pas">
+            <Form>frmRelEquip</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Forms\uFrmRelLanc.pas">
+            <Form>frmRelLanc</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Forms\uFrmRelMens.pas">
             <Form>frmRelMens</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="__history\uFrmReplicarMens.pas">
+        <DCCReference Include="Forms\uFrmRelPessoas.pas">
+            <Form>frmRelPessoas</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Forms\uFrmRelTpLanc.pas">
+            <Form>frmRelTpLanc</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Forms\uFrmReplicarMens.pas">
             <Form>frmRepMens</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Forms\uFrmTipoLanc.pas">
+            <Form>frmTiposLanc</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Forms\uFrmUsuarios.pas">
+            <Form>frmUsuarios</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <BuildConfiguration Include="Release">
@@ -566,13 +566,13 @@
                         <Operation>1</Operation>
                     </Platform>
                 </DeployClass>
-                <ProjectRoot Platform="iOSDevice32" Name="$(PROJECTNAME).app"/>
+                <ProjectRoot Platform="iOSSimulator" Name="$(PROJECTNAME).app"/>
                 <ProjectRoot Platform="Android" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="Win32" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="iOSDevice64" Name="$(PROJECTNAME).app"/>
                 <ProjectRoot Platform="Win64" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="OSX32" Name="$(PROJECTNAME).app"/>
-                <ProjectRoot Platform="iOSSimulator" Name="$(PROJECTNAME).app"/>
+                <ProjectRoot Platform="iOSDevice32" Name="$(PROJECTNAME).app"/>
             </Deployment>
             <Platforms>
                 <Platform value="Win32">True</Platform>
