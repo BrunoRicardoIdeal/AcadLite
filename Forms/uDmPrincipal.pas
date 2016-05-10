@@ -10,7 +10,7 @@ uses
   FireDAC.Phys.MySQLDef, FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf,uEndereco,
   FireDAC.DApt, FireDAC.Comp.DataSet,IniFiles, Datasnap.DBClient, Soap.InvokeRegistry,
   IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient, IdHTTP, Soap.Rio, Soap.SOAPHTTPClient,
-  Xml.xmldom, Datasnap.Provider, Datasnap.Xmlxform, uWS;
+  Xml.xmldom, Datasnap.Provider, Datasnap.Xmlxform, IPPeerClient, REST.Client, Data.Bind.Components, Data.Bind.ObjectScope, Xml.XMLIntf, Xml.adomxmldom, Xml.XMLDoc;
 
 type
   TdmPrincipal = class(TDataModule)
@@ -23,6 +23,10 @@ type
     qryLogoperacao: TStringField;
     cdsEndereco: TClientDataSet;
     XMLTransfProv: TXMLTransformProvider;
+    TCPCStatusNet: TIdTCPClient;
+    restReq: TRESTRequest;
+    restClient: TRESTClient;
+    restResp: TRESTResponse;
     cdsEnderecocep: TStringField;
     cdsEnderecologradouro: TStringField;
     cdsEnderecocomplemento: TStringField;
@@ -32,16 +36,14 @@ type
     cdsEnderecounidade: TStringField;
     cdsEnderecoibge: TStringField;
     cdsEnderecogia: TStringField;
-    TCPCStatusNet: TIdTCPClient;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
-
-   var
-    FWS : TWS;
    procedure CriaUsuarioAdmin;
    procedure InserirTpLancPadroes;
    function GetNomePC: String;
+   function ConsultaEndereco(pCep : String):String;
+
 
     { Private declarations }
 
@@ -62,7 +64,7 @@ type
     function getListaTiposCli:TStringList;
     function GetEndereco(pCep : String) : TEndereco;
     function ConectadoInternet : boolean;
-
+    function RetirarChars(pVChars : array of Char; pStr : String):String;
   end;
 
 var
@@ -71,7 +73,7 @@ var
 implementation
 
 uses
-  Winapi.Windows, Vcl.Forms, uConstantes;
+  Winapi.Windows, Vcl.Forms, uConstantes,Strutils;
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
@@ -107,6 +109,15 @@ begin
  MySQLConn.Params.Add('Server='+ lserver);
 end;
 
+function TdmPrincipal.ConsultaEndereco(pCep: String): String;
+var
+ lURL : String;
+begin
+  lURL := URL_CEP_CORREIOS + pCep + '/xml/';
+  restClient.BaseURL := lURL;
+  restReq.Execute;
+  Result:= restResp.Content
+end;
 procedure TdmPrincipal.CriaUsuarioAdmin;
 var
  lQryCria : TFdQuery;
@@ -140,13 +151,11 @@ begin
  CriaUsuarioAdmin;
  InserirTpLancPadroes;
  nomePC := GetNomePC;
- FWS := TWS.Create;
 end;
 
 procedure TdmPrincipal.DataModuleDestroy(Sender: TObject);
 begin
  ConfigINI.Free;
- FWS.Free;
 end;
 
 function TdmPrincipal.getCodTpLanc(pDesc: String): integer;
@@ -175,19 +184,20 @@ begin
   lXml := TStringList.Create;
   lEnd := TEndereco.Create;
   try
-    lXml.Text := FWS.ConsultaEndereco(pCep);
+    lXml.Text := ConsultaEndereco(pCep);
+    lXml.Text := ReplaceStr(lXml.Text,#9,'');
     if lXml.Count > 1 then
     begin
-      lXml.SaveToFile(lCaminhoTemp);
+      lXml.SaveToFile(lCaminhoTemp,TEncoding.UTF8);
       cdsEndereco.Close;
       XMLTransfProv.XMLDataFile := lCaminhoTemp;
       cdsEndereco.Open;
-      lEnd.Cep := cdsEnderecocep.AsString;
-      lEnd.UF := cdsEnderecouf.AsString;
-      lEnd.Cidade := cdsEnderecounidade.AsString;
-      lEnd.Logradouro := cdsEnderecologradouro.AsString;
-      lEnd.Bairro := cdsEnderecobairro.AsString;
-      lEnd.Complemento := cdsEnderecocomplemento.AsString;
+      lEnd.Cep := cdsEndereco.FieldByName('cep').AsString;
+      lEnd.UF := cdsEndereco.FieldByName('uf').AsString;
+      lEnd.Cidade := cdsEndereco.FieldByName('localidade').AsString;
+      lEnd.Logradouro := cdsEndereco.FieldByName('logradouro').AsString;
+      lEnd.Bairro := cdsEndereco.FieldByName('bairro').AsString;
+      lEnd.Complemento := cdsEndereco.FieldByName('complemento').AsString;
       Result := lEnd;
     end
     else
@@ -286,6 +296,18 @@ begin
   finally
    lQrySelect.Free;
   end;
+end;
+
+function TdmPrincipal.RetirarChars(pVChars: array of Char; pStr: String): String;
+var
+ lChar : Char;
+ lStrRes : String;
+begin
+  for lChar in pVChars do
+  begin
+    lStrRes := StringReplace(pStr,lChar,'',[rfReplaceAll]);
+  end;
+  Result := lStrRes;
 end;
 
 function TdmPrincipal.GetNomePC: String;

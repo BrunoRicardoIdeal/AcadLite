@@ -391,20 +391,28 @@ object frmPessoas: TfrmPessoas
     Top = 552
     Width = 323
     Height = 21
+    DataField = 'logradouro'
+    DataSource = dsPessoas
     TabOrder = 11
   end
   object cbEstado: TDBComboBox
     Left = 81
     Top = 527
     Width = 53
-    Height = 21
+    Height = 22
+    Style = csOwnerDrawVariable
+    DataField = 'uf'
+    DataSource = dsPessoas
     TabOrder = 12
   end
   object cbCidade: TDBComboBox
     Left = 197
     Top = 527
     Width = 207
-    Height = 21
+    Height = 22
+    Style = csOwnerDrawVariable
+    DataField = 'cidade'
+    DataSource = dsPessoas
     TabOrder = 13
   end
   object edtCep: TDBEdit
@@ -412,13 +420,18 @@ object frmPessoas: TfrmPessoas
     Top = 502
     Width = 115
     Height = 21
+    DataField = 'cep'
+    DataSource = dsPessoas
     TabOrder = 14
+    OnExit = edtCepExit
   end
   object edtBairro: TDBEdit
-    Left = 79
+    Left = 81
     Top = 579
-    Width = 138
+    Width = 136
     Height = 21
+    DataField = 'bairro'
+    DataSource = dsPessoas
     TabOrder = 15
   end
   object edtComplemento: TDBEdit
@@ -426,6 +439,8 @@ object frmPessoas: TfrmPessoas
     Top = 579
     Width = 110
     Height = 21
+    DataField = 'complemento'
+    DataSource = dsPessoas
     TabOrder = 16
   end
   object AcList: TActionList
@@ -526,6 +541,44 @@ object frmPessoas: TfrmPessoas
       FieldKind = fkCalculated
       FieldName = 'inadimplente'
       Calculated = True
+    end
+    object qryPessoaslogradouro: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'logradouro'
+      Origin = 'logradouro'
+      Size = 100
+    end
+    object qryPessoascomplemento: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'complemento'
+      Origin = 'complemento'
+      Size = 50
+    end
+    object qryPessoascep: TStringField
+      AutoGenerateValue = arDefault
+      DisplayWidth = 10
+      FieldName = 'cep'
+      Origin = 'cep'
+      EditMask = '99999-999;1;_'
+      Size = 10
+    end
+    object qryPessoasbairro: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'bairro'
+      Origin = 'bairro'
+      Size = 50
+    end
+    object qryPessoascidade: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'cidade'
+      Origin = 'cidade'
+      Size = 50
+    end
+    object qryPessoasuf: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'uf'
+      Origin = 'uf'
+      Size = 2
     end
   end
   object dsPessoas: TDataSource

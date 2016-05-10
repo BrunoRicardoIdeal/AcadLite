@@ -2,8 +2,8 @@ object dmPrincipal: TdmPrincipal
   OldCreateOrder = False
   OnCreate = DataModuleCreate
   OnDestroy = DataModuleDestroy
-  Height = 320
-  Width = 215
+  Height = 409
+  Width = 611
   object MySQLConn: TFDConnection
     Params.Strings = (
       'Database=AcadLite'
@@ -12,7 +12,7 @@ object dmPrincipal: TdmPrincipal
       'Server=localhost'
       'DriverID=MySQL')
     LoginPrompt = False
-    Left = 16
+    Left = 224
     Top = 16
   end
   object WaitCursor: TFDGUIxWaitCursor
@@ -67,19 +67,19 @@ object dmPrincipal: TdmPrincipal
     end
     object cdsEnderecologradouro: TStringField
       FieldName = 'logradouro'
-      Size = 11
+      Size = 42
     end
     object cdsEnderecocomplemento: TStringField
       FieldName = 'complemento'
-      Size = 10
+      Size = 32
     end
     object cdsEnderecobairro: TStringField
       FieldName = 'bairro'
-      Size = 2
+      Size = 42
     end
     object cdsEnderecolocalidade: TStringField
       FieldName = 'localidade'
-      Size = 9
+      Size = 25
     end
     object cdsEnderecouf: TStringField
       FieldName = 'uf'
@@ -95,12 +95,12 @@ object dmPrincipal: TdmPrincipal
     end
     object cdsEnderecogia: TStringField
       FieldName = 'gia'
-      Size = 4
+      Size = 32
     end
   end
   object XMLTransfProv: TXMLTransformProvider
     TransformRead.TransformationFile = 'D:\Projetos\AcadLite\AcadLite\docs\TransformationFiles\ToDp.xtr'
-    XMLDataFile = 'C:\Users\BRUNO\Desktop\Correios.xml'
+    XMLDataFile = 'D:\Projetos\AcadLite\AcadLite\docs\XML\Correios.xml'
     Left = 120
     Top = 240
   end
@@ -112,5 +112,24 @@ object dmPrincipal: TdmPrincipal
     ReadTimeout = 5000
     Left = 127
     Top = 96
+  end
+  object restReq: TRESTRequest
+    Client = restClient
+    Params = <>
+    Response = restResp
+    SynchronizedEvents = False
+    Left = 520
+    Top = 184
+  end
+  object restClient: TRESTClient
+    BaseURL = 'http://viacep.com.br/ws/01001000/json'
+    Params = <>
+    HandleRedirects = True
+    Left = 528
+    Top = 104
+  end
+  object restResp: TRESTResponse
+    Left = 536
+    Top = 48
   end
 end

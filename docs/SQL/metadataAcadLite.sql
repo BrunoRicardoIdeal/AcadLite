@@ -1,8 +1,8 @@
 -- --------------------------------------------------------
 -- Servidor:                     127.0.0.1
--- Versão do servidor:           5.7.12-log - MySQL Community Server (GPL)
--- OS do Servidor:               Win32
--- HeidiSQL Versão:              9.3.0.4984
+-- Versão do servidor:           5.6.24-log - MySQL Community Server (GPL)
+-- OS do Servidor:               Win64
+-- HeidiSQL Versão:              9.2.0.4947
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS `equipamentos` (
 ) ENGINE=InnoDB AUTO_INCREMENT=104 DEFAULT CHARSET=utf8;
 
 -- Copiando dados para a tabela acadlite.equipamentos: ~103 rows (aproximadamente)
+DELETE FROM `equipamentos`;
 /*!40000 ALTER TABLE `equipamentos` DISABLE KEYS */;
 INSERT INTO `equipamentos` (`cod_equip`, `nome`, `tipo`, `dt_cadastro`) VALUES
 	(1, 'Acadmix Executivo Metalmix 300.25.03 Prata/Vermelho', 'Musculação', '2016-04-27 13:44:21'),
@@ -142,6 +143,7 @@ CREATE TABLE IF NOT EXISTS `execucao_jobs` (
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- Copiando dados para a tabela acadlite.execucao_jobs: ~4 rows (aproximadamente)
+DELETE FROM `execucao_jobs`;
 /*!40000 ALTER TABLE `execucao_jobs` DISABLE KEYS */;
 INSERT INTO `execucao_jobs` (`id`, `nome`, `data_exec`) VALUES
 	(1, 'JOB_LANC_AUTO', '2016-05-03 09:28:00'),
@@ -176,7 +178,8 @@ CREATE TABLE IF NOT EXISTS `lancamentos` (
   CONSTRAINT `lancamentos_ibfk_1` FOREIGN KEY (`cod_tipo_lanc`) REFERENCES `tipos_lancamentos` (`cod_tipo_lanc`)
 ) ENGINE=InnoDB AUTO_INCREMENT=121 DEFAULT CHARSET=utf8;
 
--- Copiando dados para a tabela acadlite.lancamentos: ~114 rows (aproximadamente)
+-- Copiando dados para a tabela acadlite.lancamentos: ~116 rows (aproximadamente)
+DELETE FROM `lancamentos`;
 /*!40000 ALTER TABLE `lancamentos` DISABLE KEYS */;
 INSERT INTO `lancamentos` (`cod_lanc`, `descricao`, `dt_lanc`, `dt_vencimento`, `cod_tipo_lanc`, `dt_exclusao`, `valor`, `cod_mensalidade`, `fixo`) VALUES
 	(1, 'teste', NULL, NULL, 3, '2016-05-02 22:57:40', NULL, 0, 'N'),
@@ -312,6 +315,7 @@ CREATE TABLE IF NOT EXISTS `lancamentos_fixos` (
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- Copiando dados para a tabela acadlite.lancamentos_fixos: ~2 rows (aproximadamente)
+DELETE FROM `lancamentos_fixos`;
 /*!40000 ALTER TABLE `lancamentos_fixos` DISABLE KEYS */;
 INSERT INTO `lancamentos_fixos` (`cod_lanc_fixo`, `descricao`, `cod_tipo_lanc`, `dt_ini`, `dia`, `valor`) VALUES
 	(4, 'Aluguel do prédio', 5, '2016-05-03', 3, 850),
@@ -329,9 +333,10 @@ CREATE TABLE IF NOT EXISTS `log` (
   PRIMARY KEY (`id`),
   KEY `FK_log_cod_usu` (`cod_usuario`),
   CONSTRAINT `FK_log_cod_usu` FOREIGN KEY (`cod_usuario`) REFERENCES `usuarios` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=81 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=113 DEFAULT CHARSET=utf8;
 
--- Copiando dados para a tabela acadlite.log: ~76 rows (aproximadamente)
+-- Copiando dados para a tabela acadlite.log: ~77 rows (aproximadamente)
+DELETE FROM `log`;
 /*!40000 ALTER TABLE `log` DISABLE KEYS */;
 INSERT INTO `log` (`id`, `cod_usuario`, `computador`, `operacao`, `dt_operacao`) VALUES
 	(1, 14, 'SERVIDOR', 'Login', '2016-05-06 18:54:31'),
@@ -410,7 +415,39 @@ INSERT INTO `log` (`id`, `cod_usuario`, `computador`, `operacao`, `dt_operacao`)
 	(77, 14, 'BRUNO-PC', 'Login', '2016-05-09 16:48:36'),
 	(78, 14, 'BRUNO-PC', 'Login', '2016-05-09 17:02:28'),
 	(79, 14, 'BRUNO-PC', 'Logout', '2016-05-09 17:03:18'),
-	(80, 14, 'BRUNO-PC', 'Login', '2016-05-09 18:53:34');
+	(80, 14, 'BRUNO-PC', 'Login', '2016-05-09 18:53:34'),
+	(81, 14, 'BRUNO-PC', 'Login', '2016-05-10 15:36:55'),
+	(82, 14, 'BRUNO-PC', 'Login', '2016-05-10 15:37:48'),
+	(83, 14, 'BRUNO-PC', 'Login', '2016-05-10 15:41:06'),
+	(84, 14, 'BRUNO-PC', 'Login', '2016-05-10 15:46:59'),
+	(85, 14, 'BRUNO-PC', 'Login', '2016-05-10 15:47:42'),
+	(86, 14, 'BRUNO-PC', 'Login', '2016-05-10 15:48:35'),
+	(87, 14, 'BRUNO-PC', 'Login', '2016-05-10 15:49:22'),
+	(88, 14, 'BRUNO-PC', 'Login', '2016-05-10 16:24:41'),
+	(89, 14, 'BRUNO-PC', 'Login', '2016-05-10 16:25:41'),
+	(90, 14, 'BRUNO-PC', 'Login', '2016-05-10 16:27:58'),
+	(91, 14, 'BRUNO-PC', 'Login', '2016-05-10 16:28:39'),
+	(92, 14, 'BRUNO-PC', 'Login', '2016-05-10 16:31:47'),
+	(93, 14, 'BRUNO-PC', 'Login', '2016-05-10 16:35:56'),
+	(94, 14, 'BRUNO-PC', 'Login', '2016-05-10 16:39:32'),
+	(95, 14, 'BRUNO-PC', 'Login', '2016-05-10 16:46:58'),
+	(96, 14, 'BRUNO-PC', 'Login', '2016-05-10 16:56:34'),
+	(97, 14, 'BRUNO-PC', 'Login', '2016-05-10 16:59:38'),
+	(98, 14, 'BRUNO-PC', 'Login', '2016-05-10 17:01:02'),
+	(99, 14, 'BRUNO-PC', 'Login', '2016-05-10 17:04:08'),
+	(100, 14, 'BRUNO-PC', 'Login', '2016-05-10 17:05:54'),
+	(101, 14, 'BRUNO-PC', 'Login', '2016-05-10 17:06:49'),
+	(102, 14, 'BRUNO-PC', 'Login', '2016-05-10 17:07:51'),
+	(103, 14, 'BRUNO-PC', 'Login', '2016-05-10 17:09:37'),
+	(104, 14, 'BRUNO-PC', 'Login', '2016-05-10 17:11:59'),
+	(105, 14, 'BRUNO-PC', 'Login', '2016-05-10 17:13:43'),
+	(106, 14, 'BRUNO-PC', 'Login', '2016-05-10 17:14:44'),
+	(107, 14, 'BRUNO-PC', 'Login', '2016-05-10 17:15:43'),
+	(108, 14, 'BRUNO-PC', 'Login', '2016-05-10 17:18:57'),
+	(109, 14, 'BRUNO-PC', 'Login', '2016-05-10 17:22:18'),
+	(110, 14, 'BRUNO-PC', 'Login', '2016-05-10 17:32:41'),
+	(111, 14, 'BRUNO-PC', 'Login', '2016-05-10 17:34:31'),
+	(112, 14, 'BRUNO-PC', 'Login', '2016-05-10 17:36:07');
 /*!40000 ALTER TABLE `log` ENABLE KEYS */;
 
 
@@ -429,7 +466,8 @@ CREATE TABLE IF NOT EXISTS `mensalidades` (
   CONSTRAINT `fk_cod_aluno_mens` FOREIGN KEY (`cod_aluno`) REFERENCES `pessoas` (`cod_pessoa`)
 ) ENGINE=InnoDB AUTO_INCREMENT=106 DEFAULT CHARSET=utf8;
 
--- Copiando dados para a tabela acadlite.mensalidades: ~89 rows (aproximadamente)
+-- Copiando dados para a tabela acadlite.mensalidades: ~96 rows (aproximadamente)
+DELETE FROM `mensalidades`;
 /*!40000 ALTER TABLE `mensalidades` DISABLE KEYS */;
 INSERT INTO `mensalidades` (`cod_mensalidade`, `descricao`, `cod_aluno`, `dt_cadastro`, `dt_vencimento`, `dt_recebimento`, `valor`, `valor_recebido`) VALUES
 	(10, 'Mensalidade comum', 6, '2016-05-06 10:32:16', '2016-10-10', NULL, 100, 0),
@@ -541,116 +579,123 @@ CREATE TABLE IF NOT EXISTS `pessoas` (
   `celular` varchar(13) DEFAULT NULL,
   `tipo` varchar(10) DEFAULT NULL,
   `dt_cadastro` datetime DEFAULT CURRENT_TIMESTAMP,
+  `logradouro` varchar(100) DEFAULT NULL,
+  `complemento` varchar(50) DEFAULT NULL,
+  `cep` varchar(10) DEFAULT NULL,
+  `bairro` varchar(50) DEFAULT NULL,
+  `cidade` varchar(50) DEFAULT NULL,
+  `uf` varchar(2) DEFAULT NULL,
   PRIMARY KEY (`cod_pessoa`)
 ) ENGINE=InnoDB AUTO_INCREMENT=109 DEFAULT CHARSET=utf8;
 
--- Copiando dados para a tabela acadlite.pessoas: ~103 rows (aproximadamente)
+-- Copiando dados para a tabela acadlite.pessoas: ~104 rows (aproximadamente)
+DELETE FROM `pessoas`;
 /*!40000 ALTER TABLE `pessoas` DISABLE KEYS */;
-INSERT INTO `pessoas` (`cod_pessoa`, `nome`, `dt_nascimento`, `cpf`, `telefone`, `celular`, `tipo`, `dt_cadastro`) VALUES
-	(5, 'Visitante da Academia', '1998-05-10', '604.131.977-51', '(  )         ', '(61) 99876543', 'Comum', '2016-05-02 22:48:45'),
-	(6, 'Aluno Regular', '1986-03-09', '369.196.069-33', '(62) 32245687', NULL, 'Aluno', '2016-05-02 22:49:49'),
-	(7, 'Personal Trainer ', '1978-05-03', '978.331.550-12', '(62) 34558765', '(62) 98765435', 'Professor', '2016-05-02 22:50:54'),
-	(8, 'Todd', '2031-10-15', NULL, '1684060222399', NULL, 'Aluno', '2016-05-06 23:49:50'),
-	(9, 'Fritz', '2023-05-16', NULL, '1675071956199', NULL, 'Aluno', '2016-05-06 23:49:50'),
-	(10, 'Rooney', '2018-06-15', NULL, '1696050532599', NULL, 'Aluno', '2016-05-06 23:49:50'),
-	(11, 'Cullen', '2012-02-16', NULL, '1629060224099', NULL, 'Professor', '2016-05-06 23:49:50'),
-	(12, 'Norman', '2010-03-16', NULL, '1641092968399', NULL, 'Aluno', '2016-05-06 23:49:50'),
-	(13, 'Zahir', '2020-02-17', NULL, '1632092567599', NULL, 'Aluno', '2016-05-06 23:49:50'),
-	(14, 'Sebastian', '2030-09-16', NULL, '1602092452299', NULL, 'Aluno', '2016-05-06 23:49:50'),
-	(15, 'Cole', '2019-12-16', NULL, '1615090859799', NULL, 'Comum', '2016-05-06 23:49:50'),
-	(16, 'Ferris', '2018-01-16', NULL, '1673060709299', NULL, 'Aluno', '2016-05-06 23:49:50'),
-	(17, 'Evan', '2014-10-15', NULL, '1644041127499', NULL, 'Comum', '2016-05-06 23:49:50'),
-	(18, 'Ishmael', '2013-03-16', NULL, '1673021814799', NULL, 'Aluno', '2016-05-06 23:49:50'),
-	(19, 'David', '2006-01-16', NULL, '1653032486199', NULL, 'Comum', '2016-05-06 23:49:50'),
-	(20, 'Howard', '2030-04-17', NULL, '1646022712899', NULL, 'Professor', '2016-05-06 23:49:50'),
-	(21, 'Neil', '2022-11-16', NULL, '1686111054999', NULL, 'Comum', '2016-05-06 23:49:50'),
-	(22, 'Cade', '2017-10-16', NULL, '1681100715699', NULL, 'Comum', '2016-05-06 23:49:50'),
-	(23, 'Patrick', '2021-01-17', NULL, '1651092973999', NULL, 'Comum', '2016-05-06 23:49:50'),
-	(24, 'Allen', '2018-04-17', NULL, '1601072916099', NULL, 'Comum', '2016-05-06 23:49:50'),
-	(25, 'Dexter', '2015-01-17', NULL, '1648011676499', NULL, 'Professor', '2016-05-06 23:49:50'),
-	(26, 'Kevin', '2006-10-15', NULL, '1697091687899', NULL, 'Comum', '2016-05-06 23:49:50'),
-	(27, 'Curran', '2009-10-15', NULL, '1647102218699', NULL, 'Professor', '2016-05-06 23:49:50'),
-	(28, 'Barrett', '2025-08-16', NULL, '1637120200099', NULL, 'Aluno', '2016-05-06 23:49:50'),
-	(29, 'Basil', '2020-09-16', NULL, '1617060820999', NULL, 'Professor', '2016-05-06 23:49:50'),
-	(30, 'Uriah', '2012-11-16', NULL, '1619121023199', NULL, 'Comum', '2016-05-06 23:49:50'),
-	(31, 'Chadwick', '2004-10-16', NULL, '1635051076799', NULL, 'Aluno', '2016-05-06 23:49:50'),
-	(32, 'Len', '2027-01-16', NULL, '1660070393899', NULL, 'Professor', '2016-05-06 23:49:50'),
-	(33, 'Leonard', '2015-10-15', NULL, '1602043099499', NULL, 'Professor', '2016-05-06 23:49:50'),
-	(34, 'Peter', '2002-05-17', NULL, '1640010479699', NULL, 'Aluno', '2016-05-06 23:49:50'),
-	(35, 'Geoffrey', '2010-10-15', NULL, '1666012115999', NULL, 'Comum', '2016-05-06 23:49:50'),
-	(36, 'Marshall', '2028-08-16', NULL, '1665061522099', NULL, 'Aluno', '2016-05-06 23:49:50'),
-	(37, 'Yoshio', '2016-04-17', NULL, '1624102931699', NULL, 'Aluno', '2016-05-06 23:49:50'),
-	(38, 'Baxter', '2030-11-15', NULL, '1650043013299', NULL, 'Aluno', '2016-05-06 23:49:50'),
-	(39, 'Mannix', '2014-10-15', NULL, '1697092285699', NULL, 'Professor', '2016-05-06 23:49:50'),
-	(40, 'Joseph', '2008-03-16', NULL, '1643070829999', NULL, 'Comum', '2016-05-06 23:49:50'),
-	(41, 'Hashim', '2019-12-15', NULL, '1676102015399', NULL, 'Aluno', '2016-05-06 23:49:50'),
-	(42, 'Declan', '2007-04-17', NULL, '1649062602099', NULL, 'Aluno', '2016-05-06 23:49:50'),
-	(43, 'Ali', '2005-09-15', NULL, '1638060231499', NULL, 'Aluno', '2016-05-06 23:49:50'),
-	(44, 'Ulric', '2020-08-15', NULL, '1661042255499', NULL, 'Aluno', '2016-05-06 23:49:50'),
-	(45, 'Elvis', '2024-12-16', NULL, '1637071210299', NULL, 'Professor', '2016-05-06 23:49:50'),
-	(46, 'Hoyt', '2005-10-15', NULL, '1674010198299', NULL, 'Comum', '2016-05-06 23:49:50'),
-	(47, 'Stone', '2009-07-16', NULL, '1688081832699', NULL, 'Comum', '2016-05-06 23:49:50'),
-	(48, 'Jermaine', '2012-03-16', NULL, '1616102003099', NULL, 'Aluno', '2016-05-06 23:49:50'),
-	(49, 'Kennedy', '2004-11-15', NULL, '1665062118499', NULL, 'Professor', '2016-05-06 23:49:50'),
-	(50, 'Stewart', '2024-03-17', NULL, '1646051289399', NULL, 'Comum', '2016-05-06 23:49:50'),
-	(51, 'Thaddeus', '2014-09-15', NULL, '1669121075299', NULL, 'Professor', '2016-05-06 23:49:50'),
-	(52, 'Xenos', '2012-08-16', NULL, '1610102725399', NULL, 'Professor', '2016-05-06 23:49:50'),
-	(53, 'Hammett', '2015-04-16', NULL, '1675122515599', NULL, 'Aluno', '2016-05-06 23:49:50'),
-	(54, 'Tobias', '2020-04-17', NULL, '1673113034399', NULL, 'Comum', '2016-05-06 23:49:50'),
-	(55, 'Deacon', '2006-01-16', NULL, '1602010477499', NULL, 'Professor', '2016-05-06 23:49:50'),
-	(56, 'Hammett', '2021-05-16', NULL, '1625082732899', NULL, 'Aluno', '2016-05-06 23:49:50'),
-	(57, 'Anthony', '2016-11-15', NULL, '1692012831599', NULL, 'Comum', '2016-05-06 23:49:50'),
-	(58, 'Wallace', '2018-06-16', NULL, '1666080577299', NULL, 'Professor', '2016-05-06 23:49:50'),
-	(59, 'Aquila', '2030-05-15', NULL, '1676010346899', NULL, 'Comum', '2016-05-06 23:49:50'),
-	(60, 'Judah', '2012-12-16', NULL, '1651081105399', NULL, 'Professor', '2016-05-06 23:49:50'),
-	(61, 'Callum', '2019-12-15', NULL, '1683100987499', NULL, 'Professor', '2016-05-06 23:49:50'),
-	(62, 'Mason', '2017-09-16', NULL, '1682022133699', NULL, 'Professor', '2016-05-06 23:49:50'),
-	(63, 'Gage', '2002-03-16', NULL, '1615050478599', NULL, 'Comum', '2016-05-06 23:49:50'),
-	(64, 'Craig', '2006-01-16', NULL, '1625092417699', NULL, 'Professor', '2016-05-06 23:49:50'),
-	(65, 'Tanner', '2011-12-15', NULL, '1602081033999', NULL, 'Professor', '2016-05-06 23:49:50'),
-	(66, 'Brandon', '2025-12-16', NULL, '1653092142299', NULL, 'Comum', '2016-05-06 23:49:50'),
-	(67, 'Benedict', '2027-11-15', NULL, '1625122700699', NULL, 'Professor', '2016-05-06 23:49:50'),
-	(68, 'Fritz', '2017-10-16', NULL, '1651052684299', NULL, 'Comum', '2016-05-06 23:49:50'),
-	(69, 'Jordan', '2011-01-16', NULL, '1672050596199', NULL, 'Professor', '2016-05-06 23:49:50'),
-	(70, 'Yardley', '2006-08-16', NULL, '1632050588599', NULL, 'Professor', '2016-05-06 23:49:50'),
-	(71, 'Stewart', '2008-09-16', NULL, '1625011958999', NULL, 'Professor', '2016-05-06 23:49:50'),
-	(72, 'Burke', '2006-10-15', NULL, '1605071861899', NULL, 'Comum', '2016-05-06 23:49:50'),
-	(73, 'Ashton', '2011-05-16', NULL, '1670081913899', NULL, 'Comum', '2016-05-06 23:49:50'),
-	(74, 'Channing', '2012-03-17', NULL, '1684110623699', NULL, 'Aluno', '2016-05-06 23:49:50'),
-	(75, 'Hayden', '2022-07-16', NULL, '1677121842499', NULL, 'Aluno', '2016-05-06 23:49:50'),
-	(76, 'Brenden', '2007-12-16', NULL, '1689100828099', NULL, 'Professor', '2016-05-06 23:49:50'),
-	(77, 'Jerome', '2014-04-17', NULL, '1677100932799', NULL, 'Comum', '2016-05-06 23:49:50'),
-	(78, 'Elvis', '2017-06-16', NULL, '1678053018899', NULL, 'Aluno', '2016-05-06 23:49:50'),
-	(79, 'Solomon', '2030-11-16', NULL, '1698032733699', NULL, 'Aluno', '2016-05-06 23:49:50'),
-	(80, 'Jesse', '2023-08-16', NULL, '1604060498399', NULL, 'Comum', '2016-05-06 23:49:50'),
-	(81, 'Peter', '2030-06-16', NULL, '1646042022299', NULL, 'Aluno', '2016-05-06 23:49:50'),
-	(82, 'Griffin', '2020-12-15', NULL, '1671020380599', NULL, 'Comum', '2016-05-06 23:49:50'),
-	(83, 'Rudyard', '2031-03-16', NULL, '1689110162799', NULL, 'Aluno', '2016-05-06 23:49:50'),
-	(84, 'Carlos', '2025-09-15', NULL, '1610090252299', NULL, 'Professor', '2016-05-06 23:49:50'),
-	(85, 'Hayden', '2006-01-17', NULL, '1646041138099', NULL, 'Professor', '2016-05-06 23:49:50'),
-	(86, 'Peter', '2009-07-16', NULL, '1607010814699', NULL, 'Professor', '2016-05-06 23:49:50'),
-	(87, 'Baxter', '2022-03-17', NULL, '1687122708099', NULL, 'Professor', '2016-05-06 23:49:50'),
-	(88, 'Thor', '2023-09-15', NULL, '1645120860999', NULL, 'Aluno', '2016-05-06 23:49:50'),
-	(89, 'Norman', '2022-10-15', NULL, '1664091132599', NULL, 'Aluno', '2016-05-06 23:49:50'),
-	(90, 'Baker', '2016-06-15', NULL, '1609022235299', NULL, 'Professor', '2016-05-06 23:49:50'),
-	(91, 'Graham', '2029-04-17', NULL, '1603032816399', NULL, 'Professor', '2016-05-06 23:49:50'),
-	(92, 'Igor', '2009-06-16', NULL, '1672011393899', NULL, 'Aluno', '2016-05-06 23:49:50'),
-	(93, 'Cadman', '2023-02-17', NULL, '1639011994599', NULL, 'Professor', '2016-05-06 23:49:50'),
-	(94, 'Tate', '2014-06-15', NULL, '1626060550799', NULL, 'Professor', '2016-05-06 23:49:50'),
-	(95, 'Keith', '2023-07-15', NULL, '1664021504399', NULL, 'Professor', '2016-05-06 23:49:50'),
-	(96, 'Dolan', '2001-12-16', NULL, '1625011938499', NULL, 'Aluno', '2016-05-06 23:49:50'),
-	(97, 'Slade', '2024-09-16', NULL, '1671051580599', NULL, 'Aluno', '2016-05-06 23:49:50'),
-	(98, 'Ezekiel', '2010-01-16', NULL, '1628022449099', NULL, 'Aluno', '2016-05-06 23:49:50'),
-	(99, 'Walker', '2013-06-15', NULL, '1611062680199', NULL, 'Aluno', '2016-05-06 23:49:50'),
-	(100, 'Mark', '2014-06-16', NULL, '1601121945799', NULL, 'Comum', '2016-05-06 23:49:50'),
-	(101, 'Jacob', '2001-02-16', NULL, '1682090544999', NULL, 'Aluno', '2016-05-06 23:49:50'),
-	(102, 'Lester', '2008-06-15', NULL, '1652011804699', NULL, 'Professor', '2016-05-06 23:49:50'),
-	(103, 'Abel', '2005-09-16', NULL, '1633073094799', NULL, 'Comum', '2016-05-06 23:49:50'),
-	(104, 'Jamal', '2029-02-16', NULL, '1644082789699', NULL, 'Aluno', '2016-05-06 23:49:50'),
-	(105, 'Lucas', '2002-10-15', NULL, '1673070479199', NULL, 'Aluno', '2016-05-06 23:49:50'),
-	(106, 'Gannon', '2009-07-16', NULL, '1646050462699', NULL, 'Aluno', '2016-05-06 23:49:50'),
-	(107, 'Dieter', '2014-08-16', NULL, '1646080655899', NULL, 'Professor', '2016-05-06 23:49:50'),
-	(108, NULL, NULL, NULL, NULL, NULL, 'Comum', '2016-05-09 15:40:48');
+INSERT INTO `pessoas` (`cod_pessoa`, `nome`, `dt_nascimento`, `cpf`, `telefone`, `celular`, `tipo`, `dt_cadastro`, `logradouro`, `complemento`, `cep`, `bairro`, `cidade`, `uf`) VALUES
+	(5, 'Visitante da Academia', '1998-05-10', '604.131.977-51', '(  )         ', '(61) 99876543', 'Comum', '2016-05-02 22:48:45', NULL, NULL, NULL, NULL, NULL, NULL),
+	(6, 'Aluno Regular', '1986-03-09', '369.196.069-33', '(62) 32245687', NULL, 'Aluno', '2016-05-02 22:49:49', NULL, NULL, NULL, NULL, NULL, NULL),
+	(7, 'Personal Trainer ', '1978-05-03', '978.331.550-12', '(62) 34558765', '(62) 98765435', 'Professor', '2016-05-02 22:50:54', NULL, NULL, NULL, NULL, NULL, NULL),
+	(8, 'Todd', '2031-10-15', NULL, '1684060222399', NULL, 'Aluno', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(9, 'Fritz', '2023-05-16', NULL, '1675071956199', NULL, 'Aluno', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(10, 'Rooney', '2018-06-15', NULL, '1696050532599', NULL, 'Aluno', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(11, 'Cullen', '2012-02-16', NULL, '1629060224099', NULL, 'Professor', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(12, 'Norman', '2010-03-16', NULL, '1641092968399', NULL, 'Aluno', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(13, 'Zahir', '2020-02-17', NULL, '1632092567599', NULL, 'Aluno', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(14, 'Sebastian', '2030-09-16', NULL, '1602092452299', NULL, 'Aluno', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(15, 'Cole', '2019-12-16', NULL, '1615090859799', NULL, 'Comum', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(16, 'Ferris', '2018-01-16', NULL, '1673060709299', NULL, 'Aluno', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(17, 'Evan', '2014-10-15', NULL, '1644041127499', NULL, 'Comum', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(18, 'Ishmael', '2013-03-16', NULL, '1673021814799', NULL, 'Aluno', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(19, 'David', '2006-01-16', NULL, '1653032486199', NULL, 'Comum', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(20, 'Howard', '2030-04-17', NULL, '1646022712899', NULL, 'Professor', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(21, 'Neil', '2022-11-16', NULL, '1686111054999', NULL, 'Comum', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(22, 'Cade', '2017-10-16', NULL, '1681100715699', NULL, 'Comum', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(23, 'Patrick', '2021-01-17', NULL, '1651092973999', NULL, 'Comum', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(24, 'Allen', '2018-04-17', NULL, '1601072916099', NULL, 'Comum', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(25, 'Dexter', '2015-01-17', NULL, '1648011676499', NULL, 'Professor', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(26, 'Kevin', '2006-10-15', NULL, '1697091687899', NULL, 'Comum', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(27, 'Curran', '2009-10-15', NULL, '1647102218699', NULL, 'Professor', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(28, 'Barrett', '2025-08-16', NULL, '1637120200099', NULL, 'Aluno', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(29, 'Basil', '2020-09-16', NULL, '1617060820999', NULL, 'Professor', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(30, 'Uriah', '2012-11-16', NULL, '1619121023199', NULL, 'Comum', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(31, 'Chadwick', '2004-10-16', NULL, '1635051076799', NULL, 'Aluno', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(32, 'Len', '2027-01-16', NULL, '1660070393899', NULL, 'Professor', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(33, 'Leonard', '2015-10-15', NULL, '1602043099499', NULL, 'Professor', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(34, 'Peter', '2002-05-17', NULL, '1640010479699', NULL, 'Aluno', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(35, 'Geoffrey', '2010-10-15', NULL, '1666012115999', NULL, 'Comum', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(36, 'Marshall', '2028-08-16', NULL, '1665061522099', NULL, 'Aluno', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(37, 'Yoshio', '2016-04-17', NULL, '1624102931699', NULL, 'Aluno', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(38, 'Baxter', '2030-11-15', NULL, '1650043013299', NULL, 'Aluno', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(39, 'Mannix', '2014-10-15', NULL, '1697092285699', NULL, 'Professor', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(40, 'Joseph', '2008-03-16', NULL, '1643070829999', NULL, 'Comum', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(41, 'Hashim', '2019-12-15', NULL, '1676102015399', NULL, 'Aluno', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(42, 'Declan', '2007-04-17', NULL, '1649062602099', NULL, 'Aluno', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(43, 'Ali', '2005-09-15', NULL, '1638060231499', NULL, 'Aluno', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(44, 'Ulric', '2020-08-15', NULL, '1661042255499', NULL, 'Aluno', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(45, 'Elvis', '2024-12-16', NULL, '1637071210299', NULL, 'Professor', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(46, 'Hoyt', '2005-10-15', NULL, '1674010198299', NULL, 'Comum', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(47, 'Stone', '2009-07-16', NULL, '1688081832699', NULL, 'Comum', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(48, 'Jermaine', '2012-03-16', NULL, '1616102003099', NULL, 'Aluno', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(49, 'Kennedy', '2004-11-15', NULL, '1665062118499', NULL, 'Professor', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(50, 'Stewart', '2024-03-17', NULL, '1646051289399', NULL, 'Comum', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(51, 'Thaddeus', '2014-09-15', NULL, '1669121075299', NULL, 'Professor', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(52, 'Xenos', '2012-08-16', NULL, '1610102725399', NULL, 'Professor', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(53, 'Hammett', '2015-04-16', NULL, '1675122515599', NULL, 'Aluno', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(54, 'Tobias', '2020-04-17', NULL, '1673113034399', NULL, 'Comum', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(55, 'Deacon', '2006-01-16', NULL, '1602010477499', NULL, 'Professor', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(56, 'Hammett', '2021-05-16', NULL, '1625082732899', NULL, 'Aluno', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(57, 'Anthony', '2015-11-15', NULL, '1692012831599', NULL, 'Comum', '2016-05-06 23:49:50', 'Rua Dona St', '', '74650-100', 'Se', 'GoiÃ¢nia', 'GO'),
+	(58, 'Wallace', '2018-06-16', NULL, '1666080577299', NULL, 'Professor', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(59, 'Aquila', '2030-05-15', NULL, '1676010346899', NULL, 'Comum', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(60, 'Judah', '2012-12-16', NULL, '1651081105399', NULL, 'Professor', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(61, 'Callum', '2019-12-15', NULL, '1683100987499', NULL, 'Professor', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(62, 'Mason', '2017-09-16', NULL, '1682022133699', NULL, 'Professor', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(63, 'Gage', '2002-03-16', NULL, '1615050478599', NULL, 'Comum', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(64, 'Craig', '2006-01-16', NULL, '1625092417699', NULL, 'Professor', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(65, 'Tanner', '2011-12-15', NULL, '1602081033999', NULL, 'Professor', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(66, 'Brandon', '2025-12-16', NULL, '1653092142299', NULL, 'Comum', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(67, 'Benedict', '2027-11-15', NULL, '1625122700699', NULL, 'Professor', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(68, 'Fritz', '2017-10-16', NULL, '1651052684299', NULL, 'Comum', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(69, 'Jordan', '2011-01-16', NULL, '1672050596199', NULL, 'Professor', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(70, 'Yardley', '2006-08-16', NULL, '1632050588599', NULL, 'Professor', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(71, 'Stewart', '2008-09-16', NULL, '1625011958999', NULL, 'Professor', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(72, 'Burke', '2006-10-15', NULL, '1605071861899', NULL, 'Comum', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(73, 'Ashton', '2011-05-16', NULL, '1670081913899', NULL, 'Comum', '2016-05-06 23:49:50', NULL, NULL, '123123123', NULL, NULL, NULL),
+	(74, 'Channing', '2012-03-17', NULL, '1684110623699', NULL, 'Aluno', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(75, 'Hayden', '2022-07-16', NULL, '1677121842499', NULL, 'Aluno', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(76, 'Brenden', '2007-12-16', NULL, '1689100828099', NULL, 'Professor', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(77, 'Jerome', '2014-04-17', NULL, '1677100932799', NULL, 'Comum', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(78, 'Elvis', '2017-06-16', NULL, '1678053018899', NULL, 'Aluno', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(79, 'Solomon', '2030-11-16', NULL, '1698032733699', NULL, 'Aluno', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(80, 'Jesse', '2023-08-16', NULL, '1604060498399', NULL, 'Comum', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(81, 'Peter', '2030-06-16', NULL, '1646042022299', NULL, 'Aluno', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(82, 'Griffin', '2020-12-15', NULL, '1671020380599', NULL, 'Comum', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(83, 'Rudyard', '2031-03-16', NULL, '1689110162799', NULL, 'Aluno', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(84, 'Carlos', '2025-09-15', NULL, '1610090252299', NULL, 'Professor', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(85, 'Hayden', '2006-01-17', NULL, '1646041138099', NULL, 'Professor', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(86, 'Peter', '2009-07-16', NULL, '1607010814699', NULL, 'Professor', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(87, 'Baxter', '2022-03-17', NULL, '1687122708099', NULL, 'Professor', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(88, 'Thor', '2023-09-15', NULL, '1645120860999', NULL, 'Aluno', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(89, 'Norman', '2022-10-15', NULL, '1664091132599', NULL, 'Aluno', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(90, 'Baker', '2016-06-15', NULL, '1609022235299', NULL, 'Professor', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(91, 'Graham', '2029-04-17', NULL, '1603032816399', NULL, 'Professor', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(92, 'Igor', '2009-06-16', NULL, '1672011393899', NULL, 'Aluno', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(93, 'Cadman', '2023-02-17', NULL, '1639011994599', NULL, 'Professor', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(94, 'Tate', '2014-06-15', NULL, '1626060550799', NULL, 'Professor', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(95, 'Keith', '2023-07-15', NULL, '1664021504399', NULL, 'Professor', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(96, 'Dolan', '2001-12-16', NULL, '1625011938499', NULL, 'Aluno', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(97, 'Slade', '2024-09-16', NULL, '1671051580599', NULL, 'Aluno', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(98, 'Ezekiel', '2010-01-16', NULL, '1628022449099', NULL, 'Aluno', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(99, 'Walker', '2013-06-15', NULL, '1611062680199', NULL, 'Aluno', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(100, 'Mark', '2014-06-16', NULL, '1601121945799', NULL, 'Comum', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(101, 'Jacob', '2001-02-16', NULL, '1682090544999', NULL, 'Aluno', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(102, 'Lester', '2008-06-15', NULL, '1652011804699', NULL, 'Professor', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(103, 'Abel', '2005-09-16', NULL, '1633073094799', NULL, 'Comum', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(104, 'Jamal', '2029-02-16', NULL, '1644082789699', NULL, 'Aluno', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(105, 'Lucas', '2002-10-15', NULL, '1673070479199', NULL, 'Aluno', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(106, 'Gannon', '2009-07-16', NULL, '1646050462699', NULL, 'Aluno', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(107, 'Dieter', '2014-08-16', NULL, '1646080655899', NULL, 'Professor', '2016-05-06 23:49:50', NULL, NULL, NULL, NULL, NULL, NULL),
+	(108, NULL, NULL, NULL, NULL, NULL, 'Comum', '2016-05-09 15:40:48', NULL, NULL, NULL, NULL, NULL, NULL);
 /*!40000 ALTER TABLE `pessoas` ENABLE KEYS */;
 
 
@@ -694,6 +739,7 @@ CREATE TABLE IF NOT EXISTS `tipos_lancamentos` (
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 -- Copiando dados para a tabela acadlite.tipos_lancamentos: ~9 rows (aproximadamente)
+DELETE FROM `tipos_lancamentos`;
 /*!40000 ALTER TABLE `tipos_lancamentos` DISABLE KEYS */;
 INSERT INTO `tipos_lancamentos` (`cod_tipo_lanc`, `descricao`, `categoria`, `dt_cadastro`, `padrao`) VALUES
 	(1, 'Vendas do Bazar', 'Receita', '2016-04-27 15:31:16', 'N'),
@@ -718,6 +764,7 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
 ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 
 -- Copiando dados para a tabela acadlite.usuarios: ~3 rows (aproximadamente)
+DELETE FROM `usuarios`;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
 INSERT INTO `usuarios` (`id`, `nome`, `senha`, `admin`) VALUES
 	(13, 'Admin', '#Admin123', 'S'),

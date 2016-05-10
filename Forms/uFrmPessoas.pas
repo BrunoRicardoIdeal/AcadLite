@@ -73,6 +73,12 @@ type
     Label11: TLabel;
     edtComplemento: TDBEdit;
     Label12: TLabel;
+    qryPessoaslogradouro: TStringField;
+    qryPessoascomplemento: TStringField;
+    qryPessoascep: TStringField;
+    qryPessoasbairro: TStringField;
+    qryPessoascidade: TStringField;
+    qryPessoasuf: TStringField;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure acNovoExecute(Sender: TObject);
     procedure acEditarExecute(Sender: TObject);
@@ -84,6 +90,7 @@ type
     procedure grdPessoasDrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
     procedure FormCreate(Sender: TObject);
+    procedure edtCepExit(Sender: TObject);
   private
    FListaTpPes : TStringList;
    procedure confRgTiposPes;
@@ -99,7 +106,7 @@ var
 
 implementation
 
-uses uDmprincipal,uConstantes;
+uses uDmprincipal,uConstantes, uEndereco;
 
 {$R *.dfm}
 
@@ -221,6 +228,12 @@ begin
  qryPessoas.SQL.Add('       ,CPF');
  qryPessoas.SQL.Add('       ,TELEFONE');
  qryPessoas.SQL.Add('       ,CELULAR');
+ qryPessoas.SQL.Add('       ,LOGRADOURO');
+ qryPessoas.SQL.Add('       ,BAIRRO');
+ qryPessoas.SQL.Add('       ,COMPLEMENTO');
+ qryPessoas.SQL.Add('       ,CIDADE');
+ qryPessoas.SQL.Add('       ,UF');
+ qryPessoas.SQL.Add('       ,CEP');
  qryPessoas.SQL.Add('FROM PESSOAS');
  qryPessoas.SQL.Add('WHERE 1=1');
  if lblEdtCod.Text <> '' then
@@ -259,6 +272,11 @@ begin
  dbRgTipo.Items := FListaTpPes;
 end;
 
+procedure TfrmPessoas.edtCepExit(Sender: TObject);
+begin
+ preenchEndereco;
+end;
+
 procedure TfrmPessoas.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
  FListaTpPes.Free;
@@ -284,15 +302,33 @@ begin
 end;
 
 procedure TfrmPessoas.preenchEndereco;
+var
+ lEnd : TEndereco;
+ lCep : String;
 begin
- if dmPrincipal.ConectadoInternet then
+ if not qryPessoascep.AsString.IsEmpty then
  begin
-   if qryPessoas.State in dsEditModes then
+   if dmPrincipal.ConectadoInternet then
    begin
+     if qryPessoas.State in dsEditModes then
+     begin
+        lCep := dmPrincipal.RetirarChars(['-'],qryPessoascep.AsString);
+        lEnd := dmPrincipal.GetEndereco(lCep);
+        try
+          qryPessoaslogradouro.AsString := lEnd.Logradouro;
+          qryPessoascomplemento.AsString := lend.Complemento;
+          qryPessoascep.AsString := lend.Cep;
+          qryPessoasbairro.AsString := lEnd.Bairro;
+          qryPessoascidade.AsString := lEnd.Cidade;
+          qryPessoasuf.AsString := lEnd.UF;
+        finally
+          lEnd.Free;
+        end;
 
+     end;
    end;
- end;
 
+ end;
 end;
 
 procedure TfrmPessoas.qryPessoasCalcFields(DataSet: TDataSet);
