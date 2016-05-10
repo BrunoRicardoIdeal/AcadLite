@@ -47,11 +47,12 @@ type
     procedure frxPessoasBeforePrint(Sender: TfrxReportComponent);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormCreate(Sender: TObject);
   private
-   const
-    TRIM_MASK_TEL = '(  )';
+
    procedure Limpar;
    procedure Emitir;
+   procedure confCbTipo;
     { Private declarations }
   public
     { Public declarations }
@@ -62,7 +63,7 @@ var
 
 implementation
 
- uses uDmPrincipal;
+ uses uDmPrincipal,uConstantes;
 
 {$R *.dfm}
 
@@ -81,6 +82,13 @@ begin
  dtNascIni.Enabled := chkHabDtNasc.Checked;
  dtNascFim.Enabled := chkHabDtNasc.Checked;
  lblEData.Enabled := chkHabDtNasc.Checked;
+end;
+
+procedure TfrmRelPessoas.confCbTipo;
+begin
+ cbTipo.Items.Clear;
+ cbTipo.Items.Add('Todos');
+ cbTipo.Items.AddStrings(dmPrincipal.getListaTiposCli);
 end;
 
 procedure TfrmRelPessoas.Emitir;
@@ -142,6 +150,11 @@ procedure TfrmRelPessoas.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
  frmRelPessoas := nil;
  Action := caFree;
+end;
+
+procedure TfrmRelPessoas.FormCreate(Sender: TObject);
+begin
+ confCbTipo;
 end;
 
 procedure TfrmRelPessoas.FormShow(Sender: TObject);

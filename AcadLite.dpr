@@ -22,7 +22,9 @@ uses
   uFrmRelTpLanc in 'Forms\uFrmRelTpLanc.pas' {frmRelTpLanc},
   uFrmReplicarMens in 'Forms\uFrmReplicarMens.pas' {frmRepMens},
   uFrmTipoLanc in 'Forms\uFrmTipoLanc.pas' {frmTiposLanc},
-  uFrmUsuarios in 'Forms\uFrmUsuarios.pas' {frmUsuarios};
+  uFrmUsuarios in 'Forms\uFrmUsuarios.pas' {frmUsuarios},
+  uEndereco in 'Class\uEndereco.pas',
+  uWS in 'Class\uWS.pas';
 
 {$R *.res}
 

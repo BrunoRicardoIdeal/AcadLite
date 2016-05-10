@@ -1,0 +1,53 @@
+<XmlTransformation Version="1.0"><Transform Direction="ToCds"><SelectEach dest="DATAPACKET\ROWDATA\ROW" from="\xmlcep"><Select dest="@cep" from="\cep"/><Select dest="@logradouro" from="\logradouro"/><Select dest="@complemento" from="\complemento"/><Select dest="@bairro" from="\bairro"/><Select dest="@localidade" from="\localidade"/><Select dest="@uf" from="\uf"/><Select dest="@unidade" from="\unidade"/><Select dest="@ibge" from="\ibge"/><Select dest="@gia" from="\gia"/></SelectEach></Transform><XmlSchema RootName="xmlcep"><![CDATA[<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <element xmlns="http://www.w3.org/2001/XMLSchema" name="xmlcep" type="xmlcepType"/>
+  <complexType xmlns="http://www.w3.org/2001/XMLSchema" name="xmlcepType">
+    <sequence>
+      <element name="cep" type="cepType"/>
+      <element name="logradouro" type="logradouroType"/>
+      <element name="complemento" type="complementoType"/>
+      <element name="bairro" type="bairroType"/>
+      <element name="localidade" type="localidadeType"/>
+      <element name="uf" type="ufType"/>
+      <element name="unidade" type="unidadeType"/>
+      <element name="ibge" type="ibgeType"/>
+      <element name="gia" type="giaType"/>
+    </sequence>
+  </complexType>
+  <element xmlns="http://www.w3.org/2001/XMLSchema" name="cep" type="cepType"/>
+  <simpleType xmlns="http://www.w3.org/2001/XMLSchema" name="cepType">
+    <restriction base="xs:string"/>
+  </simpleType>
+  <element xmlns="http://www.w3.org/2001/XMLSchema" name="logradouro" type="logradouroType"/>
+  <simpleType xmlns="http://www.w3.org/2001/XMLSchema" name="logradouroType">
+    <restriction base="xs:string"/>
+  </simpleType>
+  <element xmlns="http://www.w3.org/2001/XMLSchema" name="complemento" type="complementoType"/>
+  <simpleType xmlns="http://www.w3.org/2001/XMLSchema" name="complementoType">
+    <restriction base="xs:string"/>
+  </simpleType>
+  <element xmlns="http://www.w3.org/2001/XMLSchema" name="bairro" type="bairroType"/>
+  <simpleType xmlns="http://www.w3.org/2001/XMLSchema" name="bairroType">
+    <restriction base="xs:string"/>
+  </simpleType>
+  <element xmlns="http://www.w3.org/2001/XMLSchema" name="localidade" type="localidadeType"/>
+  <simpleType xmlns="http://www.w3.org/2001/XMLSchema" name="localidadeType">
+    <restriction base="xs:string"/>
+  </simpleType>
+  <element xmlns="http://www.w3.org/2001/XMLSchema" name="uf" type="ufType"/>
+  <simpleType xmlns="http://www.w3.org/2001/XMLSchema" name="ufType">
+    <restriction base="xs:string"/>
+  </simpleType>
+  <element xmlns="http://www.w3.org/2001/XMLSchema" name="unidade" type="unidadeType"/>
+  <simpleType xmlns="http://www.w3.org/2001/XMLSchema" name="unidadeType">
+    <restriction base="xs:string"/>
+  </simpleType>
+  <element xmlns="http://www.w3.org/2001/XMLSchema" name="ibge" type="ibgeType"/>
+  <simpleType xmlns="http://www.w3.org/2001/XMLSchema" name="ibgeType">
+    <restriction base="xs:string"/>
+  </simpleType>
+  <element xmlns="http://www.w3.org/2001/XMLSchema" name="gia" type="giaType"/>
+  <simpleType xmlns="http://www.w3.org/2001/XMLSchema" name="giaType">
+    <restriction base="xs:string"/>
+  </simpleType>
+</xs:schema>]]></XmlSchema><CdsSkeleton/><XslTransform/><Skeleton><![CDATA[<?xml version="1.0"?><DATAPACKET Version="2.0"><METADATA><FIELDS><FIELD attrname="cep" fieldtype="string" WIDTH="9"/><FIELD attrname="logradouro" fieldtype="string" WIDTH="11"/><FIELD attrname="complemento" fieldtype="string" WIDTH="10"/><FIELD attrname="bairro" fieldtype="string" WIDTH="2"/><FIELD attrname="localidade" fieldtype="string" WIDTH="9"/><FIELD attrname="uf" fieldtype="string" WIDTH="2"/><FIELD attrname="unidade" fieldtype="string" WIDTH="32"/><FIELD attrname="ibge" fieldtype="string" WIDTH="7"/><FIELD attrname="gia" fieldtype="string" WIDTH="4"/></FIELDS><PARAMS/></METADATA><ROWDATA/><METADATA><FIELDS><FIELD attrname="cep" fieldtype="string" WIDTH="9"/><FIELD attrname="logradouro" fieldtype="string" WIDTH="11"/><FIELD attrname="complemento" fieldtype="string" WIDTH="10"/><FIELD attrname="bairro" fieldtype="string" WIDTH="2"/><FIELD attrname="localidade" fieldtype="string" WIDTH="9"/><FIELD attrname="uf" fieldtype="string" WIDTH="2"/><FIELD attrname="unidade" fieldtype="string" WIDTH="32"/><FIELD attrname="ibge" fieldtype="string" WIDTH="7"/><FIELD attrname="gia" fieldtype="string" WIDTH="4"/></FIELDS><PARAMS/></METADATA><ROWDATA/></DATAPACKET>
+]]></Skeleton></XmlTransformation>

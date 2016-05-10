@@ -61,6 +61,18 @@ type
     qryPessoasinadimplente: TBooleanField;
     Label6: TLabel;
     shpRed: TShape;
+    Label7: TLabel;
+    edtLogradouro: TDBEdit;
+    Label8: TLabel;
+    cbEstado: TDBComboBox;
+    cbCidade: TDBComboBox;
+    Label9: TLabel;
+    edtCep: TDBEdit;
+    Label10: TLabel;
+    edtBairro: TDBEdit;
+    Label11: TLabel;
+    edtComplemento: TDBEdit;
+    Label12: TLabel;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure acNovoExecute(Sender: TObject);
     procedure acEditarExecute(Sender: TObject);
@@ -71,7 +83,12 @@ type
     procedure qryPessoasCalcFields(DataSet: TDataSet);
     procedure grdPessoasDrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure FormCreate(Sender: TObject);
   private
+   FListaTpPes : TStringList;
+   procedure confRgTiposPes;
+   procedure confCbPsqTipo;
+   procedure preenchEndereco;
     { Private declarations }
   public
     { Public declarations }
@@ -82,7 +99,7 @@ var
 
 implementation
 
-uses uDmprincipal;
+uses uDmprincipal,uConstantes;
 
 {$R *.dfm}
 
@@ -188,7 +205,7 @@ begin
    qryPessoas.Open();
  end;
  qryPessoas.Append;
- qryPessoastipo.AsString := 'Comum';
+ qryPessoastipo.AsString := PES_COMUM;
  edtNome.SetFocus;
 end;
 
@@ -229,12 +246,32 @@ begin
  end;
 end;
 
+procedure TfrmPessoas.confCbPsqTipo;
+begin
+ cbTipo.Items.Clear;
+ cbTipo.Items.Add('Todos');
+ cbTipo.Items.AddStrings(dmPrincipal.getListaTiposCli);
+end;
+
+procedure TfrmPessoas.confRgTiposPes;
+begin
+ dbRgTipo.Items.Clear;
+ dbRgTipo.Items := FListaTpPes;
+end;
+
 procedure TfrmPessoas.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
+ FListaTpPes.Free;
  frmPessoas := nil;
  Action :=caFree;
 end;
 
+
+procedure TfrmPessoas.FormCreate(Sender: TObject);
+begin
+ FListaTpPes := dmPrincipal.getListaTiposCli;
+ confRgTiposPes;
+end;
 
 procedure TfrmPessoas.grdPessoasDrawColumnCell(Sender: TObject;
   const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
@@ -246,9 +283,21 @@ begin
  end;
 end;
 
+procedure TfrmPessoas.preenchEndereco;
+begin
+ if dmPrincipal.ConectadoInternet then
+ begin
+   if qryPessoas.State in dsEditModes then
+   begin
+
+   end;
+ end;
+
+end;
+
 procedure TfrmPessoas.qryPessoasCalcFields(DataSet: TDataSet);
 begin
- if qryPessoastipo.AsString = 'Aluno' then
+ if qryPessoastipo.AsString = PES_ALUNO then
  begin
    qryPessoasinadimplente.AsBoolean
     := dmPrincipal.isInadimp(qryPessoascod_pessoa.AsInteger);

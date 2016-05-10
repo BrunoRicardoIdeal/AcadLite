@@ -7,8 +7,10 @@ uses
   FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf, FireDAC.Stan.Def,
   FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys, FireDAC.VCLUI.Wait,
   FireDAC.Comp.UI, Data.DB, FireDAC.Comp.Client, FireDAC.Phys.MySQL,uLancPadroes,
-  FireDAC.Phys.MySQLDef, FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf,
-  FireDAC.DApt, FireDAC.Comp.DataSet,IniFiles;
+  FireDAC.Phys.MySQLDef, FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf,uEndereco,
+  FireDAC.DApt, FireDAC.Comp.DataSet,IniFiles, Datasnap.DBClient, Soap.InvokeRegistry,
+  IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient, IdHTTP, Soap.Rio, Soap.SOAPHTTPClient,
+  Xml.xmldom, Datasnap.Provider, Datasnap.Xmlxform, uWS;
 
 type
   TdmPrincipal = class(TDataModule)
@@ -19,25 +21,37 @@ type
     qryLogcod_usuario: TIntegerField;
     qryLogcomputador: TStringField;
     qryLogoperacao: TStringField;
+    cdsEndereco: TClientDataSet;
+    XMLTransfProv: TXMLTransformProvider;
+    cdsEnderecocep: TStringField;
+    cdsEnderecologradouro: TStringField;
+    cdsEnderecocomplemento: TStringField;
+    cdsEnderecobairro: TStringField;
+    cdsEnderecolocalidade: TStringField;
+    cdsEnderecouf: TStringField;
+    cdsEnderecounidade: TStringField;
+    cdsEnderecoibge: TStringField;
+    cdsEnderecogia: TStringField;
+    TCPCStatusNet: TIdTCPClient;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
 
+   var
+    FWS : TWS;
    procedure CriaUsuarioAdmin;
    procedure InserirTpLancPadroes;
    function GetNomePC: String;
+
     { Private declarations }
 
   public
-   const
-    {usuario e senha}
-    USER_ADMIN = 'Admin';
-    PAS_ADMIN = '#Admin123';
    var
     NomeUsuario : string;
     CodUsuario : integer;
     isAdmin : boolean;
     nomePC : string;
+    CaminhoEXE : String;
 
     ConfigINI : TINIFile;
     { Public declarations }
@@ -45,8 +59,9 @@ type
     procedure ConfiguraConn;
     function getCodTpLanc(pDesc : String):integer;
     function isInadimp(pCodAluno : integer) : boolean;
-
-
+    function getListaTiposCli:TStringList;
+    function GetEndereco(pCep : String) : TEndereco;
+    function ConectadoInternet : boolean;
 
   end;
 
@@ -56,11 +71,29 @@ var
 implementation
 
 uses
-  Winapi.Windows, Vcl.Forms;
+  Winapi.Windows, Vcl.Forms, uConstantes;
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
 {$R *.dfm}
+
+function TdmPrincipal.ConectadoInternet: boolean;
+begin
+ if TCPCStatusNet.Connected then
+ begin
+  TCPCStatusNet.Disconnect;
+ end;
+ try
+  TCPCStatusNet.Connect;
+  Result := true;
+ except
+  on E : Exception do
+  begin
+    Result := False;
+  end;
+
+ end;
+end;
 
 procedure TdmPrincipal.ConfiguraConn;
 var
@@ -98,20 +131,22 @@ end;
 
 procedure TdmPrincipal.DataModuleCreate(Sender: TObject);
 var
- lCam : String;
+ CaminhoConfig : String;
 begin
- lCam := ExtractFilePath(Application.ExeName) + 'Config.ini';
- ConfigINI := TIniFile.Create(lCam);
+ CaminhoEXE := ExtractFilePath(Application.ExeName) ;
+ CaminhoConfig := CaminhoEXE + 'Config.ini';
+ ConfigINI := TIniFile.Create(CaminhoConfig);
  ConfiguraConn;
  CriaUsuarioAdmin;
  InserirTpLancPadroes;
  nomePC := GetNomePC;
-
+ FWS := TWS.Create;
 end;
 
 procedure TdmPrincipal.DataModuleDestroy(Sender: TObject);
 begin
  ConfigINI.Free;
+ FWS.Free;
 end;
 
 function TdmPrincipal.getCodTpLanc(pDesc: String): integer;
@@ -128,6 +163,53 @@ begin
   finally
    lQrySelect.Free;
   end;
+end;
+
+function TdmPrincipal.GetEndereco(pCep: String): TEndereco;
+var
+ lXml : TStringList;
+ lCaminhoTemp : String;
+ lEnd : Tendereco;
+begin
+  lCaminhoTemp := CaminhoEXE + 'xml_end_temp.XML';
+  lXml := TStringList.Create;
+  lEnd := TEndereco.Create;
+  try
+    lXml.Text := FWS.ConsultaEndereco(pCep);
+    if lXml.Count > 1 then
+    begin
+      lXml.SaveToFile(lCaminhoTemp);
+      cdsEndereco.Close;
+      XMLTransfProv.XMLDataFile := lCaminhoTemp;
+      cdsEndereco.Open;
+      lEnd.Cep := cdsEnderecocep.AsString;
+      lEnd.UF := cdsEnderecouf.AsString;
+      lEnd.Cidade := cdsEnderecounidade.AsString;
+      lEnd.Logradouro := cdsEnderecologradouro.AsString;
+      lEnd.Bairro := cdsEnderecobairro.AsString;
+      lEnd.Complemento := cdsEnderecocomplemento.AsString;
+      Result := lEnd;
+    end
+    else
+    begin
+      result := nil;
+    end;
+  finally
+    lXml.Free;
+  end;
+
+
+end;
+
+function TdmPrincipal.getListaTiposCli: TStringList;
+var
+ lLista : TStringList;
+begin
+ lLista := TStringList.Create;
+ lLista.Add(PES_COMUM);
+ lLista.Add(PES_ALUNO);
+ lLista.Add(PES_PROFESSOR);
+ Result := lLista;
 end;
 
 procedure TdmPrincipal.InserirTpLancPadroes;

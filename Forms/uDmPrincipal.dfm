@@ -2,7 +2,7 @@ object dmPrincipal: TdmPrincipal
   OldCreateOrder = False
   OnCreate = DataModuleCreate
   OnDestroy = DataModuleDestroy
-  Height = 150
+  Height = 320
   Width = 215
   object MySQLConn: TFDConnection
     Params.Strings = (
@@ -11,13 +11,13 @@ object dmPrincipal: TdmPrincipal
       'Password=#rise2015'
       'Server=localhost'
       'DriverID=MySQL')
-    Connected = True
-    Left = 88
-    Top = 56
+    LoginPrompt = False
+    Left = 16
+    Top = 16
   end
   object WaitCursor: TFDGUIxWaitCursor
     Provider = 'Forms'
-    Left = 136
+    Left = 80
     Top = 16
   end
   object qryLog: TFDQuery
@@ -29,8 +29,8 @@ object dmPrincipal: TdmPrincipal
       '       ,l.operacao'
       'from log l '
       'where 1=2')
-    Left = 152
-    Top = 80
+    Left = 144
+    Top = 16
     object qryLogid: TFDAutoIncField
       FieldName = 'id'
       Origin = 'id'
@@ -54,5 +54,63 @@ object dmPrincipal: TdmPrincipal
       Origin = 'operacao'
       Size = 50
     end
+  end
+  object cdsEndereco: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'XMLTransfProv'
+    Left = 48
+    Top = 240
+    object cdsEnderecocep: TStringField
+      FieldName = 'cep'
+      Size = 9
+    end
+    object cdsEnderecologradouro: TStringField
+      FieldName = 'logradouro'
+      Size = 11
+    end
+    object cdsEnderecocomplemento: TStringField
+      FieldName = 'complemento'
+      Size = 10
+    end
+    object cdsEnderecobairro: TStringField
+      FieldName = 'bairro'
+      Size = 2
+    end
+    object cdsEnderecolocalidade: TStringField
+      FieldName = 'localidade'
+      Size = 9
+    end
+    object cdsEnderecouf: TStringField
+      FieldName = 'uf'
+      Size = 2
+    end
+    object cdsEnderecounidade: TStringField
+      FieldName = 'unidade'
+      Size = 32
+    end
+    object cdsEnderecoibge: TStringField
+      FieldName = 'ibge'
+      Size = 7
+    end
+    object cdsEnderecogia: TStringField
+      FieldName = 'gia'
+      Size = 4
+    end
+  end
+  object XMLTransfProv: TXMLTransformProvider
+    TransformRead.TransformationFile = 'D:\Projetos\AcadLite\AcadLite\docs\TransformationFiles\ToDp.xtr'
+    XMLDataFile = 'C:\Users\BRUNO\Desktop\Correios.xml'
+    Left = 120
+    Top = 240
+  end
+  object TCPCStatusNet: TIdTCPClient
+    ConnectTimeout = 5000
+    Host = 'google.com'
+    IPVersion = Id_IPv4
+    Port = 80
+    ReadTimeout = 5000
+    Left = 127
+    Top = 96
   end
 end

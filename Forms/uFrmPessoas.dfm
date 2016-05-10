@@ -3,7 +3,7 @@ object frmPessoas: TfrmPessoas
   Top = 0
   BorderIcons = [biSystemMenu]
   Caption = 'Pessoas'
-  ClientHeight = 600
+  ClientHeight = 656
   ClientWidth = 800
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -16,52 +16,53 @@ object frmPessoas: TfrmPessoas
   PrintScale = poNone
   Visible = True
   OnClose = FormClose
+  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
   object lblCodpes: TLabel
-    Left = 19
+    Left = 41
     Top = 371
     Width = 33
     Height = 13
     Caption = 'C'#243'digo'
   end
   object lblNome: TLabel
-    Left = 25
+    Left = 47
     Top = 398
     Width = 27
     Height = 13
     Caption = 'Nome'
   end
   object lblDtNasc: TLabel
-    Left = 7
+    Left = 29
     Top = 425
     Width = 45
     Height = 13
     Caption = 'Dt. Nasc.'
   end
   object Label1: TLabel
-    Left = 33
+    Left = 55
     Top = 452
     Width = 19
     Height = 13
     Caption = 'CPF'
   end
   object Label2: TLabel
-    Left = 10
+    Left = 32
     Top = 479
     Width = 42
     Height = 13
     Caption = 'Telefone'
   end
   object Label3: TLabel
-    Left = 201
+    Left = 253
     Top = 479
     Width = 33
     Height = 13
     Caption = 'Celular'
   end
   object Label5: TLabel
-    Left = 148
+    Left = 210
     Top = 371
     Width = 62
     Height = 13
@@ -80,6 +81,48 @@ object frmPessoas: TfrmPessoas
     Width = 20
     Height = 20
     Brush.Color = clRed
+  end
+  object Label7: TLabel
+    Left = 19
+    Top = 554
+    Width = 55
+    Height = 13
+    Caption = 'Logradouro'
+  end
+  object Label8: TLabel
+    Left = 41
+    Top = 530
+    Width = 33
+    Height = 13
+    Caption = 'Estado'
+  end
+  object Label9: TLabel
+    Left = 157
+    Top = 530
+    Width = 33
+    Height = 13
+    Caption = 'Cidade'
+  end
+  object Label10: TLabel
+    Left = 55
+    Top = 505
+    Width = 19
+    Height = 13
+    Caption = 'CEP'
+  end
+  object Label11: TLabel
+    Left = 45
+    Top = 581
+    Width = 28
+    Height = 13
+    Caption = 'Bairro'
+  end
+  object Label12: TLabel
+    Left = 222
+    Top = 581
+    Width = 65
+    Height = 13
+    Caption = 'Complemento'
   end
   object GroupBox1: TGroupBox
     Left = 0
@@ -211,11 +254,12 @@ object frmPessoas: TfrmPessoas
   end
   object pnlBotoes: TPanel
     Left = 0
-    Top = 559
+    Top = 615
     Width = 800
     Height = 41
     Align = alBottom
     TabOrder = 10
+    ExplicitTop = 559
     object btnNovo: TButton
       Left = 1
       Top = 1
@@ -263,7 +307,7 @@ object frmPessoas: TfrmPessoas
     end
   end
   object edtCodPes: TDBEdit
-    Left = 65
+    Left = 81
     Top = 368
     Width = 73
     Height = 21
@@ -273,7 +317,7 @@ object frmPessoas: TfrmPessoas
     TabOrder = 2
   end
   object edtNome: TDBEdit
-    Left = 65
+    Left = 81
     Top = 395
     Width = 323
     Height = 21
@@ -282,7 +326,7 @@ object frmPessoas: TfrmPessoas
     TabOrder = 4
   end
   object edtDtNasc: TDBEdit
-    Left = 65
+    Left = 81
     Top = 422
     Width = 115
     Height = 21
@@ -291,7 +335,7 @@ object frmPessoas: TfrmPessoas
     TabOrder = 5
   end
   object edtCPF: TDBEdit
-    Left = 65
+    Left = 81
     Top = 449
     Width = 115
     Height = 21
@@ -300,7 +344,7 @@ object frmPessoas: TfrmPessoas
     TabOrder = 6
   end
   object dbRgTipo: TDBRadioGroup
-    Left = 216
+    Left = 232
     Top = 422
     Width = 305
     Height = 48
@@ -315,7 +359,7 @@ object frmPessoas: TfrmPessoas
     TabOrder = 7
   end
   object edtTelefone: TDBEdit
-    Left = 65
+    Left = 81
     Top = 476
     Width = 115
     Height = 21
@@ -324,7 +368,7 @@ object frmPessoas: TfrmPessoas
     TabOrder = 8
   end
   object edtCelular: TDBEdit
-    Left = 240
+    Left = 289
     Top = 476
     Width = 115
     Height = 21
@@ -333,7 +377,7 @@ object frmPessoas: TfrmPessoas
     TabOrder = 9
   end
   object edtCadastro: TDBEdit
-    Left = 216
+    Left = 277
     Top = 368
     Width = 127
     Height = 21
@@ -341,6 +385,48 @@ object frmPessoas: TfrmPessoas
     DataSource = dsPessoas
     Enabled = False
     TabOrder = 3
+  end
+  object edtLogradouro: TDBEdit
+    Left = 81
+    Top = 552
+    Width = 323
+    Height = 21
+    TabOrder = 11
+  end
+  object cbEstado: TDBComboBox
+    Left = 81
+    Top = 527
+    Width = 53
+    Height = 21
+    TabOrder = 12
+  end
+  object cbCidade: TDBComboBox
+    Left = 197
+    Top = 527
+    Width = 207
+    Height = 21
+    TabOrder = 13
+  end
+  object edtCep: TDBEdit
+    Left = 81
+    Top = 502
+    Width = 115
+    Height = 21
+    TabOrder = 14
+  end
+  object edtBairro: TDBEdit
+    Left = 79
+    Top = 579
+    Width = 138
+    Height = 21
+    TabOrder = 15
+  end
+  object edtComplemento: TDBEdit
+    Left = 293
+    Top = 579
+    Width = 110
+    Height = 21
+    TabOrder = 16
   end
   object AcList: TActionList
     Left = 296
