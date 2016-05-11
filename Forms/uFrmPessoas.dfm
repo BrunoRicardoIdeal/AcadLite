@@ -494,6 +494,7 @@ object frmPessoas: TfrmPessoas
   object qryPessoas: TFDQuery
     AfterOpen = qryPessoasAfterOpen
     AfterClose = qryPessoasAfterClose
+    AfterScroll = qryPessoasAfterScroll
     AfterRefresh = qryPessoasAfterRefresh
     OnCalcFields = qryPessoasCalcFields
     Connection = dmPrincipal.MySQLConn
@@ -617,7 +618,8 @@ object frmPessoas: TfrmPessoas
     Connection = dmPrincipal.MySQLConn
     SQL.Strings = (
       'select id, nome, estado'
-      'from cidade')
+      'from cidade'
+      'order by nome')
     Left = 384
     Top = 528
     object qryCidadeid: TFDAutoIncField

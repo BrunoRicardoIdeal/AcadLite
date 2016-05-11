@@ -2,8 +2,8 @@ object dmPrincipal: TdmPrincipal
   OldCreateOrder = False
   OnCreate = DataModuleCreate
   OnDestroy = DataModuleDestroy
-  Height = 409
-  Width = 611
+  Height = 138
+  Width = 513
   object MySQLConn: TFDConnection
     Params.Strings = (
       'Database=AcadLite'
@@ -11,14 +11,13 @@ object dmPrincipal: TdmPrincipal
       'Password=#rise2015'
       'Server=localhost'
       'DriverID=MySQL')
-    Connected = True
     LoginPrompt = False
-    Left = 224
+    Left = 112
     Top = 16
   end
   object WaitCursor: TFDGUIxWaitCursor
     Provider = 'Forms'
-    Left = 80
+    Left = 56
     Top = 16
   end
   object qryLog: TFDQuery
@@ -30,8 +29,8 @@ object dmPrincipal: TdmPrincipal
       '       ,l.operacao'
       'from log l '
       'where 1=2')
-    Left = 144
-    Top = 16
+    Left = 232
+    Top = 64
     object qryLogid: TFDAutoIncField
       FieldName = 'id'
       Origin = 'id'
@@ -60,8 +59,8 @@ object dmPrincipal: TdmPrincipal
     Aggregates = <>
     Params = <>
     ProviderName = 'XMLTransfProv'
-    Left = 48
-    Top = 240
+    Left = 336
+    Top = 64
     object cdsEnderecocep: TStringField
       FieldName = 'cep'
       Size = 9
@@ -100,9 +99,9 @@ object dmPrincipal: TdmPrincipal
     end
   end
   object XMLTransfProv: TXMLTransformProvider
-    TransformRead.TransformationFile = 'C:\Projetos\AcadLite\docs\TransformationFiles\ToDp.xtr'
-    Left = 120
-    Top = 240
+    TransformRead.TransformationFile = '..\..\docs\TransformationFiles\ToDp.xtr'
+    Left = 336
+    Top = 16
   end
   object TCPCStatusNet: TIdTCPClient
     ConnectTimeout = 5000
@@ -110,27 +109,27 @@ object dmPrincipal: TdmPrincipal
     IPVersion = Id_IPv4
     Port = 80
     ReadTimeout = 5000
-    Left = 127
-    Top = 96
+    Left = 57
+    Top = 66
   end
   object restReq: TRESTRequest
     Client = restClient
     Params = <>
     Response = restResp
     SynchronizedEvents = False
-    Left = 520
-    Top = 184
+    Left = 176
+    Top = 64
   end
   object restClient: TRESTClient
     BaseURL = 'http://viacep.com.br/ws/01001000/json'
     Params = <>
     HandleRedirects = True
-    Left = 528
-    Top = 104
+    Left = 232
+    Top = 16
   end
   object restResp: TRESTResponse
-    Left = 536
-    Top = 48
+    Left = 176
+    Top = 16
   end
   object qryInsertUF: TFDQuery
     Connection = MySQLConn
@@ -5766,15 +5765,15 @@ object dmPrincipal: TdmPrincipal
       '(5562, '#39'Tupiratins'#39', 27),'
       '(5563, '#39'Wanderl'#226'ndia'#39', 27),'
       '(5564, '#39'Xambio'#225#39', 27);')
-    Left = 520
-    Top = 264
+    Left = 408
+    Top = 16
   end
   object qryTabelas: TFDQuery
     Connection = MySQLConn
     SQL.Strings = (
       'show tables')
-    Left = 520
-    Top = 328
+    Left = 408
+    Top = 64
     object qryTabelasTables_in_acadlite: TStringField
       AutoGenerateValue = arDefault
       FieldName = 'Tables_in_acadlite'

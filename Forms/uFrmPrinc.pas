@@ -161,6 +161,7 @@ procedure TfrmPrinc.ConfStatusBar;
 begin
  SBPrinc.Panels[0].Text := 'Usuário: ' + UpperCase(dmPrincipal.NomeUsuario);
  SBPrinc.Panels[1].Text := 'Computador: ' + dmPrincipal.nomePC;
+ SBPrinc.Panels[2].Text := 'Versão: ' + dmPrincipal.getVersaoEXE;
 end;
 
 procedure TfrmPrinc.DesAtivAc(pEnabled: boolean);

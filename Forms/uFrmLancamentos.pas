@@ -142,6 +142,11 @@ begin
  acGravar.Enabled := True;
  acCancelar.Enabled := True;
  grdLanc.Enabled := False;
+ if cbLkpTipoLanc.CanFocus then
+ begin
+   cbLkpTipoLanc.SetFocus;
+ end;
+
 end;
 
 procedure TfrmLancamentos.acExcluirExecute(Sender: TObject);

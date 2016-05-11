@@ -106,7 +106,10 @@ begin
  acGravar.Enabled := True;
  acCancelar.Enabled := True;
  grTipoLanc.Enabled := False;
-
+ if edtDescricao.CanFocus then
+ begin
+   edtDescricao.SetFocus;
+ end;
 end;
 
 procedure TfrmTiposLanc.acExcluirExecute(Sender: TObject);

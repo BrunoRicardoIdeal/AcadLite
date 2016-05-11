@@ -180,6 +180,10 @@ begin
  acGravar.Enabled := True;
  acCancelar.Enabled := True;
  grdMens.Enabled := False;
+ if edtDescricao.CanFocus then
+ begin
+   edtDescricao.SetFocus;
+ end;
 
 end;
 

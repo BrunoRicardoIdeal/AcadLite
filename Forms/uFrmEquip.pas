@@ -100,6 +100,10 @@ begin
  acGravar.Enabled := True;
  acCancelar.Enabled := True;
  grdEquip.Enabled := False;
+ if edtNome.CanFocus then
+ begin
+   edtNome.SetFocus;
+ end;
 end;
 
 procedure TfrmEquip.acExcluirExecute(Sender: TObject);

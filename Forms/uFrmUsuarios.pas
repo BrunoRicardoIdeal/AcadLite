@@ -107,6 +107,10 @@ begin
  lblEdtNovaSenha.Enabled := True;
  lblEdtConfNovaSenha.Enabled := True;
  grdUsuarios.Enabled := False;
+ if edtNome.CanFocus then
+ begin
+   edtNome.SetFocus;
+ end;
 end;
 
 procedure TfrmUsuarios.acExcluirExecute(Sender: TObject);

@@ -104,12 +104,7 @@ end;
 
 procedure TfrmLancFixos.acEditarExecute(Sender: TObject);
 begin
- acEditar.Enabled := False;
- acExcluir.Enabled := False;
- acNovo.Enabled := False;
- acGravar.Enabled := True;
- acCancelar.Enabled := True;
- grLancFixos.Enabled := False;
+
  if not qryLancFixos.Active then
  begin
    qryLancFixos.Open();
@@ -123,6 +118,16 @@ begin
    MessageBox(0, 'Selecione um registro para editar!', 'Atenção', MB_ICONWARNING or MB_OK);
    acCancelarExecute(Sender);
    Exit;
+ end;
+ acEditar.Enabled := False;
+ acExcluir.Enabled := False;
+ acNovo.Enabled := False;
+ acGravar.Enabled := True;
+ acCancelar.Enabled := True;
+ grLancFixos.Enabled := False;
+ if cbLkpTipoLanc.CanFocus then
+ begin
+   cbLkpTipoLanc.SetFocus;
  end;
 end;
 

@@ -104,13 +104,15 @@ type
     procedure qryPessoasAfterOpen(DataSet: TDataSet);
     procedure qryPessoasAfterClose(DataSet: TDataSet);
     procedure qryPessoasAfterRefresh(DataSet: TDataSet);
-    procedure qryPessoascod_ufChange(Sender: TField);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
+    procedure qryPessoasAfterScroll(DataSet: TDataSet);
+    procedure qryPessoascod_ufChange(Sender: TField);
   private
    FListaTpPes : TStringList;
    procedure confRgTiposPes;
    procedure confCbPsqTipo;
    procedure preenchEndereco;
+    procedure FiltrarCidades;
     { Private declarations }
   public
     { Public declarations }
@@ -319,6 +321,7 @@ procedure TfrmPessoas.FormCreate(Sender: TObject);
 begin
  FListaTpPes := dmPrincipal.getListaTiposCli;
  confRgTiposPes;
+ confCbPsqTipo;
 end;
 
 procedure TfrmPessoas.FormKeyPress(Sender: TObject; var Key: Char);
@@ -357,6 +360,7 @@ begin
         if lEnd = nil then
         begin
           MessageBox(0, 'CEP Inválido!', 'Erro', MB_ICONERROR or MB_OK);
+          qryPessoascep.Clear;
           Abort;
         end;
         try
@@ -376,6 +380,16 @@ begin
  end;
 end;
 
+procedure TfrmPessoas.FiltrarCidades;
+begin
+  if qryCidade.Active and qryUF.Active and not qryPessoascod_uf.IsNull then
+  begin
+    qryCidade.Filtered := False;
+    qryCidade.Filter := 'estado = ' + qryPessoascod_uf.AsString;
+    qryCidade.Filtered := True;
+  end;
+end;
+
 procedure TfrmPessoas.qryPessoasAfterClose(DataSet: TDataSet);
 begin
  qryUF.close();
@@ -385,12 +399,18 @@ end;
 procedure TfrmPessoas.qryPessoasAfterOpen(DataSet: TDataSet);
 begin
  qryUF.Open();
+ qryCidade.Filtered := False;
  qryCidade.Open();
 end;
 
 procedure TfrmPessoas.qryPessoasAfterRefresh(DataSet: TDataSet);
 begin
  qryCidade.Filtered := false;
+end;
+
+procedure TfrmPessoas.qryPessoasAfterScroll(DataSet: TDataSet);
+begin
+  FiltrarCidades;
 end;
 
 procedure TfrmPessoas.qryPessoasCalcFields(DataSet: TDataSet);
@@ -404,14 +424,8 @@ end;
 
 procedure TfrmPessoas.qryPessoascod_ufChange(Sender: TField);
 begin
- if (qryPessoascod_uf.AsInteger > 0) and (qryPessoas.State in dsEditModes) then
- begin
-   qryCidade.Filtered := False;
-   qryCidade.Filter := 'estado = ' + qryUFid.AsString;
-   qryCidade.Filtered := True;
-   qryPessoascod_cidade.Clear;
-
- end;
+ FiltrarCidades;
+ qryPessoascod_cidade.Clear;
 end;
 
 end.

@@ -106,7 +106,6 @@ object frmUsuarios: TfrmUsuarios
       Action = acCancelar
       Align = alLeft
       TabOrder = 2
-      ExplicitLeft = 220
     end
     object btnEditar: TButton
       Left = 76
