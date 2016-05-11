@@ -34,6 +34,7 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure acEmitirExecute(Sender: TObject);
     procedure frxTpLancBeforePrint(Sender: TfrxReportComponent);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
   private
    procedure Limpar;
     { Private declarations }
@@ -46,7 +47,7 @@ var
 
 implementation
 
- uses uDmPrincipal;
+ uses uDmPrincipal, System.UITypes;
 {$R *.dfm}
 
 procedure TfrmRelTpLanc.acEmitirExecute(Sender: TObject);
@@ -94,6 +95,16 @@ procedure TfrmRelTpLanc.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
  frmRelTpLanc := nil;
  Action := caFree;
+end;
+
+procedure TfrmRelTpLanc.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+ if key = #13 then
+ begin
+   key := #0;
+   Perform(WM_NEXTDLGCTL, 0, 0);
+
+ end;
 end;
 
 procedure TfrmRelTpLanc.FormShow(Sender: TObject);

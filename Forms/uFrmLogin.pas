@@ -8,7 +8,8 @@ uses
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
   FireDAC.Stan.Async, FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet,
-  FireDAC.Comp.Client, uDmPrincipal, Vcl.Imaging.pngimage;
+  FireDAC.Comp.Client, uDmPrincipal, Vcl.Imaging.pngimage, Vcl.ComCtrls,
+  System.UITypes;
 
 type
   TfrmLogin = class(TForm)
@@ -17,9 +18,13 @@ type
     btnEntrar: TButton;
     btnFechar: TButton;
     imgLogo: TImage;
+    pbLogin: TProgressBar;
+    lblProcesso: TLabel;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure btnFecharClick(Sender: TObject);
     procedure btnEntrarClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
   private
    function TentarLogin(pLogin,pSenha : string) : boolean;
     { Private declarations }
@@ -45,6 +50,12 @@ begin
  end
  else
  begin
+   lblProcesso.Enabled := True;
+   Application.ProcessMessages;
+   lblProcesso.Caption := 'Iniciando configurações padrões...';
+   dmPrincipal.InserirTpLancPadroes(pbLogin);
+   lblProcesso.Caption := 'Conferindo dados importantes...';
+   dmPrincipal.CriaInsereUfCid(pbLogin);
    Close;
  end;
 end;
@@ -59,6 +70,22 @@ procedure TfrmLogin.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
  frmLogin := nil;
  Action := caFree;
+end;
+
+procedure TfrmLogin.FormCreate(Sender: TObject);
+begin
+ pbLogin.Position := 0;
+ pbLogin.Step := 1;
+end;
+
+procedure TfrmLogin.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+ if key = #13 then
+ begin
+   key := #0;
+   Perform(WM_NEXTDLGCTL, 0, 0);
+
+ end;
 end;
 
 function TfrmLogin.TentarLogin(pLogin, pSenha: string): boolean;

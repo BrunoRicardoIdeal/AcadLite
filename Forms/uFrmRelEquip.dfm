@@ -11,9 +11,11 @@ object frmRelEquip: TfrmRelEquip
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
+  KeyPreview = True
   OldCreateOrder = False
   Position = poScreenCenter
   OnClose = FormClose
+  OnKeyPress = FormKeyPress
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
@@ -139,8 +141,8 @@ object frmRelEquip: TfrmRelEquip
     PreviewOptions.Zoom = 1.000000000000000000
     PrintOptions.Printer = 'Default'
     PrintOptions.PrintOnSheet = 0
-    ReportOptions.CreateDate = 42488.806165925900000000
-    ReportOptions.LastChange = 42488.806165925900000000
+    ReportOptions.CreateDate = 42488.806165925890000000
+    ReportOptions.LastChange = 42488.806165925890000000
     ScriptLanguage = 'PascalScript'
     ScriptText.Strings = (
       'begin'

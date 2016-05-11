@@ -53,6 +53,7 @@ type
     procedure acExcluirExecute(Sender: TObject);
     procedure acPesquisarExecute(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
   private
    function ExisteLancamento(pCodTipo : integer):boolean;
     { Private declarations }
@@ -75,6 +76,7 @@ begin
  acNovo.Enabled := True;
  acCancelar.Enabled := False;
  qryTpLanc.Cancel;
+ grTipoLanc.Enabled := True;
 end;
 
 procedure TfrmTiposLanc.acEditarExecute(Sender: TObject);
@@ -103,6 +105,7 @@ begin
  acNovo.Enabled := False;
  acGravar.Enabled := True;
  acCancelar.Enabled := True;
+ grTipoLanc.Enabled := False;
 
 end;
 
@@ -130,6 +133,7 @@ begin
     acCancelar.Enabled := False;
     qryTpLanc.Delete;
     qryTpLanc.Refresh;
+    grTipoLanc.Enabled := True;
    end;
   end;
 end;
@@ -148,6 +152,7 @@ begin
     acCancelar.Enabled := False;
     qryTpLanc.Post;
     qryTpLanc.Refresh;
+    grTipoLanc.Enabled := True;
    end;
 
  end;
@@ -160,13 +165,17 @@ begin
  acNovo.Enabled := False;
  acGravar.Enabled := True;
  acCancelar.Enabled := True;
+ grTipoLanc.Enabled := False;
  if not qryTpLanc.Active then
  begin
    qryTpLanc.Open();
  end;
  qryTpLanc.Append;
  qryTpLanccategoria.AsString := 'Receita';
- edtDescricao.SetFocus;
+ if edtDescricao.CanFocus then
+ begin
+  edtDescricao.SetFocus;
+ end;
 end;
 
 procedure TfrmTiposLanc.acPesquisarExecute(Sender: TObject);
@@ -229,6 +238,16 @@ procedure TfrmTiposLanc.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
  frmTiposLanc := nil;
  Action := caFree;
+end;
+
+procedure TfrmTiposLanc.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+ if key = #13 then
+ begin
+   key := #0;
+   Perform(WM_NEXTDLGCTL, 0, 0);
+
+ end;
 end;
 
 end.

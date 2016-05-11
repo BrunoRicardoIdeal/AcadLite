@@ -99,10 +99,9 @@ type
     procedure grdMensDrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
     procedure acBtnReceberExecute(Sender: TObject);
-    procedure edtValorRecebidoKeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
     procedure acReplicarExecute(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
   private
     procedure EfetuarRecebimento;
     { Private declarations }
@@ -157,6 +156,7 @@ begin
  acNovo.Enabled := True;
  acCancelar.Enabled := False;
  qryMensalidade.Cancel;
+ grdMens.Enabled := True;
 end;
 
 procedure TfrmMensalidades.acEditarExecute(Sender: TObject);
@@ -179,6 +179,7 @@ begin
  acNovo.Enabled := False;
  acGravar.Enabled := True;
  acCancelar.Enabled := True;
+ grdMens.Enabled := False;
 
 end;
 
@@ -201,6 +202,7 @@ begin
     acCancelar.Enabled := False;
     qryMensalidade.Delete;
     qryMensalidade.Refresh;
+    grdMens.Enabled := True;
    end;
   end;
 end;
@@ -239,6 +241,7 @@ begin
     acCancelar.Enabled := False;
     qryMensalidade.Post;
     qryMensalidade.Refresh;
+    grdMens.Enabled := True;
    end;
 
  end;
@@ -251,12 +254,16 @@ begin
  acNovo.Enabled := False;
  acGravar.Enabled := True;
  acCancelar.Enabled := True;
+ grdMens.Enabled := False;
  if not qryMensalidade.Active then
  begin
    qryMensalidade.Open();
  end;
  qryMensalidade.Append;
- edtDescricao.SetFocus;
+ if edtDescricao.CanFocus then
+ begin
+  edtDescricao.SetFocus;
+ end;
 end;
 
 procedure TfrmMensalidades.acPesquisarExecute(Sender: TObject);
@@ -361,15 +368,6 @@ begin
   qryMensalidade.Cancel;
 end;
 
-procedure TfrmMensalidades.edtValorRecebidoKeyDown(Sender: TObject;
-  var Key: Word; Shift: TShiftState);
-begin
- if key = vkreturn then
- begin
-   Perform(WM_NEXTDLGCTL, 0, 0);
- end;
-end;
-
 procedure TfrmMensalidades.EfetuarRecebimento;
 var
   lStrAux: string;
@@ -431,6 +429,16 @@ begin
  end;
  qryAlunos.Close;
  qryAlunos.EnableControls;
+end;
+
+procedure TfrmMensalidades.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+ if key = #13 then
+ begin
+   key := #0;
+   Perform(WM_NEXTDLGCTL, 0, 0);
+
+ end;
 end;
 
 procedure TfrmMensalidades.grdMensDrawColumnCell(Sender: TObject;

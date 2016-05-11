@@ -46,26 +46,15 @@ type
     Label3: TLabel;
     qryPessoas: TFDQuery;
     dsPessoas: TDataSource;
-    qryPessoascod_pessoa: TFDAutoIncField;
-    qryPessoasnome: TStringField;
-    qryPessoasdt_nascimento: TDateField;
-    qryPessoascpf: TStringField;
-    qryPessoastelefone: TStringField;
-    qryPessoascelular: TStringField;
-    qryPessoastipo: TStringField;
     Label4: TLabel;
     cbTipo: TComboBox;
     edtCadastro: TDBEdit;
     Label5: TLabel;
-    qryPessoasdt_cadastro: TDateTimeField;
-    qryPessoasinadimplente: TBooleanField;
     Label6: TLabel;
     shpRed: TShape;
     Label7: TLabel;
     edtLogradouro: TDBEdit;
     Label8: TLabel;
-    cbEstado: TDBComboBox;
-    cbCidade: TDBComboBox;
     Label9: TLabel;
     edtCep: TDBEdit;
     Label10: TLabel;
@@ -73,12 +62,33 @@ type
     Label11: TLabel;
     edtComplemento: TDBEdit;
     Label12: TLabel;
+    Label13: TLabel;
+    qryPessoascod_pessoa: TFDAutoIncField;
+    qryPessoasnome: TStringField;
+    qryPessoasdt_nascimento: TDateField;
+    qryPessoascpf: TStringField;
+    qryPessoastelefone: TStringField;
+    qryPessoascelular: TStringField;
+    qryPessoastipo: TStringField;
+    qryPessoasdt_cadastro: TDateTimeField;
     qryPessoaslogradouro: TStringField;
     qryPessoascomplemento: TStringField;
     qryPessoascep: TStringField;
     qryPessoasbairro: TStringField;
-    qryPessoascidade: TStringField;
-    qryPessoasuf: TStringField;
+    qryPessoascod_uf: TIntegerField;
+    qryPessoascod_cidade: TIntegerField;
+    qryUF: TFDQuery;
+    qryUFid: TFDAutoIncField;
+    qryUFuf: TStringField;
+    qryCidade: TFDQuery;
+    qryCidadeid: TFDAutoIncField;
+    qryCidadenome: TStringField;
+    qryCidadeestado: TIntegerField;
+    cbEstado: TDBLookupComboBox;
+    dsUF: TDataSource;
+    dsCidade: TDataSource;
+    cbCidade: TDBLookupComboBox;
+    qryPessoasinadimplente: TBooleanField;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure acNovoExecute(Sender: TObject);
     procedure acEditarExecute(Sender: TObject);
@@ -91,6 +101,11 @@ type
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
     procedure FormCreate(Sender: TObject);
     procedure edtCepExit(Sender: TObject);
+    procedure qryPessoasAfterOpen(DataSet: TDataSet);
+    procedure qryPessoasAfterClose(DataSet: TDataSet);
+    procedure qryPessoasAfterRefresh(DataSet: TDataSet);
+    procedure qryPessoascod_ufChange(Sender: TField);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
   private
    FListaTpPes : TStringList;
    procedure confRgTiposPes;
@@ -118,6 +133,7 @@ begin
  acNovo.Enabled := True;
  acCancelar.Enabled := False;
  qryPessoas.Cancel;
+ grdPessoas.Enabled := True;
 end;
 
 procedure TfrmPessoas.acEditarExecute(Sender: TObject);
@@ -140,6 +156,11 @@ begin
  acNovo.Enabled := False;
  acGravar.Enabled := True;
  acCancelar.Enabled := True;
+ grdPessoas.Enabled := False;
+ if edtNome.CanFocus then
+ begin
+   edtNome.SetFocus;
+ end;
 
 end;
 
@@ -157,6 +178,7 @@ begin
     acCancelar.Enabled := False;
     qryPessoas.Delete;
     qryPessoas.Refresh;
+    grdPessoas.Enabled := True;
    end;
   end;
 end;
@@ -195,6 +217,7 @@ begin
     acCancelar.Enabled := False;
     qryPessoas.Post;
     qryPessoas.Refresh;
+    grdPessoas.Enabled := True;
    end;
 
  end;
@@ -207,13 +230,17 @@ begin
  acNovo.Enabled := False;
  acGravar.Enabled := True;
  acCancelar.Enabled := True;
+ grdPessoas.Enabled := False;
  if not qryPessoas.Active then
  begin
    qryPessoas.Open();
  end;
  qryPessoas.Append;
  qryPessoastipo.AsString := PES_COMUM;
- edtNome.SetFocus;
+ if edtNome.CanFocus then
+ begin
+  edtNome.SetFocus;
+ end;
 end;
 
 procedure TfrmPessoas.acPesquisarExecute(Sender: TObject);
@@ -231,8 +258,8 @@ begin
  qryPessoas.SQL.Add('       ,LOGRADOURO');
  qryPessoas.SQL.Add('       ,BAIRRO');
  qryPessoas.SQL.Add('       ,COMPLEMENTO');
- qryPessoas.SQL.Add('       ,CIDADE');
- qryPessoas.SQL.Add('       ,UF');
+ qryPessoas.SQL.Add('       ,COD_CIDADE');
+ qryPessoas.SQL.Add('       ,COD_UF');
  qryPessoas.SQL.Add('       ,CEP');
  qryPessoas.SQL.Add('FROM PESSOAS');
  qryPessoas.SQL.Add('WHERE 1=1');
@@ -259,12 +286,15 @@ begin
  end;
 end;
 
+
+
 procedure TfrmPessoas.confCbPsqTipo;
 begin
  cbTipo.Items.Clear;
  cbTipo.Items.Add('Todos');
  cbTipo.Items.AddStrings(dmPrincipal.getListaTiposCli);
 end;
+
 
 procedure TfrmPessoas.confRgTiposPes;
 begin
@@ -291,6 +321,16 @@ begin
  confRgTiposPes;
 end;
 
+procedure TfrmPessoas.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+ if key = #13 then
+ begin
+   key := #0;
+   Perform(WM_NEXTDLGCTL, 0, 0);
+
+ end;
+end;
+
 procedure TfrmPessoas.grdPessoasDrawColumnCell(Sender: TObject;
   const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
 begin
@@ -314,13 +354,18 @@ begin
      begin
         lCep := dmPrincipal.RetirarChars(['-'],qryPessoascep.AsString);
         lEnd := dmPrincipal.GetEndereco(lCep);
+        if lEnd = nil then
+        begin
+          MessageBox(0, 'CEP Inválido!', 'Erro', MB_ICONERROR or MB_OK);
+          Abort;
+        end;
         try
           qryPessoaslogradouro.AsString := lEnd.Logradouro;
           qryPessoascomplemento.AsString := lend.Complemento;
           qryPessoascep.AsString := lend.Cep;
           qryPessoasbairro.AsString := lEnd.Bairro;
-          qryPessoascidade.AsString := lEnd.Cidade;
-          qryPessoasuf.AsString := lEnd.UF;
+          qryPessoascod_uf.AsInteger := dmPrincipal.getCodUF(lEnd.UF);
+          qryPessoascod_cidade.AsInteger := dmPrincipal.getCodCidade(lEnd.Cidade);
         finally
           lEnd.Free;
         end;
@@ -331,12 +376,41 @@ begin
  end;
 end;
 
+procedure TfrmPessoas.qryPessoasAfterClose(DataSet: TDataSet);
+begin
+ qryUF.close();
+ qryCidade.close();
+end;
+
+procedure TfrmPessoas.qryPessoasAfterOpen(DataSet: TDataSet);
+begin
+ qryUF.Open();
+ qryCidade.Open();
+end;
+
+procedure TfrmPessoas.qryPessoasAfterRefresh(DataSet: TDataSet);
+begin
+ qryCidade.Filtered := false;
+end;
+
 procedure TfrmPessoas.qryPessoasCalcFields(DataSet: TDataSet);
 begin
  if qryPessoastipo.AsString = PES_ALUNO then
  begin
    qryPessoasinadimplente.AsBoolean
     := dmPrincipal.isInadimp(qryPessoascod_pessoa.AsInteger);
+ end;
+end;
+
+procedure TfrmPessoas.qryPessoascod_ufChange(Sender: TField);
+begin
+ if (qryPessoascod_uf.AsInteger > 0) and (qryPessoas.State in dsEditModes) then
+ begin
+   qryCidade.Filtered := False;
+   qryCidade.Filter := 'estado = ' + qryUFid.AsString;
+   qryCidade.Filtered := True;
+   qryPessoascod_cidade.Clear;
+
  end;
 end;
 

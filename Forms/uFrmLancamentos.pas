@@ -32,7 +32,7 @@ type
     btnCancelar: TButton;
     btnEditar: TButton;
     btnGravar: TButton;
-    grLanc: TDBGrid;
+    grdLanc: TDBGrid;
     edtCodLanc: TDBEdit;
     lblCodpes: TLabel;
     edtDtLanc: TDBEdit;
@@ -93,6 +93,7 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure chkHabDtVencClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
   private
    procedure ValidarPreench;
     { Private declarations }
@@ -117,6 +118,7 @@ begin
  acNovo.Enabled := True;
  acCancelar.Enabled := False;
  qryLanc.Cancel;
+ grdLanc.Enabled := True;
 end;
 
 procedure TfrmLancamentos.acEditarExecute(Sender: TObject);
@@ -139,7 +141,7 @@ begin
  acNovo.Enabled := False;
  acGravar.Enabled := True;
  acCancelar.Enabled := True;
-
+ grdLanc.Enabled := False;
 end;
 
 procedure TfrmLancamentos.acExcluirExecute(Sender: TObject);
@@ -158,6 +160,7 @@ begin
     qryLancdt_exclusao.AsDateTime := now;
     qryLanc.Post;
     qryLanc.Refresh;
+    grdLanc.Enabled := True;
    end;
   end;
 end;
@@ -177,6 +180,7 @@ begin
     acCancelar.Enabled := False;
     qryLanc.Post;
     qryLanc.Refresh;
+    grdLanc.Enabled := True;
    end;
 
  end;
@@ -189,12 +193,17 @@ begin
  acNovo.Enabled := False;
  acGravar.Enabled := True;
  acCancelar.Enabled := True;
+ grdLanc.Enabled := False;
  if not qryLanc.Active then
  begin
    qryLanc.Open();
  end;
  qryLanc.Append;
- cbLkpTipoLanc.SetFocus;
+ if cbLkpTipoLanc.CanFocus then
+ begin
+  cbLkpTipoLanc.SetFocus;
+ end;
+
 
 end;
 
@@ -271,6 +280,16 @@ procedure TfrmLancamentos.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
  frmLancamentos := nil;
  Action := caFree;
+end;
+
+procedure TfrmLancamentos.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+ if key = #13 then
+ begin
+   key := #0;
+   Perform(WM_NEXTDLGCTL, 0, 0);
+
+ end;
 end;
 
 procedure TfrmLancamentos.FormShow(Sender: TObject);

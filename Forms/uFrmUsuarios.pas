@@ -50,6 +50,7 @@ type
     procedure acPesquisarExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
   private
     procedure ValidaPreench;
     procedure ValidaAdmin(pUser,pPas : string);
@@ -79,7 +80,8 @@ begin
  acExcluir.Enabled := True;
  acNovo.Enabled := True;
  acCancelar.Enabled := False;
- qryUsuarios.Cancel
+ qryUsuarios.Cancel;
+ grdUsuarios.Enabled := True;
 end;
 
 procedure TfrmUsuarios.acEditarExecute(Sender: TObject);
@@ -104,6 +106,7 @@ begin
  acCancelar.Enabled := True;
  lblEdtNovaSenha.Enabled := True;
  lblEdtConfNovaSenha.Enabled := True;
+ grdUsuarios.Enabled := False;
 end;
 
 procedure TfrmUsuarios.acExcluirExecute(Sender: TObject);
@@ -125,6 +128,7 @@ begin
     lblEdtConfNovaSenha.Enabled := False;
     qryUsuarios.Delete;
     qryUsuarios.Refresh;
+    grdUsuarios.Enabled := True;
    end;
   end;
 end;
@@ -150,6 +154,7 @@ begin
     lblEdtConfNovaSenha.clear;
     qryUsuarios.Post;
     qryUsuarios.Refresh;
+    grdUsuarios.Enabled := True;
    end;
 
  end;
@@ -164,6 +169,7 @@ begin
  acCancelar.Enabled := True;
  lblEdtNovaSenha.Enabled := True;
  lblEdtConfNovaSenha.Enabled := True;
+ grdUsuarios.Enabled := False;
  if not qryUsuarios.Active then
  begin
    qryUsuarios.Open();
@@ -210,6 +216,16 @@ procedure TfrmUsuarios.FormCreate(Sender: TObject);
 begin
  lblEdtNovaSenha.Enabled := False;
  lblEdtConfNovaSenha.Enabled := False;
+end;
+
+procedure TfrmUsuarios.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+ if key = #13 then
+ begin
+   key := #0;
+   Perform(WM_NEXTDLGCTL, 0, 0);
+
+ end;
 end;
 
 procedure TfrmUsuarios.ValidaAdmin(pUser, pPas: string);

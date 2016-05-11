@@ -11,10 +11,12 @@ object frmRepMens: TfrmRepMens
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
+  KeyPreview = True
   OldCreateOrder = False
   Position = poScreenCenter
   OnClose = FormClose
   OnCreate = FormCreate
+  OnKeyPress = FormKeyPress
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
@@ -82,7 +84,6 @@ object frmRepMens: TfrmRepMens
     Height = 41
     Align = alBottom
     TabOrder = 4
-    ExplicitTop = 276
     object btnGerar: TButton
       Left = 324
       Top = 1
@@ -120,9 +121,6 @@ object frmRepMens: TfrmRepMens
     Height = 17
     Align = alBottom
     TabOrder = 6
-    ExplicitLeft = 256
-    ExplicitTop = 272
-    ExplicitWidth = 150
   end
   object ActionList: TActionList
     Left = 192

@@ -11,10 +11,12 @@ object frmUsuarios: TfrmUsuarios
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
+  KeyPreview = True
   OldCreateOrder = False
   Position = poScreenCenter
   OnClose = FormClose
   OnCreate = FormCreate
+  OnKeyPress = FormKeyPress
   PixelsPerInch = 96
   TextHeight = 13
   object lblNome: TLabel
@@ -104,6 +106,7 @@ object frmUsuarios: TfrmUsuarios
       Action = acCancelar
       Align = alLeft
       TabOrder = 2
+      ExplicitLeft = 220
     end
     object btnEditar: TButton
       Left = 76

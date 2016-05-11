@@ -59,6 +59,7 @@ type
     procedure chkHabDtVencClick(Sender: TObject);
     procedure acEmitirExecute(Sender: TObject);
     procedure frxLancamentosBeforePrint(Sender: TfrxReportComponent);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
   private
     procedure PreenCbTpLanc;
     procedure Limpar;
@@ -73,7 +74,7 @@ var
 
 implementation
 
- uses uDmPrincipal;
+ uses uDmPrincipal, System.UITypes;
 
 {$R *.dfm}
 
@@ -180,6 +181,16 @@ procedure TfrmRelLanc.FormCreate(Sender: TObject);
 begin
   PreenCbTpLanc;
   Limpar;
+end;
+
+procedure TfrmRelLanc.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+ if key = #13 then
+ begin
+   key := #0;
+   Perform(WM_NEXTDLGCTL, 0, 0);
+
+ end;
 end;
 
 procedure TfrmRelLanc.frxLancamentosBeforePrint(Sender: TfrxReportComponent);

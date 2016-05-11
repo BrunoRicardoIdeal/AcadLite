@@ -11,12 +11,14 @@ object frmPessoas: TfrmPessoas
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
+  KeyPreview = True
   OldCreateOrder = False
   Position = poScreenCenter
   PrintScale = poNone
   Visible = True
   OnClose = FormClose
   OnCreate = FormCreate
+  OnKeyPress = FormKeyPress
   PixelsPerInch = 96
   TextHeight = 13
   object lblCodpes: TLabel
@@ -123,6 +125,14 @@ object frmPessoas: TfrmPessoas
     Width = 65
     Height = 13
     Caption = 'Complemento'
+  end
+  object Label13: TLabel
+    Left = 202
+    Top = 505
+    Width = 321
+    Height = 13
+    Caption = 'Nota: O recurso de completar automaticamente precisa de internet'
+    WordWrap = True
   end
   object GroupBox1: TGroupBox
     Left = 0
@@ -258,8 +268,7 @@ object frmPessoas: TfrmPessoas
     Width = 800
     Height = 41
     Align = alBottom
-    TabOrder = 10
-    ExplicitTop = 559
+    TabOrder = 16
     object btnNovo: TButton
       Left = 1
       Top = 1
@@ -307,7 +316,7 @@ object frmPessoas: TfrmPessoas
     end
   end
   object edtCodPes: TDBEdit
-    Left = 81
+    Left = 80
     Top = 368
     Width = 73
     Height = 21
@@ -341,7 +350,7 @@ object frmPessoas: TfrmPessoas
     Height = 21
     DataField = 'cpf'
     DataSource = dsPessoas
-    TabOrder = 6
+    TabOrder = 7
   end
   object dbRgTipo: TDBRadioGroup
     Left = 232
@@ -356,7 +365,7 @@ object frmPessoas: TfrmPessoas
       'Comum'
       'Aluno'
       'Professor')
-    TabOrder = 7
+    TabOrder = 6
   end
   object edtTelefone: TDBEdit
     Left = 81
@@ -393,26 +402,6 @@ object frmPessoas: TfrmPessoas
     Height = 21
     DataField = 'logradouro'
     DataSource = dsPessoas
-    TabOrder = 11
-  end
-  object cbEstado: TDBComboBox
-    Left = 81
-    Top = 527
-    Width = 53
-    Height = 22
-    Style = csOwnerDrawVariable
-    DataField = 'uf'
-    DataSource = dsPessoas
-    TabOrder = 12
-  end
-  object cbCidade: TDBComboBox
-    Left = 197
-    Top = 527
-    Width = 207
-    Height = 22
-    Style = csOwnerDrawVariable
-    DataField = 'cidade'
-    DataSource = dsPessoas
     TabOrder = 13
   end
   object edtCep: TDBEdit
@@ -422,7 +411,7 @@ object frmPessoas: TfrmPessoas
     Height = 21
     DataField = 'cep'
     DataSource = dsPessoas
-    TabOrder = 14
+    TabOrder = 10
     OnExit = edtCepExit
   end
   object edtBairro: TDBEdit
@@ -432,7 +421,7 @@ object frmPessoas: TfrmPessoas
     Height = 21
     DataField = 'bairro'
     DataSource = dsPessoas
-    TabOrder = 15
+    TabOrder = 14
   end
   object edtComplemento: TDBEdit
     Left = 293
@@ -441,7 +430,31 @@ object frmPessoas: TfrmPessoas
     Height = 21
     DataField = 'complemento'
     DataSource = dsPessoas
-    TabOrder = 16
+    TabOrder = 15
+  end
+  object cbEstado: TDBLookupComboBox
+    Left = 81
+    Top = 527
+    Width = 53
+    Height = 21
+    DataField = 'cod_uf'
+    DataSource = dsPessoas
+    KeyField = 'id'
+    ListField = 'uf'
+    ListSource = dsUF
+    TabOrder = 11
+  end
+  object cbCidade: TDBLookupComboBox
+    Left = 197
+    Top = 527
+    Width = 207
+    Height = 21
+    DataField = 'cod_cidade'
+    DataSource = dsPessoas
+    KeyField = 'id'
+    ListField = 'nome'
+    ListSource = dsCidade
+    TabOrder = 12
   end
   object AcList: TActionList
     Left = 296
@@ -479,6 +492,9 @@ object frmPessoas: TfrmPessoas
     end
   end
   object qryPessoas: TFDQuery
+    AfterOpen = qryPessoasAfterOpen
+    AfterClose = qryPessoasAfterClose
+    AfterRefresh = qryPessoasAfterRefresh
     OnCalcFields = qryPessoasCalcFields
     Connection = dmPrincipal.MySQLConn
     SQL.Strings = (
@@ -501,28 +517,23 @@ object frmPessoas: TfrmPessoas
       AutoGenerateValue = arDefault
       FieldName = 'dt_nascimento'
       Origin = 'dt_nascimento'
-      EditMask = '!99/99/0000;1;_'
     end
     object qryPessoascpf: TStringField
       AutoGenerateValue = arDefault
-      DisplayWidth = 14
       FieldName = 'cpf'
       Origin = 'cpf'
-      EditMask = '999.999.999-99'
       Size = 14
     end
     object qryPessoastelefone: TStringField
       AutoGenerateValue = arDefault
       FieldName = 'telefone'
       Origin = 'telefone'
-      EditMask = '(99) 9999999999;1;_'
       Size = 13
     end
     object qryPessoascelular: TStringField
       AutoGenerateValue = arDefault
       FieldName = 'celular'
       Origin = 'celular'
-      EditMask = '(99) 9999999999;1;_'
       Size = 13
     end
     object qryPessoastipo: TStringField
@@ -535,12 +546,6 @@ object frmPessoas: TfrmPessoas
       AutoGenerateValue = arDefault
       FieldName = 'dt_cadastro'
       Origin = 'dt_cadastro'
-      ReadOnly = True
-    end
-    object qryPessoasinadimplente: TBooleanField
-      FieldKind = fkCalculated
-      FieldName = 'inadimplente'
-      Calculated = True
     end
     object qryPessoaslogradouro: TStringField
       AutoGenerateValue = arDefault
@@ -556,10 +561,8 @@ object frmPessoas: TfrmPessoas
     end
     object qryPessoascep: TStringField
       AutoGenerateValue = arDefault
-      DisplayWidth = 10
       FieldName = 'cep'
       Origin = 'cep'
-      EditMask = '99999-999;1;_'
       Size = 10
     end
     object qryPessoasbairro: TStringField
@@ -568,17 +571,21 @@ object frmPessoas: TfrmPessoas
       Origin = 'bairro'
       Size = 50
     end
-    object qryPessoascidade: TStringField
+    object qryPessoascod_uf: TIntegerField
       AutoGenerateValue = arDefault
-      FieldName = 'cidade'
-      Origin = 'cidade'
-      Size = 50
+      FieldName = 'cod_uf'
+      Origin = 'cod_uf'
+      OnChange = qryPessoascod_ufChange
     end
-    object qryPessoasuf: TStringField
+    object qryPessoascod_cidade: TIntegerField
       AutoGenerateValue = arDefault
-      FieldName = 'uf'
-      Origin = 'uf'
-      Size = 2
+      FieldName = 'cod_cidade'
+      Origin = 'cod_cidade'
+    end
+    object qryPessoasinadimplente: TBooleanField
+      FieldKind = fkCalculated
+      FieldName = 'inadimplente'
+      Calculated = True
     end
   end
   object dsPessoas: TDataSource
@@ -586,5 +593,59 @@ object frmPessoas: TfrmPessoas
     DataSet = qryPessoas
     Left = 304
     Top = 208
+  end
+  object qryUF: TFDQuery
+    Connection = dmPrincipal.MySQLConn
+    SQL.Strings = (
+      'select id,uf from estado')
+    Left = 8
+    Top = 520
+    object qryUFid: TFDAutoIncField
+      FieldName = 'id'
+      Origin = 'id'
+      ProviderFlags = [pfInWhere, pfInKey]
+      ReadOnly = True
+    end
+    object qryUFuf: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'uf'
+      Origin = 'uf'
+      Size = 5
+    end
+  end
+  object qryCidade: TFDQuery
+    Connection = dmPrincipal.MySQLConn
+    SQL.Strings = (
+      'select id, nome, estado'
+      'from cidade')
+    Left = 384
+    Top = 528
+    object qryCidadeid: TFDAutoIncField
+      FieldName = 'id'
+      Origin = 'id'
+      ProviderFlags = [pfInWhere, pfInKey]
+      ReadOnly = True
+    end
+    object qryCidadenome: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'nome'
+      Origin = 'nome'
+      Size = 120
+    end
+    object qryCidadeestado: TIntegerField
+      AutoGenerateValue = arDefault
+      FieldName = 'estado'
+      Origin = 'estado'
+    end
+  end
+  object dsUF: TDataSource
+    DataSet = qryUF
+    Left = 8
+    Top = 568
+  end
+  object dsCidade: TDataSource
+    DataSet = qryCidade
+    Left = 416
+    Top = 528
   end
 end

@@ -4,7 +4,7 @@ object frmLogin: TfrmLogin
   BorderIcons = []
   BorderStyle = bsSingle
   Caption = 'Login'
-  ClientHeight = 266
+  ClientHeight = 295
   ClientWidth = 256
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -12,9 +12,12 @@ object frmLogin: TfrmLogin
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
+  KeyPreview = True
   OldCreateOrder = False
   Position = poScreenCenter
   OnClose = FormClose
+  OnCreate = FormCreate
+  OnKeyPress = FormKeyPress
   PixelsPerInch = 96
   TextHeight = 13
   object imgLogo: TImage
@@ -143,6 +146,24 @@ object frmLogin: TfrmLogin
       170600716100101706007161001017060071FD1F494F0F35F364027D00000000
       49454E44AE426082}
   end
+  object lblProcesso: TLabel
+    Left = 0
+    Top = 265
+    Width = 256
+    Height = 13
+    Align = alBottom
+    Caption = 'Carregamento...'
+    Enabled = False
+    ExplicitWidth = 81
+  end
+  object pbLogin: TProgressBar
+    Left = 0
+    Top = 278
+    Width = 256
+    Height = 17
+    Align = alBottom
+    TabOrder = 4
+  end
   object lblEdtUsu: TLabeledEdit
     Left = 8
     Top = 120
@@ -166,18 +187,17 @@ object frmLogin: TfrmLogin
   end
   object btnEntrar: TButton
     Left = 0
-    Top = 186
+    Top = 185
     Width = 256
     Height = 40
     Align = alBottom
     Caption = 'Entrar'
     TabOrder = 2
     OnClick = btnEntrarClick
-    ExplicitTop = 187
   end
   object btnFechar: TButton
     Left = 0
-    Top = 226
+    Top = 225
     Width = 256
     Height = 40
     Align = alBottom

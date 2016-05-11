@@ -52,6 +52,7 @@ type
     procedure acCancelarExecute(Sender: TObject);
     procedure acPesquisarExecute(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
   private
     { Private declarations }
   public
@@ -75,6 +76,7 @@ begin
  acNovo.Enabled := True;
  acCancelar.Enabled := False;
  qryEquip.Cancel;
+ grdEquip.Enabled := True;
 end;
 
 procedure TfrmEquip.acEditarExecute(Sender: TObject);
@@ -97,7 +99,7 @@ begin
  acNovo.Enabled := False;
  acGravar.Enabled := True;
  acCancelar.Enabled := True;
-
+ grdEquip.Enabled := False;
 end;
 
 procedure TfrmEquip.acExcluirExecute(Sender: TObject);
@@ -114,6 +116,7 @@ begin
     acCancelar.Enabled := False;
     qryEquip.Delete;
     qryEquip.Refresh;
+    grdEquip.Enabled := True;
    end;
   end;
 end;
@@ -132,6 +135,7 @@ begin
     acCancelar.Enabled := False;
     qryEquip.Post;
     qryEquip.Refresh;
+    grdEquip.Enabled := True;
    end;
 
  end;
@@ -144,13 +148,18 @@ begin
  acNovo.Enabled := False;
  acGravar.Enabled := True;
  acCancelar.Enabled := True;
+ grdEquip.Enabled := False;
  if not qryEquip.Active then
  begin
    qryEquip.Open();
  end;
  qryEquip.Append;
  qryEquiptipo.AsString := 'Ergometria';
- edtNome.SetFocus;
+ if edtNome.CanFocus then
+ begin
+  edtNome.SetFocus;
+ end;
+
 end;
 
 procedure TfrmEquip.acPesquisarExecute(Sender: TObject);
@@ -190,6 +199,16 @@ procedure TfrmEquip.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
  frmEquip := nil;
  Action := caFree;
+end;
+
+procedure TfrmEquip.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+ if key = #13 then
+ begin
+   key := #0;
+   Perform(WM_NEXTDLGCTL, 0, 0);
+
+ end;
 end;
 
 end.

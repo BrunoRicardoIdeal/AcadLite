@@ -11,9 +11,11 @@ object frmLancamentos: TfrmLancamentos
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
+  KeyPreview = True
   OldCreateOrder = False
   Position = poScreenCenter
   OnClose = FormClose
+  OnKeyPress = FormKeyPress
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
@@ -205,7 +207,6 @@ object frmLancamentos: TfrmLancamentos
     Height = 41
     Align = alBottom
     TabOrder = 9
-    ExplicitLeft = -4
     object btnNovo: TButton
       Left = 1
       Top = 1
@@ -252,7 +253,7 @@ object frmLancamentos: TfrmLancamentos
       TabOrder = 4
     end
   end
-  object grLanc: TDBGrid
+  object grdLanc: TDBGrid
     Left = 0
     Top = 161
     Width = 800

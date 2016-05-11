@@ -74,6 +74,7 @@ type
     procedure qryLancFixosAfterOpen(DataSet: TDataSet);
     procedure qryLancFixoscod_tipo_lancChange(Sender: TField);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
   private
    procedure validarPreench;
     { Private declarations }
@@ -98,6 +99,7 @@ begin
  acNovo.Enabled := True;
  acCancelar.Enabled := False;
  qryLancFixos.Cancel;
+ grLancFixos.Enabled := True;
 end;
 
 procedure TfrmLancFixos.acEditarExecute(Sender: TObject);
@@ -107,6 +109,7 @@ begin
  acNovo.Enabled := False;
  acGravar.Enabled := True;
  acCancelar.Enabled := True;
+ grLancFixos.Enabled := False;
  if not qryLancFixos.Active then
  begin
    qryLancFixos.Open();
@@ -137,6 +140,7 @@ begin
     acCancelar.Enabled := False;
     qryLancFixos.Delete;
     qryLancFixos.Refresh;
+    grLancFixos.Enabled := True;
    end;
   end;
 end;
@@ -156,6 +160,7 @@ begin
     acCancelar.Enabled := False;
     qryLancFixos.Post;
     qryLancFixos.Refresh;
+    grLancFixos.Enabled := True;
    end;
 
  end;
@@ -168,12 +173,16 @@ begin
  acNovo.Enabled := False;
  acGravar.Enabled := True;
  acCancelar.Enabled := True;
+ grLancFixos.Enabled := False;
  if not qryLancFixos.Active then
  begin
    qryLancFixos.Open();
  end;
  qryLancFixos.Append;
- cbLkpTipoLanc.SetFocus;
+ if cbLkpTipoLanc.CanFocus then
+ begin
+  cbLkpTipoLanc.SetFocus;
+ end;
 end;
 
 procedure TfrmLancFixos.acPesquisarExecute(Sender: TObject);
@@ -218,6 +227,16 @@ procedure TfrmLancFixos.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
  frmLancFixos := nil;
  action := cafree;
+end;
+
+procedure TfrmLancFixos.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+ if key = #13 then
+ begin
+   key := #0;
+   Perform(WM_NEXTDLGCTL, 0, 0);
+
+ end;
 end;
 
 procedure TfrmLancFixos.qryLancFixosAfterClose(DataSet: TDataSet);

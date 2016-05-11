@@ -34,6 +34,7 @@ type
     procedure acCancelarExecute(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure acGerarExecute(Sender: TObject);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
   private
    var
     FListaDatas : TList<TDate>;
@@ -60,7 +61,7 @@ var
 
 implementation
 
- uses uDmPrincipal, DateUtils;
+ uses uDmPrincipal, DateUtils, System.UITypes;
 
 {$R *.dfm}
 
@@ -115,6 +116,16 @@ procedure TfrmRepMens.FormCreate(Sender: TObject);
 begin
  FListaDatas := TList<TDate>.Create;
 
+end;
+
+procedure TfrmRepMens.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+ if key = #13 then
+ begin
+   key := #0;
+   Perform(WM_NEXTDLGCTL, 0, 0);
+
+ end;
 end;
 
 procedure TfrmRepMens.FormShow(Sender: TObject);

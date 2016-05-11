@@ -10,7 +10,8 @@ uses
   FireDAC.Phys.MySQLDef, FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf,uEndereco,
   FireDAC.DApt, FireDAC.Comp.DataSet,IniFiles, Datasnap.DBClient, Soap.InvokeRegistry,
   IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient, IdHTTP, Soap.Rio, Soap.SOAPHTTPClient,
-  Xml.xmldom, Datasnap.Provider, Datasnap.Xmlxform, IPPeerClient, REST.Client, Data.Bind.Components, Data.Bind.ObjectScope, Xml.XMLIntf, Xml.adomxmldom, Xml.XMLDoc;
+  Xml.xmldom, Datasnap.Provider, Datasnap.Xmlxform, IPPeerClient, REST.Client, Data.Bind.Components, Data.Bind.ObjectScope, Xml.XMLIntf, Xml.adomxmldom, Xml.XMLDoc,
+  Vcl.ComCtrls;
 
 type
   TdmPrincipal = class(TDataModule)
@@ -36,13 +37,16 @@ type
     cdsEnderecounidade: TStringField;
     cdsEnderecoibge: TStringField;
     cdsEnderecogia: TStringField;
+    qryInsertUF: TFDQuery;
+    qryTabelas: TFDQuery;
+    qryTabelasTables_in_acadlite: TStringField;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
    procedure CriaUsuarioAdmin;
-   procedure InserirTpLancPadroes;
    function GetNomePC: String;
    function ConsultaEndereco(pCep : String):String;
+
 
 
     { Private declarations }
@@ -59,12 +63,19 @@ type
     { Public declarations }
     procedure salvarLog(pCodUsu : integer; pOperacao : string;pComputador : string);
     procedure ConfiguraConn;
+    procedure InserirTpLancPadroes(var pProgBar : TProgressBar);
+    procedure CriaInsereUfCid(var pProgBar : TProgressBar);
     function getCodTpLanc(pDesc : String):integer;
     function isInadimp(pCodAluno : integer) : boolean;
     function getListaTiposCli:TStringList;
+    function getListaUF:TStringList;
+    function getListaCidades(pUf: String) : TStringList;
+    function getCodUF(pUF : string):integer;
+    function getCodCidade(pNome : string):integer;
     function GetEndereco(pCep : String) : TEndereco;
     function ConectadoInternet : boolean;
     function RetirarChars(pVChars : array of Char; pStr : String):String;
+    function RemoverCharEsp(aTexto: string; aLimExt: boolean): string;
   end;
 
 var
@@ -118,6 +129,43 @@ begin
   restReq.Execute;
   Result:= restResp.Content
 end;
+procedure TdmPrincipal.CriaInsereUfCid(var pProgBar : TProgressBar);
+var
+ lExiste : boolean;
+ lUsaPB : boolean;
+begin
+   lUsaPB := pProgBar <> nil;
+   if not qryTabelas.Active then
+   begin
+    qryTabelas.Open();
+   end;
+   lExiste := qryTabelas.Locate('Tables_in_acadlite','pais',[loCaseInsensitive]);
+   if not lExiste then
+   begin
+     if lUsaPB then
+     begin
+       pProgBar.Position := 0;
+       pProgBar.Min := 0;
+       pProgBar.Max := 3;
+     end;
+
+     MySQLConn.StartTransaction;
+     try
+      Application.ProcessMessages;
+      pProgBar.StepIt;
+      qryInsertUF.ExecSQL;
+      pProgBar.StepIt;
+      Application.ProcessMessages;
+      MySQLConn.Commit;
+      pProgBar.StepIt;
+     except
+      MySQLConn.Rollback;
+     end;
+
+   end;
+   qryTabelas.Close;
+end;
+
 procedure TdmPrincipal.CriaUsuarioAdmin;
 var
  lQryCria : TFdQuery;
@@ -149,13 +197,29 @@ begin
  ConfigINI := TIniFile.Create(CaminhoConfig);
  ConfiguraConn;
  CriaUsuarioAdmin;
- InserirTpLancPadroes;
+
  nomePC := GetNomePC;
 end;
 
 procedure TdmPrincipal.DataModuleDestroy(Sender: TObject);
 begin
  ConfigINI.Free;
+end;
+
+function TdmPrincipal.getCodCidade(pNome: string): integer;
+var
+ lQrySelect : TFdQuery;
+begin
+  lQrySelect := TFdQuery.Create(self);
+  try
+   lQrySelect.Connection := MySQLConn;
+   lQrySelect.SQL.Add('SELECT ID FROM CIDADE');
+   lQrySelect.SQL.Add('WHERE LOWER(NOME)=' + QuotedStr(LowerCase(pNome)));
+   lQrySelect.Open();
+   result := lQrySelect.FieldByName('ID').AsInteger;
+  finally
+   lQrySelect.Free;
+  end;
 end;
 
 function TdmPrincipal.getCodTpLanc(pDesc: String): integer;
@@ -174,19 +238,38 @@ begin
   end;
 end;
 
+function TdmPrincipal.getCodUF(pUF: string): integer;
+var
+ lQrySelect : TFdQuery;
+begin
+  lQrySelect := TFdQuery.Create(self);
+  try
+   lQrySelect.Connection := MySQLConn;
+   lQrySelect.SQL.Add('SELECT ID FROM ESTADO');
+   lQrySelect.SQL.Add('WHERE LOWER(UF)=' + QuotedStr(LowerCase(pUF)));
+   lQrySelect.Open();
+   result := lQrySelect.FieldByName('ID').AsInteger;
+  finally
+   lQrySelect.Free;
+  end;
+end;
+
 function TdmPrincipal.GetEndereco(pCep: String): TEndereco;
 var
  lXml : TStringList;
  lCaminhoTemp : String;
  lEnd : Tendereco;
+ lValidaXML : String;
 begin
   lCaminhoTemp := CaminhoEXE + 'xml_end_temp.XML';
   lXml := TStringList.Create;
   lEnd := TEndereco.Create;
   try
     lXml.Text := ConsultaEndereco(pCep);
-    lXml.Text := ReplaceStr(lXml.Text,#9,'');
-    if lXml.Count > 1 then
+//    lXml.Text := RemoverCharEsp(lxml.Text,false);
+    lValidaXML := lowerCase(lXml.Text);
+
+    if not ((lValidaXML.Contains('erro')) or (lValidaXML.Contains('bad request')) ) then
     begin
       lXml.SaveToFile(lCaminhoTemp,TEncoding.UTF8);
       cdsEndereco.Close;
@@ -194,10 +277,11 @@ begin
       cdsEndereco.Open;
       lEnd.Cep := cdsEndereco.FieldByName('cep').AsString;
       lEnd.UF := cdsEndereco.FieldByName('uf').AsString;
-      lEnd.Cidade := cdsEndereco.FieldByName('localidade').AsString;
-      lEnd.Logradouro := cdsEndereco.FieldByName('logradouro').AsString;
-      lEnd.Bairro := cdsEndereco.FieldByName('bairro').AsString;
-      lEnd.Complemento := cdsEndereco.FieldByName('complemento').AsString;
+      lEnd.Cidade := UTF8ToString(cdsEndereco.FieldByName('localidade').AsString);
+      lEnd.Logradouro := UTF8ToString(cdsEndereco.FieldByName('logradouro').AsString);
+      lEnd.Bairro := UTF8ToString(cdsEndereco.FieldByName('bairro').AsString);
+      lEnd.Complemento := UTF8ToString(cdsEndereco.FieldByName('complemento').AsString);
+      DeleteFile(Pchar(lCaminhoTemp));
       Result := lEnd;
     end
     else
@@ -211,6 +295,37 @@ begin
 
 end;
 
+function TdmPrincipal.getListaCidades(pUf: String): TStringList;
+var
+ lListaCid : TStringList;
+ lQry : TFDQuery;
+begin
+  lListaCid := TStringList.Create;
+  lQry := TFDQuery.Create(nil);
+  try
+    lQry.Connection := MySQLConn;
+    lQry.SQL.Add('select c.nome ');
+    lQry.SQL.Add('from cidade c , estado e');
+    lQry.SQL.Add('where c.estado = e.id');
+    lQry.SQL.Add('and e.uf = :uf ');
+    lQry.SQL.Add('or :uf is null');
+    lQry.ParamByName('uf').AsString := pUf;
+    lQry.Open();
+    if not lQry.IsEmpty then
+    begin
+       lQry.First;
+       while not lQry.Eof do
+       begin
+        lListaCid.Add(RemoverCharEsp(lQry.FieldByName('nome').AsString,false));
+        lQry.Next;
+       end;
+    end;
+    Result := lListaCid;
+  finally
+    lQry.Free;
+  end;
+end;
+
 function TdmPrincipal.getListaTiposCli: TStringList;
 var
  lLista : TStringList;
@@ -222,13 +337,42 @@ begin
  Result := lLista;
 end;
 
-procedure TdmPrincipal.InserirTpLancPadroes;
+function TdmPrincipal.getListaUF: TStringList;
+var
+ lListaUF : TStringList;
+ lQry : TFDQuery;
+begin
+  lListaUF := TStringList.Create;
+  lQry := TFDQuery.Create(nil);
+  try
+    lQry.Connection := MySQLConn;
+    lQry.SQL.Add('select uf from estado');
+    lQry.Open();
+    if not lQry.IsEmpty then
+    begin
+       lQry.First;
+       while not lQry.Eof do
+       begin
+        lListaUF.Add(lQry.FieldByName('uf').AsString);
+        lQry.Next;
+       end;
+    end;
+    Result := lListaUF;
+  finally
+    lQry.Free;
+  end;
+end;
+
+procedure TdmPrincipal.InserirTpLancPadroes(var pProgBar : TProgressBar );
 var
  lQrySelect : TFdQuery;
  lExiste: boolean;
  lLancPad : TListLancPad;
  i : integer;
+ lUsaPB : Boolean;
+ lCountLista : integer;
 begin
+  lUsaPB := pProgBar <> nil;
   lQrySelect := TFDQuery.Create(nil);
   lLancPad := TListLancPad.Create;
   try
@@ -239,8 +383,18 @@ begin
    lQrySelect.SQL.Add('FROM TIPOS_LANCAMENTOS');
    lQrySelect.SQL.Add('WHERE PADRAO = ''S''');
    lQrySelect.Open();
-   for i := 0 to lLancPad.GetLista.Count - 1 do
+
+   lCountLista := lLancPad.GetLista.Count;
+   if lUsaPB then
    begin
+       pProgBar.Position := 0;
+       pProgBar.Min := 0;
+       pProgBar.Max := lCountLista - 1;
+   end;
+   for i := 0 to  lCountLista - 1 do
+   begin
+     pProgBar.StepIt;
+     Application.ProcessMessages;
      lQrySelect.First;
      lExiste := False;
      while not lQrySelect.Eof do
@@ -260,12 +414,7 @@ begin
        lQrySelect.FieldByName('PADRAO').AsString := 'S';
        lQrySelect.Post;
      end;
-
-
    end;
-
-
-
    if lQrySelect.IsEmpty then
    begin
      lQrySelect.Append;
@@ -323,6 +472,23 @@ begin
   Result := String(lpBuffer);
   StrDispose(lpBuffer);
 end;
+
+function TdmPrincipal.RemoverCharEsp(aTexto : string; aLimExt : boolean) : string;
+var
+  xTexto : string;
+  i : Integer;
+begin
+   xTexto := aTexto;
+   for i:=1 to 38 do
+     xTexto := StringReplace(xTexto, xCarEsp[i], xCarTro[i], [rfreplaceall]);
+   //De acordo com o parâmetro aLimExt, elimina caracteres extras.
+   if (aLimExt) then
+     for i:=1 to 48 do
+       xTexto := StringReplace(xTexto, xCarExt[i], '', [rfreplaceall]);
+   Result := xTexto;
+end;
+
+
 
 
 procedure TdmPrincipal.salvarLog( pCodUsu: integer; pOperacao, pComputador: string);

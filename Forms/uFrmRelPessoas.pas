@@ -48,6 +48,7 @@ type
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
   private
 
    procedure Limpar;
@@ -63,7 +64,7 @@ var
 
 implementation
 
- uses uDmPrincipal,uConstantes;
+ uses uDmPrincipal,uConstantes, System.UITypes;
 
 {$R *.dfm}
 
@@ -155,6 +156,16 @@ end;
 procedure TfrmRelPessoas.FormCreate(Sender: TObject);
 begin
  confCbTipo;
+end;
+
+procedure TfrmRelPessoas.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+ if key = #13 then
+ begin
+   key := #0;
+   Perform(WM_NEXTDLGCTL, 0, 0);
+
+ end;
 end;
 
 procedure TfrmRelPessoas.FormShow(Sender: TObject);

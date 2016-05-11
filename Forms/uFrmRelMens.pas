@@ -49,6 +49,7 @@ type
     procedure acEmitirExecute(Sender: TObject);
     procedure chkHabDtVencClick(Sender: TObject);
     procedure frxMensBeforePrint(Sender: TfrxReportComponent);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
   private
     { Private declarations }
   public
@@ -59,6 +60,9 @@ var
   frmRelMens: TfrmRelMens;
 
 implementation
+
+uses
+  System.UITypes;
 
 {$R *.dfm}
 
@@ -162,6 +166,16 @@ begin
  end;
  qryAlunos.Close;
  qryAlunos.EnableControls;
+end;
+
+procedure TfrmRelMens.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+ if key = #13 then
+ begin
+   key := #0;
+   Perform(WM_NEXTDLGCTL, 0, 0);
+
+ end;
 end;
 
 procedure TfrmRelMens.frxMensBeforePrint(Sender: TfrxReportComponent);

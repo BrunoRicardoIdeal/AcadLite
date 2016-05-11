@@ -34,6 +34,7 @@ type
     procedure acEmitirExecute(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
   private
    procedure Limpar;
    procedure Emitir;
@@ -47,7 +48,7 @@ var
 
 implementation
 
- uses uDmPrincipal;
+ uses uDmPrincipal, System.UITypes;
 
 {$R *.dfm}
 
@@ -105,6 +106,16 @@ procedure TfrmRelEquip.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
  frmRelEquip := nil;
  Action := CaFree;
+end;
+
+procedure TfrmRelEquip.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+ if key = #13 then
+ begin
+   key := #0;
+   Perform(WM_NEXTDLGCTL, 0, 0);
+
+ end;
 end;
 
 procedure TfrmRelEquip.FormShow(Sender: TObject);

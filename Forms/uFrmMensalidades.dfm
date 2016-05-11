@@ -11,10 +11,12 @@ object frmMensalidades: TfrmMensalidades
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
+  KeyPreview = True
   OldCreateOrder = False
   Position = poScreenCenter
   OnClose = FormClose
   OnCreate = FormCreate
+  OnKeyPress = FormKeyPress
   PixelsPerInch = 96
   TextHeight = 13
   object Label5: TLabel
@@ -421,7 +423,6 @@ object frmMensalidades: TfrmMensalidades
     Enabled = False
     TabOrder = 8
     OnExit = edtValorRecebidoExit
-    OnKeyDown = edtValorRecebidoKeyDown
   end
   object btnReceber: TButton
     Left = 365
