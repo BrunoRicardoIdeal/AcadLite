@@ -56,6 +56,7 @@ begin
    dmPrincipal.InserirTpLancPadroes(pbLogin);
    lblProcesso.Caption := 'Conferindo dados importantes...';
    dmPrincipal.CriaInsereUfCid(pbLogin);
+
    Close;
  end;
 end;

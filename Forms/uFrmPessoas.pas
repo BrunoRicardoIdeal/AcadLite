@@ -221,7 +221,6 @@ begin
     qryPessoas.Refresh;
     grdPessoas.Enabled := True;
    end;
-
  end;
 end;
 

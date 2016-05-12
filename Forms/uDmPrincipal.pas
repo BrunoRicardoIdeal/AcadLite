@@ -8,7 +8,7 @@ uses
   FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys, FireDAC.VCLUI.Wait,
   FireDAC.Comp.UI, Data.DB, FireDAC.Comp.Client, FireDAC.Phys.MySQL,uLancPadroes,
   FireDAC.Phys.MySQLDef, FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf,uEndereco,
-  FireDAC.DApt, FireDAC.Comp.DataSet,IniFiles, Datasnap.DBClient, Soap.InvokeRegistry,
+  FireDAC.DApt, FireDAC.Comp.DataSet,IniFiles, Datasnap.DBClient, Soap.InvokeRegistry,Generics.Collections,
   IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient, IdHTTP, Soap.Rio, Soap.SOAPHTTPClient,
   Xml.xmldom, Datasnap.Provider, Datasnap.Xmlxform, IPPeerClient, REST.Client, Data.Bind.Components, Data.Bind.ObjectScope, Xml.XMLIntf, Xml.adomxmldom, Xml.XMLDoc,
   Vcl.ComCtrls;
@@ -74,9 +74,11 @@ type
     function getCodUF(pUF : string):integer;
     function getCodCidade(pNome : string):integer;
     function GetEndereco(pCep : String) : TEndereco;
+    function getValorPlano(pCodPlano : integer) : double;
     function ConectadoInternet : boolean;
     function RetirarChars(pVChars : array of Char; pStr : String):String;
     function RemoverCharEsp(aTexto: string; aLimExt: boolean): string;
+    function getProxVencimentos(pNMeses : integer ; pDtIni : TDate):TList<TDate>;
     function getVersaoEXE : string;
   end;
 
@@ -364,6 +366,8 @@ begin
   end;
 end;
 
+
+
 procedure TdmPrincipal.InserirTpLancPadroes(var pProgBar : TProgressBar );
 var
  lQrySelect : TFdQuery;
@@ -472,6 +476,30 @@ begin
   GetComputerName(lpBuffer,nSize);
   Result := String(lpBuffer);
   StrDispose(lpBuffer);
+end;
+
+function TdmPrincipal.getProxVencimentos(pNMeses: integer; pDtIni: TDate): TList<TDate>;
+var
+ lLista : TList<TDate>;
+begin
+  lLista := TList<TDate>.Create;
+end;
+
+function TdmPrincipal.getValorPlano(pCodPlano: integer): double;
+var
+ lQrySelect : TFdQuery;
+begin
+  lQrySelect := TFdQuery.Create(self);
+  try
+   lQrySelect.Connection := MySQLConn;
+   lQrySelect.SQL.Add('SELECT VALOR FROM PLANOS');
+   lQrySelect.SQL.Add('WHERE ID = ' + InTtoStr(pCodPlano));
+   lQrySelect.SQL.Add('LIMIT 1');
+   lQrySelect.Open();
+   result := lQrySelect.FieldByName('VALOR').AsFloat;
+  finally
+   lQrySelect.Free;
+  end;
 end;
 
 Function TdmPrincipal.getVersaoExe: String;

@@ -3,7 +3,7 @@ object frmMensalidades: TfrmMensalidades
   Top = 0
   BorderIcons = [biSystemMenu]
   Caption = 'Mensalidades'
-  ClientHeight = 600
+  ClientHeight = 672
   ClientWidth = 800
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -21,93 +21,107 @@ object frmMensalidades: TfrmMensalidades
   TextHeight = 13
   object Label5: TLabel
     Left = 180
-    Top = 411
+    Top = 459
     Width = 62
     Height = 13
     Caption = 'Dt. Cadastro'
   end
   object lblCodpes: TLabel
     Left = 51
-    Top = 411
+    Top = 459
     Width = 33
     Height = 13
     Caption = 'C'#243'digo'
   end
   object lblNome: TLabel
     Left = 38
-    Top = 438
+    Top = 486
     Width = 46
     Height = 13
     Caption = 'Descri'#231#227'o'
   end
   object Label1: TLabel
     Left = 57
-    Top = 466
+    Top = 511
     Width = 27
     Height = 13
     Caption = 'Aluno'
   end
   object Label6: TLabel
     Left = 60
-    Top = 495
+    Top = 561
     Width = 24
     Height = 13
     Caption = 'Valor'
   end
   object Label2: TLabel
     Left = 247
-    Top = 522
+    Top = 588
     Width = 80
     Height = 13
     Caption = 'Dt. Recebimento'
   end
   object Label3: TLabel
     Left = 192
-    Top = 495
+    Top = 561
     Width = 71
     Height = 13
     Caption = 'Valor Recebido'
   end
   object Label7: TLabel
     Left = 11
-    Top = 522
+    Top = 588
     Width = 73
     Height = 13
     Caption = 'Dt. Vencimento'
   end
   object Label8: TLabel
     Left = 648
-    Top = 400
+    Top = 456
     Width = 51
     Height = 13
     Caption = 'Valor Total'
   end
   object Label9: TLabel
     Left = 628
-    Top = 427
+    Top = 483
     Width = 71
     Height = 13
     Caption = 'Total Recebido'
   end
   object shpREd: TShape
     Left = 485
-    Top = 400
+    Top = 456
     Width = 20
     Height = 20
     Brush.Color = clRed
   end
   object Label10: TLabel
     Left = 511
-    Top = 404
+    Top = 460
     Width = 42
     Height = 13
     Caption = 'Vencidas'
+  end
+  object Label11: TLabel
+    Left = 53
+    Top = 537
+    Width = 31
+    Height = 13
+    Caption = 'Planos'
+  end
+  object Label13: TLabel
+    Left = 489
+    Top = 537
+    Width = 60
+    Height = 13
+    Caption = 'N'#186' de Meses'
   end
   object gbPsq: TGroupBox
     Left = 0
     Top = 0
     Width = 800
-    Height = 177
+    Height = 193
     Align = alTop
     Caption = 'Pesquisa'
     TabOrder = 0
@@ -125,6 +139,13 @@ object frmMensalidades: TfrmMensalidades
       Height = 13
       Caption = 'e'
       Enabled = False
+    end
+    object Label12: TLabel
+      Left = 23
+      Top = 137
+      Width = 26
+      Height = 13
+      Caption = 'Plano'
     end
     object lblEdtCod: TLabeledEdit
       Left = 56
@@ -151,11 +172,11 @@ object frmMensalidades: TfrmMensalidades
     end
     object btnPsq: TButton
       Left = 54
-      Top = 134
+      Top = 160
       Width = 75
       Height = 25
       Action = acPesquisar
-      TabOrder = 8
+      TabOrder = 9
     end
     object cbPsqAlunos: TComboBox
       Left = 56
@@ -220,14 +241,22 @@ object frmMensalidades: TfrmMensalidades
         'Todos'
         'Sim'
         'N'#227'o')
+      TabOrder = 8
+    end
+    object cbPsqPlanos: TComboBox
+      Left = 56
+      Top = 134
+      Width = 321
+      Height = 22
+      Style = csOwnerDrawFixed
       TabOrder = 7
     end
   end
   object grdMens: TDBGrid
     Left = 0
-    Top = 177
+    Top = 193
     Width = 800
-    Height = 217
+    Height = 254
     Align = alTop
     DataSource = dsMensalidade
     Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
@@ -289,15 +318,22 @@ object frmMensalidades: TfrmMensalidades
         FieldName = 'DT_CADASTRO'
         Title.Caption = 'Dt. Cadastro'
         Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'PLANO_DESC'
+        Title.Caption = 'Plano'
+        Visible = True
       end>
   end
   object pnlBotoes: TPanel
     Left = 0
-    Top = 559
+    Top = 631
     Width = 800
     Height = 41
     Align = alBottom
     TabOrder = 2
+    ExplicitTop = 559
     object btnNovo: TButton
       Left = 1
       Top = 1
@@ -355,7 +391,7 @@ object frmMensalidades: TfrmMensalidades
   end
   object edtCadastro: TDBEdit
     Left = 248
-    Top = 408
+    Top = 456
     Width = 127
     Height = 21
     DataField = 'DT_CADASTRO'
@@ -365,7 +401,7 @@ object frmMensalidades: TfrmMensalidades
   end
   object edtCodPes: TDBEdit
     Left = 96
-    Top = 408
+    Top = 456
     Width = 73
     Height = 21
     DataField = 'COD_MENSALIDADE'
@@ -375,7 +411,7 @@ object frmMensalidades: TfrmMensalidades
   end
   object edtDescricao: TDBEdit
     Left = 96
-    Top = 435
+    Top = 483
     Width = 383
     Height = 21
     DataField = 'DESCRICAO'
@@ -384,7 +420,7 @@ object frmMensalidades: TfrmMensalidades
   end
   object lkpCbAluno: TDBLookupComboBox
     Left = 96
-    Top = 462
+    Top = 507
     Width = 383
     Height = 21
     DataField = 'COD_ALUNO'
@@ -396,75 +432,97 @@ object frmMensalidades: TfrmMensalidades
   end
   object edtValor: TDBEdit
     Left = 96
-    Top = 492
+    Top = 558
     Width = 90
     Height = 21
     DataField = 'VALOR'
     DataSource = dsMensalidade
-    TabOrder = 7
+    TabOrder = 8
   end
   object edtDtRecebimento: TDBEdit
     Left = 333
-    Top = 519
+    Top = 585
     Width = 146
     Height = 21
     DataField = 'DT_RECEBIMENTO'
     DataSource = dsMensalidade
     Enabled = False
-    TabOrder = 11
+    TabOrder = 12
   end
   object edtValorRecebido: TDBEdit
     Left = 269
-    Top = 492
+    Top = 558
     Width = 90
     Height = 21
     DataField = 'VALOR_RECEBIDO'
     DataSource = dsMensalidade
     Enabled = False
-    TabOrder = 8
+    TabOrder = 9
     OnExit = edtValorRecebidoExit
   end
   object btnReceber: TButton
     Left = 365
-    Top = 490
+    Top = 556
     Width = 114
     Height = 25
     Action = acBtnReceber
-    TabOrder = 9
+    TabOrder = 10
     TabStop = False
   end
   object edtDtVencimento: TDBEdit
     Left = 96
-    Top = 519
+    Top = 585
     Width = 146
     Height = 21
     DataField = 'DT_VENCIMENTO'
     DataSource = dsMensalidade
-    TabOrder = 10
+    TabOrder = 11
   end
   object edtAggTotal: TDBEdit
     Left = 705
-    Top = 397
+    Top = 453
     Width = 88
     Height = 21
     TabStop = False
     DataField = 'AGGVLTOTAL'
     DataSource = dsMensalidade
-    TabOrder = 12
+    TabOrder = 13
   end
   object edtAggTotalRec: TDBEdit
     Left = 704
-    Top = 424
+    Top = 480
     Width = 88
     Height = 21
     TabStop = False
     DataField = 'AGGVLREC'
     DataSource = dsMensalidade
-    TabOrder = 13
+    TabOrder = 14
+  end
+  object lkpcbPlano: TDBLookupComboBox
+    Left = 96
+    Top = 532
+    Width = 383
+    Height = 21
+    DataField = 'COD_PLANO'
+    DataSource = dsMensalidade
+    KeyField = 'ID'
+    ListField = 'DESCRICAO'
+    ListSource = dsPlanos
+    TabOrder = 7
+  end
+  object edtNumMeses: TDBEdit
+    Left = 555
+    Top = 534
+    Width = 73
+    Height = 21
+    DataField = 'NUM_MESES'
+    DataSource = dsMensalidade
+    Enabled = False
+    TabOrder = 15
   end
   object AcList: TActionList
-    Left = 664
-    Top = 464
+    Left = 216
+    Top = 240
     object acNovo: TAction
       Caption = 'Novo'
       ShortCut = 112
@@ -525,10 +583,14 @@ object frmMensalidades: TfrmMensalidades
       '      ,M.DT_RECEBIMENTO'
       '      ,M.VALOR'
       '      ,M.VALOR_RECEBIDO'
-      'FROM MENSALIDADES M, PESSOAS P'
-      'WHERE M.COD_ALUNO = P.COD_PESSOA      ')
-    Left = 416
-    Top = 232
+      '      ,M.COD_PLANO'
+      '      ,PL.DESCRICAO PLANO_DESC'
+      '      ,PL.NUM_MESES '
+      'FROM MENSALIDADES M'
+      'INNER JOIN PESSOAS P ON M.COD_ALUNO = P.COD_PESSOA'
+      'LEFT JOIN PLANOS PL ON M.COD_PLANO = PL.ID')
+    Left = 608
+    Top = 248
     object qryMensalidadeCOD_MENSALIDADE: TFDAutoIncField
       FieldName = 'COD_MENSALIDADE'
       Origin = 'cod_mensalidade'
@@ -586,6 +648,26 @@ object frmMensalidades: TfrmMensalidades
       FieldName = 'VENCIDA'
       Calculated = True
     end
+    object qryMensalidadeCOD_PLANO: TIntegerField
+      AutoGenerateValue = arDefault
+      FieldName = 'COD_PLANO'
+      Origin = 'cod_plano'
+      OnChange = qryMensalidadeCOD_PLANOChange
+    end
+    object qryMensalidadePLANO_DESC: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'PLANO_DESC'
+      Origin = 'descricao'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 50
+    end
+    object qryMensalidadeNUM_MESES: TIntegerField
+      AutoGenerateValue = arDefault
+      FieldName = 'NUM_MESES'
+      Origin = 'num_meses'
+      ProviderFlags = []
+    end
     object qryMensalidadeAGGVLTOTAL: TAggregateField
       FieldName = 'AGGVLTOTAL'
       Active = True
@@ -604,8 +686,8 @@ object frmMensalidades: TfrmMensalidades
   object dsMensalidade: TDataSource
     AutoEdit = False
     DataSet = qryMensalidade
-    Left = 304
-    Top = 208
+    Left = 608
+    Top = 312
   end
   object qryAlunos: TFDQuery
     Connection = dmPrincipal.MySQLConn
@@ -615,8 +697,8 @@ object frmMensalidades: TfrmMensalidades
       'FROM PESSOAS'
       'WHERE TIPO = '#39'Aluno'#39
       'order by nome')
-    Left = 232
-    Top = 200
+    Left = 392
+    Top = 296
     object qryAlunosCOD_PESSOA: TFDAutoIncField
       FieldName = 'COD_PESSOA'
       Origin = 'cod_pessoa'
@@ -632,8 +714,8 @@ object frmMensalidades: TfrmMensalidades
   end
   object dsAluno: TDataSource
     DataSet = qryAlunos
-    Left = 456
-    Top = 208
+    Left = 392
+    Top = 248
   end
   object qryInsereLanc: TFDQuery
     Connection = dmPrincipal.MySQLConn
@@ -644,8 +726,8 @@ object frmMensalidades: TfrmMensalidades
       
         ' VALUES(:DESCRICAO,:DT_VENCIMENTO,:COD_TIPO_LANC,:VALOR,:COD_MEN' +
         'SALIDADE)')
-    Left = 552
-    Top = 440
+    Left = 104
+    Top = 264
     ParamData = <
       item
         Name = 'DESCRICAO'
@@ -677,5 +759,31 @@ object frmMensalidades: TfrmMensalidades
         ParamType = ptInput
         Value = Null
       end>
+  end
+  object qryPlanos: TFDQuery
+    Connection = dmPrincipal.MySQLConn
+    SQL.Strings = (
+      'SELECT ID, DESCRICAO'
+      'FROM PLANOS'
+      'ORDER BY DESCRICAO')
+    Left = 296
+    Top = 240
+    object qryPlanosID: TFDAutoIncField
+      FieldName = 'ID'
+      Origin = 'id'
+      ProviderFlags = [pfInWhere, pfInKey]
+    end
+    object qryPlanosDESCRICAO: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'DESCRICAO'
+      Origin = 'descricao'
+      Size = 50
+    end
+  end
+  object dsPlanos: TDataSource
+    AutoEdit = False
+    DataSet = qryPlanos
+    Left = 296
+    Top = 296
   end
 end

@@ -32,6 +32,8 @@ type
     btnMensalidades: TButton;
     acMensalidades: TAction;
     SBPrinc: TStatusBar;
+    Button1: TButton;
+    acPlanos: TAction;
     procedure btnEquipClick(Sender: TObject);
     procedure AcPesExecute(Sender: TObject);
     procedure acEquipExecute(Sender: TObject);
@@ -44,6 +46,7 @@ type
     procedure acMensalidadesExecute(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
+    procedure acPlanosExecute(Sender: TObject);
   private
    procedure EfetuarLogin;
    procedure ConfStatusBar;
@@ -62,7 +65,7 @@ implementation
          uFrmTipoLanc,uFrmUsuarios,
          uFrmLancamentos, uFrmRelatorios,
          uFrmLogin,ufrmMensalidades,
-         uConstantes;
+         uConstantes, uFrmPlanos;
 {$R *.dfm}
 
 procedure TfrmPrinc.acEquipExecute(Sender: TObject);
@@ -108,6 +111,16 @@ begin
    Application.CreateForm(TFrmPessoas,frmPessoas);
  end;
  frmPessoas.Show;
+end;
+
+procedure TfrmPrinc.acPlanosExecute(Sender: TObject);
+begin
+ if frmPlanos = nil then
+ begin
+   Application.CreateForm(TfrmPlanos,frmPlanos);
+ end;
+ frmPlanos.Show;
+
 end;
 
 procedure TfrmPrinc.acRelExecute(Sender: TObject);

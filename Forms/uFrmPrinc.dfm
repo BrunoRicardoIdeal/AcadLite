@@ -11052,8 +11052,6 @@ object frmPrinc: TfrmPrinc
       ParentShowHint = False
       ShowHint = True
       TabOrder = 0
-      ExplicitLeft = -4
-      ExplicitTop = 0
     end
     object btnEquip: TButton
       Left = 1
@@ -11096,7 +11094,7 @@ object frmPrinc: TfrmPrinc
     end
     object btnRelatorios: TButton
       Left = 1
-      Top = 351
+      Top = 401
       Width = 143
       Height = 50
       Hint = 'Menu de Relat'#243'rios'
@@ -11106,6 +11104,7 @@ object frmPrinc: TfrmPrinc
       ParentShowHint = False
       ShowHint = True
       TabOrder = 7
+      ExplicitTop = 351
     end
     object btnLancFixos: TButton
       Left = 1
@@ -11144,6 +11143,20 @@ object frmPrinc: TfrmPrinc
       ParentShowHint = False
       ShowHint = True
       TabOrder = 5
+    end
+    object Button1: TButton
+      Left = 1
+      Top = 351
+      Width = 143
+      Height = 50
+      Hint = 'Controle de planos para mensalidades'
+      Action = acPlanos
+      Align = alTop
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 8
+      ExplicitLeft = -4
+      ExplicitTop = 373
     end
   end
   object SBPrinc: TStatusBar
@@ -11204,6 +11217,11 @@ object frmPrinc: TfrmPrinc
       Caption = '&Mensalidades'
       ShortCut = 118
       OnExecute = acMensalidadesExecute
+    end
+    object acPlanos: TAction
+      Caption = 'Pla&nos'
+      ShortCut = 118
+      OnExecute = acPlanosExecute
     end
   end
 end

@@ -175,6 +175,7 @@ object frmRelPessoas: TfrmRelPessoas
     end
   end
   object qryPessoas: TFDQuery
+    Active = True
     Connection = dmPrincipal.MySQLConn
     SQL.Strings = (
       'Select * from pessoas')
@@ -228,7 +229,7 @@ object frmRelPessoas: TfrmRelPessoas
     end
   end
   object frxPessoas: TfrxReport
-    Version = '5.5'
+    Version = '5.1.5'
     DotMatrixReport = False
     IniFile = '\Software\Fast Reports'
     PreviewOptions.Buttons = [pbPrint, pbLoad, pbSave, pbExport, pbZoom, pbFind, pbOutline, pbPageSetup, pbTools, pbEdit, pbNavigator, pbExportQuick]
@@ -372,7 +373,7 @@ object frmRelPessoas: TfrmRelPessoas
       object PageFooter1: TfrxPageFooter
         FillType = ftBrush
         Height = 22.677180000000000000
-        Top = 355.275820000000000000
+        Top = 498.897960000000000000
         Width = 1046.929810000000000000
         object SysMemo1: TfrxSysMemoView
           Left = 480.000310000000000000
@@ -716,6 +717,63 @@ object frmRelPessoas: TfrmRelPessoas
           Font.Style = [fsBold]
           Memo.UTF8W = (
             'Dt. Cad.')
+          ParentFont = False
+        end
+      end
+      object ReportSummary1: TfrxReportSummary
+        FillType = ftBrush
+        Height = 120.944960000000000000
+        Top = 355.275820000000000000
+        Width = 1046.929810000000000000
+        object Shape1: TfrxShapeView
+          Left = 11.338590000000000000
+          Top = 32.015770000000000000
+          Width = 222.992270000000000000
+          Height = 41.574830000000000000
+          Shape = skRoundRectangle
+        end
+        object SysMemo2: TfrxSysMemoView
+          Left = 105.826840000000000000
+          Top = 45.354360000000000000
+          Width = 117.165430000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            '[COUNT(MasterData1)]')
+          ParentFont = False
+        end
+        object Memo24: TfrxMemoView
+          Left = -22.677180000000000000
+          Top = 45.354360000000000000
+          Width = 124.724490000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Quantidade:')
+          ParentFont = False
+        end
+        object Memo28: TfrxMemoView
+          Left = 13.897650000000000000
+          Top = 15.118120000000000000
+          Width = 86.929190000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Memo.UTF8W = (
+            'Totais:')
           ParentFont = False
         end
       end

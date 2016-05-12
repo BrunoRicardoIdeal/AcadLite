@@ -327,7 +327,7 @@ object frmRelLanc: TfrmRelLanc
     end
   end
   object frxLancamentos: TfrxReport
-    Version = '5.5'
+    Version = '5.1.5'
     DotMatrixReport = False
     IniFile = '\Software\Fast Reports'
     PreviewOptions.Buttons = [pbPrint, pbLoad, pbSave, pbExport, pbZoom, pbFind, pbOutline, pbPageSetup, pbTools, pbEdit, pbNavigator, pbExportQuick]

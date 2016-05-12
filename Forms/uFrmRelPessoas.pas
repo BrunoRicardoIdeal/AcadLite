@@ -156,6 +156,7 @@ end;
 procedure TfrmRelPessoas.FormCreate(Sender: TObject);
 begin
  confCbTipo;
+ Limpar;
 end;
 
 procedure TfrmRelPessoas.FormKeyPress(Sender: TObject; var Key: Char);

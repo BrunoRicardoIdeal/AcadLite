@@ -286,6 +286,7 @@ object frmPessoas: TfrmPessoas
       Action = acExcluir
       Align = alLeft
       TabOrder = 1
+      ExplicitLeft = 302
     end
     object btnCancelar: TButton
       Left = 226

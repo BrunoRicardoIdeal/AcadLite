@@ -84,6 +84,19 @@ type
     acBtnReceber: TAction;
     btnReplicar: TButton;
     acReplicar: TAction;
+    qryMensalidadeCOD_PLANO: TIntegerField;
+    Label11: TLabel;
+    lkpcbPlano: TDBLookupComboBox;
+    qryPlanos: TFDQuery;
+    dsPlanos: TDataSource;
+    qryPlanosID: TFDAutoIncField;
+    qryPlanosDESCRICAO: TStringField;
+    cbPsqPlanos: TComboBox;
+    Label12: TLabel;
+    qryMensalidadePLANO_DESC: TStringField;
+    edtNumMeses: TDBEdit;
+    Label13: TLabel;
+    qryMensalidadeNUM_MESES: TIntegerField;
     procedure acNovoExecute(Sender: TObject);
     procedure acEditarExecute(Sender: TObject);
     procedure acGravarExecute(Sender: TObject);
@@ -102,8 +115,12 @@ type
     procedure acReplicarExecute(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
+    procedure qryMensalidadeCOD_PLANOChange(Sender: TField);
   private
     procedure EfetuarRecebimento;
+    procedure PreenCbAlunos;
+    procedure PreenCbPlanos;
+    procedure SalvarMensalidade;
     { Private declarations }
   public
     { Public declarations }
@@ -234,7 +251,6 @@ begin
      end;
      Abort;
    end;
-
    if MessageDlg('Deseja realmente gravar?',TMsgDlgType.mtConfirmation
    ,mbYesNo,0) = mrYes then
    begin
@@ -283,9 +299,13 @@ begin
  qryMensalidade.SQL.Add('       ,M.DT_RECEBIMENTO');
  qryMensalidade.SQL.Add('       ,M.VALOR');
  qryMensalidade.SQL.Add('       ,M.VALOR_RECEBIDO');
- qryMensalidade.SQL.Add('FROM MENSALIDADES M, PESSOAS P');
- qryMensalidade.SQL.Add('WHERE M.COD_ALUNO = P.COD_PESSOA');
-
+ qryMensalidade.SQL.Add('       ,M.COD_PLANO');
+ qryMensalidade.SQL.Add('       ,PL.NUM_MESES');
+ qryMensalidade.SQL.Add('       ,PL.DESCRICAO PLANO_DESC');
+ qryMensalidade.SQL.Add('FROM MENSALIDADES M');
+ qryMensalidade.SQL.Add('INNER JOIN PESSOAS P ON M.COD_ALUNO = P.COD_PESSOA');
+ qryMensalidade.SQL.Add('LEFT JOIN PLANOS PL ON M.COD_PLANO = PL.ID');
+ qryMensalidade.SQL.Add('WHERE 1 = 1');
  if lblEdtCod.Text <> '' then
  begin
    qryMensalidade.SQL.Add('AND M.COD_MENSALIDADE = :COD_MENSALIDADE');
@@ -298,6 +318,10 @@ begin
  if cbPsqAlunos.ItemIndex > 0  then
  begin
    qryMensalidade.SQL.Add('AND P.NOME = ' + QuotedStr(cbPsqAlunos.Text));
+ end;
+ if cbPsqPlanos.ItemIndex > 0  then
+ begin
+   qryMensalidade.SQL.Add('AND PL.DESCRICAO= ' + QuotedStr(cbPsqPlanos.Text));
  end;
  if rgPsqRec.ItemIndex > 0 then
  begin
@@ -412,6 +436,40 @@ begin
   end;
 end;
 
+procedure TfrmMensalidades.PreenCbAlunos;
+begin
+  cbPsqAlunos.Items.Clear;
+  cbPsqAlunos.Items.Add('Todos');
+  cbPsqAlunos.ItemIndex := 0;
+  qryAlunos.DisableControls;
+  qryAlunos.Open;
+  qryAlunos.First;
+  while not qryAlunos.Eof do
+  begin
+    cbPsqAlunos.Items.Add(qryAlunosNOME.AsString);
+    qryAlunos.Next;
+  end;
+  qryAlunos.Close;
+  qryAlunos.EnableControls;
+end;
+
+procedure TfrmMensalidades.PreenCbPlanos;
+begin
+  cbPsqPlanos.Items.Clear;
+  cbPsqPlanos.Items.Add('Todos');
+  cbPsqPlanos.ItemIndex := 0;
+  qryPlanos.DisableControls;
+  qryPlanos.Open;
+  qryPlanos.First;
+  while not qryPlanos.Eof do
+  begin
+    cbPsqPlanos.Items.Add(qryPlanosDESCRICAO.AsString);
+    qryPlanos.Next;
+  end;
+  qryPlanos.Close;
+  qryPlanos.EnableControls;
+end;
+
 procedure TfrmMensalidades.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
  frmMensalidades := nil;
@@ -420,19 +478,8 @@ end;
 
 procedure TfrmMensalidades.FormCreate(Sender: TObject);
 begin
- cbPsqAlunos.Items.Clear;
- cbPsqAlunos.Items.Add('Todos');
- cbPsqAlunos.ItemIndex := 0;
- qryAlunos.DisableControls;
- qryAlunos.Open();
- qryAlunos.First;
- while not qryAlunos.Eof do
- begin
-   cbPsqAlunos.Items.Add(qryAlunosNOME.AsString);
-   qryAlunos.Next;
- end;
- qryAlunos.Close;
- qryAlunos.EnableControls;
+  PreenCbAlunos;
+  PreenCbPlanos;
 end;
 
 procedure TfrmMensalidades.FormKeyPress(Sender: TObject; var Key: Char);
@@ -458,11 +505,13 @@ end;
 procedure TfrmMensalidades.qryMensalidadeAfterClose(DataSet: TDataSet);
 begin
  qryAlunos.Close;
+ qryPlanos.Close;
 end;
 
 procedure TfrmMensalidades.qryMensalidadeAfterOpen(DataSet: TDataSet);
 begin
  qryAlunos.Open();
+ qryPlanos.Open();
 end;
 
 procedure TfrmMensalidades.qryMensalidadeCalcFields(DataSet: TDataSet);
@@ -470,6 +519,38 @@ begin
   qryMensalidadeVENCIDA.AsBoolean
       := (qryMensalidadeDT_VENCIMENTO.AsDateTime < Date) and
          (qryMensalidadeDT_RECEBIMENTO.IsNull);
+end;
+
+procedure TfrmMensalidades.qryMensalidadeCOD_PLANOChange(Sender: TField);
+ var
+ lQrySelect : TFdQuery;
+begin
+ if qryMensalidade.State in dsEditModes then
+ begin
+    lQrySelect := TFdQuery.Create(self);
+    try
+       lQrySelect.Connection := dmPrincipal.MySQLConn;
+       lQrySelect.SQL.Add('SELECT VALOR,NUM_MESES FROM PLANOS');
+       lQrySelect.SQL.Add('WHERE ID = ' + InTtoStr(qryMensalidadeCOD_PLANO.AsInteger));
+       lQrySelect.SQL.Add('LIMIT 1');
+       lQrySelect.Open();
+       qryMensalidadeVALOR.AsFloat := lQrySelect.FieldByName('VALOR').AsFloat;
+       qryMensalidadeNUM_MESES.AsInteger := lQrySelect.FieldByName('NUM_MESES').AsInteger;
+    finally
+     lQrySelect.Free;
+    end;
+ end;
+end;
+
+procedure TfrmMensalidades.SalvarMensalidade;
+var
+ lNumMeses : integer;
+ i :integer;
+begin
+ lNumMeses := qryMensalidadeNUM_MESES.AsInteger;
+
+
+
 end;
 
 end.
