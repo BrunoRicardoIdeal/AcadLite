@@ -10,7 +10,7 @@ uses
   FireDAC.Phys.MySQLDef, FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf,uEndereco,
   FireDAC.DApt, FireDAC.Comp.DataSet,IniFiles, Datasnap.DBClient, Soap.InvokeRegistry,Generics.Collections,
   IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient, IdHTTP, Soap.Rio, Soap.SOAPHTTPClient,
-  Xml.xmldom, Datasnap.Provider, Datasnap.Xmlxform, IPPeerClient, REST.Client, Data.Bind.Components, Data.Bind.ObjectScope, Xml.XMLIntf, Xml.adomxmldom, Xml.XMLDoc,
+  Xml.xmldom,uConstantes, Datasnap.Provider, Datasnap.Xmlxform, IPPeerClient, REST.Client, Data.Bind.Components, Data.Bind.ObjectScope, Xml.XMLIntf, Xml.adomxmldom, Xml.XMLDoc,
   Vcl.ComCtrls;
 
 type
@@ -40,15 +40,19 @@ type
     qryInsertUF: TFDQuery;
     qryTabelas: TFDQuery;
     qryTabelasTables_in_acadlite: TStringField;
+    qryInsereMensalidade: TFDQuery;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
+   const
+    FArrayFormaPag : Array[1..5] of String = (FORMA_PG_DINHEIRO
+                                        ,FORMA_PG_CARTAO_CREDITO
+                                        ,FORMA_PG_CARTAO_DEBITO
+                                        ,FORMA_PG_CHEQUE
+                                        ,FORMA_PG_TRANSFERENCIA);
    procedure CriaUsuarioAdmin;
    function GetNomePC: String;
    function ConsultaEndereco(pCep : String):String;
-
-
-
 
     { Private declarations }
 
@@ -65,6 +69,7 @@ type
     procedure salvarLog(pCodUsu : integer; pOperacao : string;pComputador : string);
     procedure ConfiguraConn;
     procedure InserirTpLancPadroes(var pProgBar : TProgressBar);
+    procedure InserirFormaPGPadroes(var pProgBar : TProgressBar);
     procedure CriaInsereUfCid(var pProgBar : TProgressBar);
     function getCodTpLanc(pDesc : String):integer;
     function isInadimp(pCodAluno : integer) : boolean;
@@ -80,6 +85,7 @@ type
     function RemoverCharEsp(aTexto: string; aLimExt: boolean): string;
     function getProxVencimentos(pNMeses : integer ; pDtIni : TDate):TList<TDate>;
     function getVersaoEXE : string;
+
   end;
 
 var
@@ -88,7 +94,7 @@ var
 implementation
 
 uses
-  Winapi.Windows, Vcl.Forms, uConstantes,Strutils;
+  Winapi.Windows, Vcl.Forms, Strutils, System.DateUtils;
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
@@ -198,6 +204,7 @@ var
 begin
  CaminhoEXE := ExtractFilePath(Application.ExeName) ;
  CaminhoConfig := CaminhoEXE + 'Config.ini';
+ XMLTransfProv.TransformRead.TransformationFile := CaminhoEXE + 'ToDp.xtr';
  ConfigINI := TIniFile.Create(CaminhoConfig);
  ConfiguraConn;
  CriaUsuarioAdmin;
@@ -367,6 +374,44 @@ begin
 end;
 
 
+procedure TdmPrincipal.InserirFormaPGPadroes(var pProgBar: TProgressBar);
+var
+ lQry : TFDQuery;
+ lDescricao:string;
+ lTam : Integer;
+begin
+  lQry := TFDQuery.Create(nil);
+  try
+    lQry.Connection := MySQLConn;
+    lQry.SQL.Add('select id,descricao ');
+    lQry.SQL.Add('from formas_pagamento');
+    lQry.SQL.Add('where lower(descricao) = :descricao');
+    lTam := Length(FArrayFormaPag);
+    if pProgBar <> nil then
+    begin
+      pProgBar.Position := 0;
+      pProgBar.min := 0;
+      pProgBar.Max := lTam -1;
+      pProgBar.Step := 1;
+    end;
+    for lDescricao in FArrayFormaPag do
+    begin
+      lQry.Close;
+      pProgBar.StepIt;
+      lQry.ParamByName('descricao').AsString := lowerCase(lDescricao);
+      lQry.Open();
+      if lQry.IsEmpty then
+      begin
+         lQry.Append;
+         lQry.FieldByName('descricao').AsString := lDescricao;
+         lQry.Post;
+      end;
+    end;
+
+  finally
+    lQry.Free;
+  end;
+end;
 
 procedure TdmPrincipal.InserirTpLancPadroes(var pProgBar : TProgressBar );
 var
@@ -480,9 +525,31 @@ end;
 
 function TdmPrincipal.getProxVencimentos(pNMeses: integer; pDtIni: TDate): TList<TDate>;
 var
+ i : integer;
+ lNovaData,lDtMesSeg : tdate;
+ lDia,lNovoDia,lDiaFimMes, lNovoMes,lNovoAno : Integer;
  lLista : TList<TDate>;
 begin
-  lLista := TList<TDate>.Create;
+ lLista := TList<TDate>.Create;
+ lDia := DayOf(pDtini);
+ for i := 1 to pNMeses do
+ begin
+   lDtMesSeg := IncMonth(pDtIni,i);
+   lDiaFimMes := DayOf(endOfTheMonth(lDtMesSeg));
+   if lDia > lDiaFimMes then
+   begin
+     lNovoDia := lDiaFimMes;
+   end
+   else
+   begin
+     lNovoDia := lDia;
+   end;
+   lNovoMes := MonthOf(lDtMesSeg);
+   lNovoAno := YearOf(lDtMesSeg);
+   lNovaData := EncodeDate(lNovoAno,lNovoMes,lNovoDia);
+   lLista.Add(lNovaData);
+ end;
+ Result := lLista;
 end;
 
 function TdmPrincipal.getValorPlano(pCodPlano: integer): double;

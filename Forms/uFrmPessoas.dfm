@@ -286,7 +286,6 @@ object frmPessoas: TfrmPessoas
       Action = acExcluir
       Align = alLeft
       TabOrder = 1
-      ExplicitLeft = 302
     end
     object btnCancelar: TButton
       Left = 226
@@ -500,7 +499,8 @@ object frmPessoas: TfrmPessoas
     OnCalcFields = qryPessoasCalcFields
     Connection = dmPrincipal.MySQLConn
     SQL.Strings = (
-      'select * from pessoas')
+      'select * from pessoas'
+      'and 1 = 2')
     Left = 416
     Top = 232
     object qryPessoascod_pessoa: TFDAutoIncField

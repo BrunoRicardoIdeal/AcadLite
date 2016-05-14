@@ -278,7 +278,8 @@ object frmEquip: TfrmEquip
   object qryEquip: TFDQuery
     Connection = dmPrincipal.MySQLConn
     SQL.Strings = (
-      'select * from equipamentos')
+      'select * from equipamentos'
+      'where 1 = 2')
     Left = 544
     Top = 376
     object qryEquipcod_equip: TFDAutoIncField

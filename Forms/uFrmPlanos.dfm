@@ -2,7 +2,7 @@ object frmPlanos: TfrmPlanos
   Left = 0
   Top = 0
   Caption = 'Planos'
-  ClientHeight = 554
+  ClientHeight = 611
   ClientWidth = 635
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -46,11 +46,18 @@ object frmPlanos: TfrmPlanos
     Caption = 'N'#186' de Meses'
   end
   object Label2: TLabel
-    Left = 52
-    Top = 451
-    Width = 24
+    Left = 16
+    Top = 452
+    Width = 60
     Height = 13
-    Caption = 'Valor'
+    Caption = 'Valor Mensal'
+  end
+  object Label3: TLabel
+    Left = 25
+    Top = 479
+    Width = 51
+    Height = 13
+    Caption = 'Valor Total'
   end
   object GroupBox1: TGroupBox
     Left = 0
@@ -60,8 +67,6 @@ object frmPlanos: TfrmPlanos
     Align = alTop
     Caption = 'Pesquisa'
     TabOrder = 0
-    ExplicitLeft = -165
-    ExplicitWidth = 800
     object lblEdtCod: TLabeledEdit
       Left = 56
       Top = 28
@@ -119,6 +124,7 @@ object frmPlanos: TfrmPlanos
         Expanded = False
         FieldName = 'descricao'
         Title.Caption = 'Descri'#231#227'o'
+        Width = 271
         Visible = True
       end
       item
@@ -142,14 +148,12 @@ object frmPlanos: TfrmPlanos
   end
   object pnlBotoes: TPanel
     Left = 0
-    Top = 513
+    Top = 570
     Width = 635
     Height = 41
     Align = alBottom
     TabOrder = 7
-    ExplicitLeft = -165
-    ExplicitTop = 559
-    ExplicitWidth = 800
+    ExplicitTop = 513
     object btnNovo: TButton
       Left = 1
       Top = 1
@@ -158,7 +162,6 @@ object frmPlanos: TfrmPlanos
       Action = acNovo
       Align = alLeft
       TabOrder = 0
-      ExplicitLeft = -5
     end
     object btnExcluir: TButton
       Left = 301
@@ -227,7 +230,7 @@ object frmPlanos: TfrmPlanos
     TabOrder = 4
   end
   object edtNumMeses: TDBEdit
-    Left = 79
+    Left = 81
     Top = 422
     Width = 73
     Height = 21
@@ -243,6 +246,17 @@ object frmPlanos: TfrmPlanos
     DataField = 'VALOR'
     DataSource = dsPlanos
     TabOrder = 6
+  end
+  object edtVlTotal: TDBEdit
+    Left = 81
+    Top = 476
+    Width = 73
+    Height = 21
+    TabStop = False
+    DataField = 'valor_total'
+    DataSource = dsPlanos
+    Enabled = False
+    TabOrder = 8
   end
   object AcList: TActionList
     Left = 384
@@ -286,6 +300,7 @@ object frmPlanos: TfrmPlanos
     Top = 208
   end
   object qryPlanos: TFDQuery
+    OnCalcFields = qryPlanosCalcFields
     Connection = dmPrincipal.MySQLConn
     SQL.Strings = (
       'select * from planos')
@@ -295,6 +310,7 @@ object frmPlanos: TfrmPlanos
       FieldName = 'id'
       Origin = 'id'
       ProviderFlags = [pfInWhere, pfInKey]
+      ReadOnly = True
     end
     object qryPlanosdescricao: TStringField
       AutoGenerateValue = arDefault
@@ -317,6 +333,11 @@ object frmPlanos: TfrmPlanos
       AutoGenerateValue = arDefault
       FieldName = 'num_meses'
       Origin = 'num_meses'
+    end
+    object qryPlanosvalor_total: TCurrencyField
+      FieldKind = fkCalculated
+      FieldName = 'valor_total'
+      Calculated = True
     end
   end
 end

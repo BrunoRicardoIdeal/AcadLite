@@ -420,7 +420,8 @@ object frmLancFixos: TfrmLancFixos
       '       tl.descricao desc_lanc,'
       '       tl.categoria  '
       'from lancamentos_fixos lf, tipos_lancamentos tl'
-      'where lf.cod_tipo_lanc = tl.cod_tipo_lanc')
+      'where lf.cod_tipo_lanc = tl.cod_tipo_lanc'
+      'and 1 =2')
     Left = 392
     Top = 304
     object qryLancFixoscod_lanc_fixo: TFDAutoIncField

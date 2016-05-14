@@ -11103,8 +11103,7 @@ object frmPrinc: TfrmPrinc
       Caption = '&Relat'#243'rios'
       ParentShowHint = False
       ShowHint = True
-      TabOrder = 7
-      ExplicitTop = 351
+      TabOrder = 8
     end
     object btnLancFixos: TButton
       Left = 1
@@ -11154,9 +11153,7 @@ object frmPrinc: TfrmPrinc
       Align = alTop
       ParentShowHint = False
       ShowHint = True
-      TabOrder = 8
-      ExplicitLeft = -4
-      ExplicitTop = 373
+      TabOrder = 7
     end
   end
   object SBPrinc: TStatusBar

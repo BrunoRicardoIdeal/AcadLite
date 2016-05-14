@@ -26,7 +26,6 @@ type
     acCancelar: TAction;
     acGerar: TAction;
     lblEdtValor: TLabeledEdit;
-    qryInsere: TFDQuery;
     pgReplicar: TProgressBar;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -43,6 +42,8 @@ type
     FDescricaoMens : String;
     Fvalor : double;
     FDtVenc : TDate;
+    FCodPlano: integer;
+    FCodFormaPag: integer;
 
     procedure MontarLista(pNRep : integer ; pDtIni : TDate);
     procedure ValidarPrench;
@@ -54,6 +55,8 @@ type
     property CodAluno : integer read FCodAluno write FCodAluno;
     property Valor : double read Fvalor write Fvalor;
     property DtVenc : TDate read FDtVenc write FDtVenc;
+    property CodPlano : integer read FCodPlano write FCodPlano;
+    property CodformaPag : integer read FCodFormaPag write FCodFormaPag;
   end;
 
 var
@@ -82,12 +85,14 @@ begin
  for ldtVenc in FListaDatas do
  begin
    pgReplicar.StepIt;
-   qryInsere.ParamByName('DESCRICAO').AsString := FDescricaoMens;
-   qryInsere.ParamByName('COD_ALUNO').AsInteger := FCodAluno;
-   qryInsere.ParamByName('VALOR').AsFloat := Fvalor;
-   qryInsere.ParamByName('DT_VENCIMENTO').AsDate := ldtVenc;
+   dmPrincipal.qryInsereMensalidade.ParamByName('DESCRICAO').AsString := FDescricaoMens;
+   dmPrincipal.qryInsereMensalidade.ParamByName('COD_ALUNO').AsInteger := FCodAluno;
+   dmPrincipal.qryInsereMensalidade.ParamByName('VALOR').AsFloat := Fvalor;
+   dmPrincipal.qryInsereMensalidade.ParamByName('COD_PLANO').AsInteger := FCodPlano;
+   dmPrincipal.qryInsereMensalidade.ParamByName('DT_VENCIMENTO').AsDate := ldtVenc;
+   dmPrincipal.qryInsereMensalidade.ParamByName('COD_FORMA_PAGAMENTO').AsInteger := FCodFormaPag;
    dmPrincipal.MySQLConn.StartTransaction;
-   qryInsere.ExecSQL;
+   dmPrincipal.qryInsereMensalidade.ExecSQL;
    try
     dmPrincipal.MySQLConn.Commit;
    except

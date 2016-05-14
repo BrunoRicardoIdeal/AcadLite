@@ -3,7 +3,7 @@ object frmLogin: TfrmLogin
   Top = 0
   BorderIcons = []
   BorderStyle = bsSingle
-  Caption = 'Login'
+  Caption = 'AcadLite - Login'
   ClientHeight = 295
   ClientWidth = 256
   Color = clBtnFace

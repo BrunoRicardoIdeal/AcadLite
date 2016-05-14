@@ -2,7 +2,7 @@ object dmPrincipal: TdmPrincipal
   OldCreateOrder = False
   OnCreate = DataModuleCreate
   OnDestroy = DataModuleDestroy
-  Height = 138
+  Height = 224
   Width = 513
   object MySQLConn: TFDConnection
     Params.Strings = (
@@ -99,7 +99,7 @@ object dmPrincipal: TdmPrincipal
     end
   end
   object XMLTransfProv: TXMLTransformProvider
-    TransformRead.TransformationFile = '..\..\docs\TransformationFiles\ToDp.xtr'
+    TransformRead.TransformationFile = 'ToDp.xtr'
     Left = 336
     Top = 16
   end
@@ -5780,5 +5780,50 @@ object dmPrincipal: TdmPrincipal
       Origin = '`TABLE_NAME`'
       Size = 64
     end
+  end
+  object qryInsereMensalidade: TFDQuery
+    Connection = MySQLConn
+    SQL.Strings = (
+      
+        'INSERT INTO MENSALIDADES(DESCRICAO,COD_ALUNO,DT_VENCIMENTO,VALOR' +
+        ',COD_PLANO,COD_FORMA_PAGAMENTO)'
+      
+        '         VALUES(:DESCRICAO,:COD_ALUNO,:DT_VENCIMENTO,:VALOR,:COD' +
+        '_PLANO,:COD_FORMA_PAGAMENTO)')
+    Left = 56
+    Top = 128
+    ParamData = <
+      item
+        Name = 'DESCRICAO'
+        DataType = ftString
+        ParamType = ptInput
+        Value = Null
+      end
+      item
+        Name = 'COD_ALUNO'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end
+      item
+        Name = 'DT_VENCIMENTO'
+        DataType = ftDate
+        ParamType = ptInput
+        Value = Null
+      end
+      item
+        Name = 'VALOR'
+        DataType = ftFloat
+        ParamType = ptInput
+        Value = Null
+      end
+      item
+        Name = 'COD_PLANO'
+        ParamType = ptInput
+      end
+      item
+        Name = 'COD_FORMA_PAGAMENTO'
+        ParamType = ptInput
+      end>
   end
 end

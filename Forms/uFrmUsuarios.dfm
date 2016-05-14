@@ -235,7 +235,8 @@ object frmUsuarios: TfrmUsuarios
   object qryUsuarios: TFDQuery
     Connection = dmPrincipal.MySQLConn
     SQL.Strings = (
-      'select * from usuarios')
+      'select * from usuarios'
+      'where 1 = 2')
     Left = 416
     Top = 192
     object qryUsuariosid: TFDAutoIncField

@@ -3,13 +3,16 @@ unit uFrmMensalidades;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Data.DB,
   Vcl.Grids, Vcl.DBGrids, System.Actions, Vcl.ActnList, Vcl.DBCtrls, Vcl.Mask,
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,uDmPrincipal,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
   FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client,
-  System.uiTypes,uConstantes, Vcl.ComCtrls;
+  System.uiTypes,uConstantes, Vcl.ComCtrls, System.Classes;
+
+
+type TRecebimento = (trIndividual,trAgrupado);
 
 type
   TfrmMensalidades = class(TForm)
@@ -77,7 +80,7 @@ type
     lblEDtVenc: TLabel;
     dtVencIni: TDateTimePicker;
     chkHabDtVenc: TCheckBox;
-    rgInad: TRadioGroup;
+    rgVencidas: TRadioGroup;
     qryMensalidadeVENCIDA: TBooleanField;
     shpREd: TShape;
     Label10: TLabel;
@@ -97,6 +100,38 @@ type
     edtNumMeses: TDBEdit;
     Label13: TLabel;
     qryMensalidadeNUM_MESES: TIntegerField;
+    qryAgrupamento: TFDQuery;
+    qryAgrupamentocod_agrupamento: TFDAutoIncField;
+    qryAgrupamentodt_operacao: TDateTimeField;
+    qryUpdateMesmoAgrup: TFDQuery;
+    qryMensalidadeCOD_AGRUPAMENTO: TIntegerField;
+    edtCodAgrup: TDBEdit;
+    Label14: TLabel;
+    qryReceber: TFDQuery;
+    qryReceberCOD_MENSALIDADE: TFDAutoIncField;
+    qryReceberDESCRICAO: TStringField;
+    qryReceberCOD_ALUNO: TIntegerField;
+    qryReceberNOME: TStringField;
+    qryReceberDT_VENCIMENTO: TDateField;
+    qryReceberDT_CADASTRO: TDateTimeField;
+    qryReceberDT_RECEBIMENTO: TDateTimeField;
+    qryReceberVALOR: TFloatField;
+    qryReceberVALOR_RECEBIDO: TFloatField;
+    qryReceberCOD_PLANO: TIntegerField;
+    qryReceberCOD_AGRUPAMENTO: TIntegerField;
+    qryReceberPLANO_DESC: TStringField;
+    qryReceberNUM_MESES: TIntegerField;
+    qryMensalidadeCOD_FORMA_PAGAMENTO: TIntegerField;
+    lkpCbFormaPag: TDBLookupComboBox;
+    Label15: TLabel;
+    qryFormaPag: TFDQuery;
+    qryFormaPagid: TFDAutoIncField;
+    qryFormaPagdescricao: TStringField;
+    dsFormaPag: TDataSource;
+    qryReceberCOD_FORMA_PAGAMENTO: TIntegerField;
+    qryMensalidadeFORMA_PAG_DESC: TStringField;
+    cbPsqFormaPag: TComboBox;
+    Label16: TLabel;
     procedure acNovoExecute(Sender: TObject);
     procedure acEditarExecute(Sender: TObject);
     procedure acGravarExecute(Sender: TObject);
@@ -117,10 +152,23 @@ type
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure qryMensalidadeCOD_PLANOChange(Sender: TField);
   private
-    procedure EfetuarRecebimento;
+    var
+     FTipoRecebimento : TRecebimento;
+    procedure EfetuarRecebimento(pTipoRec : TRecebimento);
     procedure PreenCbAlunos;
     procedure PreenCbPlanos;
+    procedure PreenCbFormaPag;
     procedure SalvarMensalidade;
+    procedure CriarProxMensalidades(pDescricao: string; pCodAluno: Integer; pCodPlano: Integer
+              ; pValor: Double; pDtVencLoop: TDate; pCodAgrup : integer);
+    procedure UpdateMesmoAgrupamento(pDescricao: string; pCodAluno: Integer
+                ; pCodPlano: Integer; pValor: Double;pCodAgrup : integer);
+    function getProxCodAgrup : integer;
+    procedure ValidarParaReceber;
+    procedure GerarLancamento(pDescricao: string; pDtVenc: TDate; pValorRec: Double;
+                                  pCodMensalidade: Integer; pCodTipoLanc: Integer);
+    function ReceberMensalidades(pCodAgrup: Integer; pValorRec: Double; pDtRec: TDateTime;pCodFormaPag : integer):TStringList;
+    procedure ValidarPreenchimento;
     { Private declarations }
   public
     { Public declarations }
@@ -131,7 +179,7 @@ var
 
 implementation
 
- uses uFrmReplicarMens;
+ uses uFrmReplicarMens,Generics.Collections;
 
 {$R *.dfm}
 
@@ -139,22 +187,23 @@ procedure TfrmMensalidades.acBtnReceberExecute(Sender: TObject);
 begin
   if not qryMensalidade.IsEmpty then
   begin
-   if qryMensalidade.State in dsEditModes then
+   ValidarParaReceber;
+   if MessageBox(0, 'Deseja receber todas as mensalidades desse agrupamento?'
+        , 'Recebimento Agrupado', MB_ICONQUESTION or MB_YESNO) = mrYes then
    begin
-     MessageBox(0, 'Não é possível receber com a mensalidade em edição! Antes salve ou cancele!'
-        , 'Erro', MB_ICONERROR or MB_OK);
-     Abort;
-   end;
-   if qryMensalidadeVALOR_RECEBIDO.AsFloat > 0 then
+    FTipoRecebimento := trAgrupado;
+
+   end
+   else
    begin
-     MessageBox(0, 'Essa mensalidade já foi recebida' , 'Erro', MB_ICONERROR or MB_OK);
-     Abort;
+    FTipoRecebimento := trIndividual;
    end;
    qryMensalidade.Edit;
    edtValorRecebido.Enabled := True;
-   if edtValorRecebido.CanFocus then
+   lkpCbFormaPag.Enabled := True;
+   if lkpCbFormaPag.CanFocus then
    begin
-    edtValorRecebido.SetFocus;
+    lkpCbFormaPag.SetFocus;
    end;
    btnReceber.Enabled := false;
   end
@@ -232,25 +281,8 @@ procedure TfrmMensalidades.acGravarExecute(Sender: TObject);
 begin
  if qryMensalidade.State in dsEditModes then
  begin
-   if qryMensalidadeDT_VENCIMENTO.IsNull then
-   begin
-     MessageBox(0, 'Informe a data de vencimento', 'Atenção', MB_ICONWARNING or MB_OK);
-     if edtDtVencimento.CanFocus then
-     begin
-       edtDtVencimento.SetFocus;
-     end;
-     abort;
-   end;
-   if qryMensalidadeDT_VENCIMENTO.AsDateTime < Date then
-   begin
-     MessageBox(0, 'A data de vencimento deve ser maior do que a data de hoje!',
-      'Atenção', MB_ICONWARNING or MB_OK);
-     if edtDtVencimento.CanFocus then
-     begin
-       edtDtVencimento.SetFocus;
-     end;
-     Abort;
-   end;
+    ValidarPreenchimento;
+
    if MessageDlg('Deseja realmente gravar?',TMsgDlgType.mtConfirmation
    ,mbYesNo,0) = mrYes then
    begin
@@ -259,7 +291,7 @@ begin
     acExcluir.Enabled := True;
     acNovo.Enabled := True;
     acCancelar.Enabled := False;
-    qryMensalidade.Post;
+    SalvarMensalidade;
     qryMensalidade.Refresh;
     grdMens.Enabled := True;
    end;
@@ -300,11 +332,15 @@ begin
  qryMensalidade.SQL.Add('       ,M.VALOR');
  qryMensalidade.SQL.Add('       ,M.VALOR_RECEBIDO');
  qryMensalidade.SQL.Add('       ,M.COD_PLANO');
+ qryMensalidade.SQL.Add('       ,M.COD_AGRUPAMENTO');
+ qryMensalidade.SQL.Add('       ,M.COD_FORMA_PAGAMENTO');
+ qryMensalidade.SQL.Add('       ,FP.DESCRICAO FORMA_PAG_DESC');
  qryMensalidade.SQL.Add('       ,PL.NUM_MESES');
  qryMensalidade.SQL.Add('       ,PL.DESCRICAO PLANO_DESC');
  qryMensalidade.SQL.Add('FROM MENSALIDADES M');
  qryMensalidade.SQL.Add('INNER JOIN PESSOAS P ON M.COD_ALUNO = P.COD_PESSOA');
  qryMensalidade.SQL.Add('LEFT JOIN PLANOS PL ON M.COD_PLANO = PL.ID');
+ qryMensalidade.SQL.Add('LEFT JOIN FORMAS_PAGAMENTO FP ON M.COD_FORMA_PAGAMENTO = FP.ID');
  qryMensalidade.SQL.Add('WHERE 1 = 1');
  if lblEdtCod.Text <> '' then
  begin
@@ -323,6 +359,10 @@ begin
  begin
    qryMensalidade.SQL.Add('AND PL.DESCRICAO= ' + QuotedStr(cbPsqPlanos.Text));
  end;
+ if cbPsqFormaPag.ItemIndex > 0  then
+ begin
+   qryMensalidade.SQL.Add('AND FP.DESCRICAO= ' + QuotedStr(cbPsqFormaPag.Text));
+ end;
  if rgPsqRec.ItemIndex > 0 then
  begin
    case rgPsqRec.ItemIndex  of
@@ -330,9 +370,9 @@ begin
     2 : qryMensalidade.SQL.Add('AND M.DT_RECEBIMENTO IS NULL');
    end;
  end;
- if rgInad.ItemIndex > 0 then
+ if rgVencidas.ItemIndex > 0 then
  begin
-   case rgInad.ItemIndex  of
+   case rgVencidas.ItemIndex  of
     1 : qryMensalidade.SQL.Add('AND ( ( M.DT_RECEBIMENTO IS NULL) AND (M.DT_VENCIMENTO < CURDATE()) )');
     2 : qryMensalidade.SQL.Add('AND ( ( M.DT_RECEBIMENTO IS NOT NULL) OR (M.DT_VENCIMENTO >= CURDATE()) )');
    end;
@@ -344,7 +384,7 @@ begin
    qryMensalidade.ParamByName('dtfim').AsDate := dtVencFim.Date;
  end;
 
- qryMensalidade.SQL.Add('ORDER BY P.NOME,M.DESCRICAO');
+ qryMensalidade.SQL.Add('ORDER BY P.NOME,M.DESCRICAO,M.DT_VENCIMENTO');
  qryMensalidade.Open();
 
  if qryMensalidade.IsEmpty then
@@ -370,6 +410,8 @@ begin
  frmRepMens.Descricao := qryMensalidadeDESCRICAO.AsString;
  frmRepMens.Valor     := qryMensalidadeVALOR.AsFloat;
  frmRepMens.DtVenc    := qryMensalidadeDT_VENCIMENTO.AsDateTime;
+ frmRepMens.CodPlano  := qryMensalidadeCOD_PLANO.AsInteger;
+ frmRepMens.CodformaPag := qryMensalidadeCOD_FORMA_PAGAMENTO.AsInteger;
  frmRepMens.ShowModal;
  FreeAndNil(frmRepMens);
  end
@@ -391,20 +433,43 @@ end;
 procedure TfrmMensalidades.edtValorRecebidoExit(Sender: TObject);
 begin
   btnReceber.Enabled := True;
-  EfetuarRecebimento;
+  EfetuarRecebimento(FTipoRecebimento);
   edtValorRecebido.Enabled := False;
+  lkpCbFormaPag.Enabled := False;
   qryMensalidade.Cancel;
 end;
 
-procedure TfrmMensalidades.EfetuarRecebimento;
+procedure TfrmMensalidades.EfetuarRecebimento(pTipoRec : TRecebimento);
 var
   lStrAux: string;
+  lCodAgrup : integer;
+  lValorRec : double;
+  lDescricao : string;
+  lDtVenc : TDate;
+  lCodMensalidade : integer;
+  lCodTipoLanc : integer;
+  lCodFormaPag : integer;
+  lDtRec : TDateTime;
+  lMsg : string;
+  lListaNaoRec : TStringList;
+  i : integer;
 begin
 
   lStrAux := '';
   if qryMensalidadeVALOR_RECEBIDO.AsFloat > 0 then
   begin
-    if MessageDlg('Confirma o recebimento?', mtConfirmation, [mbNo, mbYes], 0) = mrYes then
+    if qryMensalidadeCOD_FORMA_PAGAMENTO.AsInteger <= 0  then
+    begin
+      MessageBox(0, 'Informe uma forma de recebimento', 'Atenção', MB_ICONWARNING or MB_OK);
+      if lkpCbFormaPag.CanFocus then
+      begin
+        lkpCbFormaPag.SetFocus;
+      end;
+      Abort;
+    end;
+
+    if MessageDlg('Confirma o recebimento?'+#13#10+'As mensalidades já recebidas não serão alteradas!'
+            , mtConfirmation, [mbNo, mbYes], 0) = mrYes then
     begin
       if qryMensalidadeVALOR_RECEBIDO.AsFloat < qryMensalidadeVALOR.AsFloat then
       begin
@@ -416,22 +481,56 @@ begin
       end;
       if not lStrAux.IsEmpty then
       begin
-        if MessageDlg('O valor recebido é ' + lStrAux + ' do que o valor a receber! Deseja continuar?', mtWarning, [mbYes, mbNo], 0) = mrNo then
+        if MessageDlg('O valor recebido é ' + lStrAux + ' do que o valor a receber! Deseja continuar?'
+              , mtWarning, [mbYes, mbNo], 0) = mrNo then
         begin
           Exit;
         end;
       end;
-      qryMensalidadeDT_RECEBIMENTO.AsDateTime := now;
-      qryMensalidade.Post;
-      qryInsereLanc.ParamByName('DESCRICAO').AsString := qryMensalidadeDESCRICAO.AsString;
-      qryInsereLanc.ParamByName('DT_VENCIMENTO').AsDate := qryMensalidadeDT_VENCIMENTO.AsDateTime;
-      qryInsereLanc.ParamByName('VALOR').AsFloat := qryMensalidadeVALOR.AsFloat;
-      qryInsereLanc.ParamByName('COD_MENSALIDADE').AsInteger := qryMensalidadeCOD_MENSALIDADE.AsInteger;
-      qryInsereLanc.ParamByName('COD_TIPO_LANC').AsInteger := dmPrincipal.getCodTpLanc(LANC_MENS_ALUNO);
-      dmPrincipal.MySQLConn.StartTransaction;
-      qryInsereLanc.ExecSQL;
-      dmPrincipal.MySQLConn.Commit;
-      MessageBox(0, 'Mensalidade Recebida.'+#13+#10+'Lançamento de Receita gerado com sucesso.', 'Informação', MB_ICONINFORMATION or MB_OK);
+
+      lDescricao := qryMensalidadeDESCRICAO.AsString;
+      lDtVenc := qryMensalidadeDT_VENCIMENTO.AsDateTime;
+      lCodAgrup := qryMensalidadeCOD_AGRUPAMENTO.AsInteger;
+      lValorRec := qryMensalidadeVALOR_RECEBIDO.AsFloat;
+      lCodMensalidade := qryMensalidadeCOD_MENSALIDADE.AsInteger;
+      lCodFormaPag := qryMensalidadeCOD_FORMA_PAGAMENTO.AsInteger;
+      lCodTipoLanc := dmPrincipal.getCodTpLanc(LANC_MENS_ALUNO);
+      lDtRec := now;
+      qryMensalidadeDT_RECEBIMENTO.AsDateTime := lDtRec;
+
+      if pTipoRec = trIndividual then
+      begin
+        qryMensalidade.Post;
+        GerarLancamento(lDescricao, lDtVenc, lValorRec, lCodMensalidade, lCodTipoLanc);
+      end
+      else if FTipoRecebimento = trAgrupado then
+      begin
+       lListaNaoRec := ReceberMensalidades(lCodAgrup, lValorRec, lDtRec,lCodFormaPag);
+      end;
+
+      if (Assigned(lListaNaoRec) and (lListaNaoRec.Count > 0) )then
+      begin
+        if lListaNaoRec.Count > 0 then
+        begin
+          lMsg := 'As seguintes mensalidades (Código || Dt.Vencimento) já estavam recebidas, e permaneceram inalteradas:';
+          for i := 0 to lListaNaoRec.Count - 1 do
+          begin
+            lMsg := lMsg + #13#10 + lListaNaoRec[i];
+          end;
+        end;
+        lListaNaoRec.Free;
+      end
+      else
+      begin
+        lMsg := 'Mensalidade(s) Recebida(s).'+#13#10+'Lançamento(s) de Receita gerado(s) com sucesso.';
+      end;
+      qryMensalidade.Refresh;
+
+      MessageBox(0, pChar(lMsg) , 'Concluído', MB_ICONINFORMATION or MB_OK);
+    end
+    else
+    begin
+      qryMensalidadeCOD_FORMA_PAGAMENTO.Clear;
     end;
   end;
 end;
@@ -451,6 +550,23 @@ begin
   end;
   qryAlunos.Close;
   qryAlunos.EnableControls;
+end;
+
+procedure TfrmMensalidades.PreenCbFormaPag;
+begin
+  cbPsqFormaPag.Items.Clear;
+  cbPsqFormaPag.Items.Add('Todos');
+  cbPsqFormaPag.ItemIndex := 0;
+  qryFormaPag.DisableControls;
+  qryFormaPag.Open;
+  qryFormaPag.First;
+  while not qryFormaPag.Eof do
+  begin
+    cbPsqFormaPag.Items.Add(qryFormaPagdescricao.AsString);
+    qryFormaPag.Next;
+  end;
+  qryFormaPag.Close;
+  qryFormaPag.EnableControls;
 end;
 
 procedure TfrmMensalidades.PreenCbPlanos;
@@ -480,6 +596,7 @@ procedure TfrmMensalidades.FormCreate(Sender: TObject);
 begin
   PreenCbAlunos;
   PreenCbPlanos;
+  PreenCbFormaPag;
 end;
 
 procedure TfrmMensalidades.FormKeyPress(Sender: TObject; var Key: Char);
@@ -490,6 +607,144 @@ begin
    Perform(WM_NEXTDLGCTL, 0, 0);
 
  end;
+end;
+
+function TfrmMensalidades.getProxCodAgrup: integer;
+begin
+ if not qryAgrupamento.Active then
+ begin
+   qryAgrupamento.Open();
+ end;
+ qryAgrupamento.Append;
+ qryAgrupamento.Post;
+ result := qryAgrupamentocod_agrupamento.AsInteger;
+end;
+
+procedure TfrmMensalidades.ValidarParaReceber;
+begin
+  if qryMensalidade.State in dsEditModes then
+  begin
+    MessageBox(0, 'Não é possível receber com a mensalidade em edição! Antes salve ou cancele!', 'Erro', MB_ICONERROR or MB_OK);
+    Abort;
+  end;
+  if qryMensalidadeVALOR_RECEBIDO.AsFloat > 0 then
+  begin
+    MessageBox(0, 'Essa mensalidade já foi recebida', 'Erro', MB_ICONERROR or MB_OK);
+    Abort;
+  end;
+end;
+
+procedure TfrmMensalidades.GerarLancamento(pDescricao: string; pDtVenc: TDate; pValorRec: Double;
+            pCodMensalidade: Integer; pCodTipoLanc: Integer);
+begin
+  qryInsereLanc.ParamByName('DESCRICAO').AsString := pDescricao;
+  qryInsereLanc.ParamByName('DT_VENCIMENTO').AsDate := pDtVenc;
+  qryInsereLanc.ParamByName('VALOR').AsFloat := pValorRec;
+  qryInsereLanc.ParamByName('COD_MENSALIDADE').AsInteger := pCodMensalidade;
+  qryInsereLanc.ParamByName('COD_TIPO_LANC').AsInteger := pCodTipoLanc;
+  dmPrincipal.MySQLConn.StartTransaction;
+  try
+    qryInsereLanc.ExecSQL;
+    dmPrincipal.MySQLConn.Commit;
+  except
+    on E: Exception do
+    begin
+      dmPrincipal.MySQLConn.Rollback;
+      raise Exception.Create(E.Message);
+    end;
+  end;
+end;
+
+function TfrmMensalidades.ReceberMensalidades(pCodAgrup: Integer; pValorRec: Double
+                ; pDtRec: TDateTime; pCodFormaPag : integer):TStringList;
+var
+ lListaNRecebidas : TStringList;
+begin
+  lListaNRecebidas  := TStringList.Create;
+  qryReceber.Close;
+  qryReceber.ParamByName('COD_AGRUPAMENTO').AsInteger := pCodAgrup;
+  qryReceber.Open;
+  qryReceber.First;
+  while not qryReceber.Eof do
+  begin
+    if qryReceberDT_RECEBIMENTO.IsNull then
+    begin
+      qryReceber.Edit;
+      qryReceberDT_RECEBIMENTO.AsDateTime := pDtRec;
+      qryReceberVALOR_RECEBIDO.AsFloat := pValorRec;
+      qryReceberCOD_FORMA_PAGAMENTO.AsInteger :=pCodFormaPag;
+      qryReceber.Post;
+      GerarLancamento(qryReceberDESCRICAO.AsString
+                      ,qryReceberDT_VENCIMENTO.AsDateTime
+                      ,pValorRec
+                      ,qryMensalidadeCOD_MENSALIDADE.AsInteger
+                      ,dmPrincipal.getCodTpLanc(LANC_MENS_ALUNO));
+    end
+    else
+    begin
+      lListaNRecebidas.Add(qryReceberCOD_MENSALIDADE.AsString + ' || ' + qryReceberDT_VENCIMENTO.AsString);
+    end;
+    qryReceber.Next;
+  end;
+  Result := lListaNRecebidas;
+end;
+
+procedure TfrmMensalidades.ValidarPreenchimento;
+begin
+  if qryMensalidadeDT_VENCIMENTO.IsNull then
+  begin
+    MessageBox(0, 'Informe a data de vencimento', 'Atenção', MB_ICONWARNING or MB_OK);
+    if edtDtVencimento.CanFocus then
+    begin
+      edtDtVencimento.SetFocus;
+    end;
+    abort;
+  end;
+  if qryMensalidadeDT_VENCIMENTO.AsDateTime < Date then
+  begin
+    MessageBox(0, 'A data de vencimento deve ser maior do que a data de hoje!', 'Atenção', MB_ICONWARNING or MB_OK);
+    if edtDtVencimento.CanFocus then
+    begin
+      edtDtVencimento.SetFocus;
+    end;
+    Abort;
+  end;
+  if qryMensalidadeCOD_PLANO.AsInteger <= 0 then
+  begin
+    MessageBox(0, 'Informe um plano', 'Atenção', MB_ICONWARNING or MB_OK);
+    if lkpcbPlano.CanFocus then
+    begin
+      lkpcbPlano.SetFocus;
+    end;
+    Abort;
+  end;
+  if qryMensalidadeCOD_ALUNO.AsInteger <= 0 then
+  begin
+    MessageBox(0, 'Informe um aluno', 'Atenção', MB_ICONWARNING or MB_OK);
+    if lkpCbAluno.CanFocus then
+    begin
+      lkpCbAluno.SetFocus;
+    end;
+    Abort;
+  end;
+end;
+
+procedure TfrmMensalidades.CriarProxMensalidades(pDescricao: string; pCodAluno: Integer;
+                          pCodPlano: Integer; pValor: Double; pDtVencLoop: TDate;
+                          pCodAgrup:integer);
+
+begin
+  if qryMensalidade.State <> dsInsert then
+  begin
+    qryMensalidade.Append;
+  end;
+  qryMensalidade.FieldByName('DESCRICAO').AsString := pDescricao;
+  qryMensalidade.FieldByName('COD_ALUNO').AsInteger := pCodAluno;
+  qryMensalidade.FieldByName('COD_PLANO').AsInteger := pCodPlano;
+  qryMensalidade.FieldByName('VALOR').AsFloat := pValor;
+  qryMensalidade.FieldByName('DT_VENCIMENTO').AsDateTime := pDtVencLoop;
+  qryMensalidade.FieldByName('COD_AGRUPAMENTO').AsInteger := pCodAgrup;
+  qryMensalidade.Post;
 end;
 
 procedure TfrmMensalidades.grdMensDrawColumnCell(Sender: TObject;
@@ -506,12 +761,14 @@ procedure TfrmMensalidades.qryMensalidadeAfterClose(DataSet: TDataSet);
 begin
  qryAlunos.Close;
  qryPlanos.Close;
+ qryFormaPag.Close();
 end;
 
 procedure TfrmMensalidades.qryMensalidadeAfterOpen(DataSet: TDataSet);
 begin
  qryAlunos.Open();
  qryPlanos.Open();
+ qryFormaPag.Open();
 end;
 
 procedure TfrmMensalidades.qryMensalidadeCalcFields(DataSet: TDataSet);
@@ -545,12 +802,73 @@ end;
 procedure TfrmMensalidades.SalvarMensalidade;
 var
  lNumMeses : integer;
- i :integer;
+ lListaVenc : TList<TDate>;
+ lDtVencLoop,lDtVenc : TDate;
+ lDescricao : string;
+ lCodAluno,lCodPlano : integer;
+ lValor : double;
+ lOperacao : TDataSetState;
+ lCodAgrup : Integer;
 begin
+ lDescricao := qryMensalidadeDESCRICAO.AsString;
+ lCodAluno := qryMensalidadeCOD_ALUNO.AsInteger;
+ lCodPlano := qryMensalidadeCOD_PLANO.AsInteger;
+ lValor := qryMensalidadeVALOR.AsFloat;
  lNumMeses := qryMensalidadeNUM_MESES.AsInteger;
+ lDtVenc := qryMensalidadeDT_VENCIMENTO.AsDateTime;
+ lOperacao := qryMensalidade.State;
+ if lOperacao = dsInsert then
+ begin
+   lCodAgrup := getProxCodAgrup;
+   qryMensalidadeCOD_AGRUPAMENTO.AsInteger := lCodAgrup;
+   qryMensalidade.Post;
+   dec(lNumMeses);
+   lListaVenc := dmPrincipal.getProxVencimentos(lNumMeses,lDtVenc);
+   for lDtVencLoop in lListaVenc do
+   begin
+      CriarProxMensalidades(lDescricao, lCodAluno, lCodPlano, lValor, lDtVencLoop,lCodAgrup);
+   end;
+ end
+ else if lOperacao = dsEdit then
+ begin
+   if MessageBox(0, 'Deseja replicar a alteração para todas as mensalidades desse agrupamento?' + #13#10
+                + 'A data de vencimento não será replicada!'
+          , 'Atenção', MB_ICONWARNING or MB_YESNO) = mrYes then
+   begin
+
+     lCodAgrup := qryMensalidadeCOD_AGRUPAMENTO.AsInteger;
+     qryMensalidade.Post;
+     UpdateMesmoAgrupamento(lDescricao, lCodAluno, lCodPlano, lValor,lCodAgrup);
+   end;
+ end;
 
 
 
+
+
+end;
+
+procedure TfrmMensalidades.UpdateMesmoAgrupamento(pDescricao: string; pCodAluno,
+      pCodPlano: Integer; pValor: Double; pCodAgrup : integer);
+begin
+ qryUpdateMesmoAgrup.ParamByName('DESCRICAO').AsString := pDescricao;
+ qryUpdateMesmoAgrup.ParamByName('COD_ALUNO').Asinteger := pCodAluno;
+ qryUpdateMesmoAgrup.ParamByName('COD_PLANO').Asinteger := pCodPlano;
+ qryUpdateMesmoAgrup.ParamByName('VALOR').AsFloat := pValor;
+ qryUpdateMesmoAgrup.ParamByName('COD_AGRUPAMENTO').AsInteger := pCodAgrup;
+ dmPrincipal.MySQLConn.StartTransaction;
+ try
+  qryUpdateMesmoAgrup.ExecSQL;
+  dmPrincipal.MySQLConn.Commit;
+
+ except
+   on E: Exception do
+   begin
+     dmPrincipal.MySQLConn.Rollback;
+     raise Exception.Create(E.Message);
+   end;
+
+ end;
 end;
 
 end.

@@ -17,6 +17,13 @@ interface
     PES_ALUNO = 'Aluno';
     PES_PROFESSOR = 'Professor';
 
+    {Formas Pagamento}
+    FORMA_PG_DINHEIRO = 'Dinheiro';
+    FORMA_PG_CARTAO_CREDITO = 'Cartão de Crédito';
+    FORMA_PG_CARTAO_DEBITO = 'Cartão de Débito';
+    FORMA_PG_CHEQUE = 'Cheque';
+    FORMA_PG_TRANSFERENCIA = 'Transferência';
+
     {mask}
     TRIM_MASK_TEL = '(  )';
 

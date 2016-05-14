@@ -44,6 +44,9 @@ type
     qryPlanosdt_cadastro: TDateTimeField;
     qryPlanosvalor: TFloatField;
     qryPlanosnum_meses: TIntegerField;
+    edtVlTotal: TDBEdit;
+    Label3: TLabel;
+    qryPlanosvalor_total: TCurrencyField;
     procedure acNovoExecute(Sender: TObject);
     procedure acEditarExecute(Sender: TObject);
     procedure acGravarExecute(Sender: TObject);
@@ -52,6 +55,7 @@ type
     procedure acPesquisarExecute(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure qryPlanosCalcFields(DataSet: TDataSet);
   private
    function ExisteMens(pCodPlano:integer):Boolean;
     { Private declarations }
@@ -261,6 +265,11 @@ begin
    Perform(WM_NEXTDLGCTL, 0, 0);
 
  end;
+end;
+
+procedure TfrmPlanos.qryPlanosCalcFields(DataSet: TDataSet);
+begin
+ qryPlanosvalor_total.AsFloat := qryPlanosvalor.AsFloat * qryPlanosnum_meses.AsInteger;
 end;
 
 end.

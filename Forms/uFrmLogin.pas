@@ -53,10 +53,10 @@ begin
    lblProcesso.Enabled := True;
    Application.ProcessMessages;
    lblProcesso.Caption := 'Iniciando configurações padrões...';
-   dmPrincipal.InserirTpLancPadroes(pbLogin);
-   lblProcesso.Caption := 'Conferindo dados importantes...';
    dmPrincipal.CriaInsereUfCid(pbLogin);
-
+   lblProcesso.Caption := 'Conferindo dados importantes...';
+   dmPrincipal.InserirTpLancPadroes(pbLogin);
+   dmPrincipal.InserirFormaPGPadroes(pbLogin);
    Close;
  end;
 end;

@@ -55,10 +55,6 @@ begin
  lLanc.categoria := 'Despesa';
  FLista.Add(lLanc);
 
-
-
-
-
 end;
 
 destructor TListLancPad.Destroy;

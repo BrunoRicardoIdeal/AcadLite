@@ -134,39 +134,4 @@ object frmRepMens: TfrmRepMens
       OnExecute = acCancelarExecute
     end
   end
-  object qryInsere: TFDQuery
-    Connection = dmPrincipal.MySQLConn
-    SQL.Strings = (
-      
-        'INSERT INTO MENSALIDADES(DESCRICAO,COD_ALUNO,DT_VENCIMENTO,VALOR' +
-        ')'
-      '         VALUES(:DESCRICAO,:COD_ALUNO,:DT_VENCIMENTO,:VALOR)')
-    Left = 248
-    Top = 96
-    ParamData = <
-      item
-        Name = 'DESCRICAO'
-        DataType = ftString
-        ParamType = ptInput
-        Value = Null
-      end
-      item
-        Name = 'COD_ALUNO'
-        DataType = ftInteger
-        ParamType = ptInput
-        Value = Null
-      end
-      item
-        Name = 'DT_VENCIMENTO'
-        DataType = ftDate
-        ParamType = ptInput
-        Value = Null
-      end
-      item
-        Name = 'VALOR'
-        DataType = ftFloat
-        ParamType = ptInput
-        Value = Null
-      end>
-  end
 end

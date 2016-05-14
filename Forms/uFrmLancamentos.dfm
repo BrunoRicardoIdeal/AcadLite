@@ -97,16 +97,18 @@ object frmLancamentos: TfrmLancamentos
     Align = alTop
     Caption = 'Pesquisa'
     TabOrder = 0
+    ExplicitLeft = -214
+    ExplicitTop = -58
     object Label4: TLabel
       Left = 383
-      Top = 58
+      Top = 45
       Width = 47
       Height = 13
       Caption = 'Categoria'
     end
     object lblEDtVenc: TLabel
       Left = 273
-      Top = 107
+      Top = 94
       Width = 6
       Height = 13
       Caption = 'e'
@@ -114,7 +116,7 @@ object frmLancamentos: TfrmLancamentos
     end
     object lblEdtCod: TLabeledEdit
       Left = 56
-      Top = 28
+      Top = 15
       Width = 73
       Height = 21
       EditLabel.Width = 33
@@ -126,7 +128,7 @@ object frmLancamentos: TfrmLancamentos
     end
     object lblEdtDesc: TLabeledEdit
       Left = 56
-      Top = 55
+      Top = 42
       Width = 321
       Height = 21
       EditLabel.Width = 46
@@ -137,7 +139,7 @@ object frmLancamentos: TfrmLancamentos
     end
     object btnPsq: TButton
       Left = 56
-      Top = 128
+      Top = 115
       Width = 75
       Height = 25
       Action = acPesquisar
@@ -145,7 +147,7 @@ object frmLancamentos: TfrmLancamentos
     end
     object cbCategoria: TComboBox
       Left = 436
-      Top = 55
+      Top = 42
       Width = 128
       Height = 22
       Style = csOwnerDrawFixed
@@ -159,7 +161,7 @@ object frmLancamentos: TfrmLancamentos
     end
     object chkExcluidos: TCheckBox
       Left = 56
-      Top = 82
+      Top = 69
       Width = 117
       Height = 17
       Hint = 
@@ -172,7 +174,7 @@ object frmLancamentos: TfrmLancamentos
     end
     object chkHabDtVenc: TCheckBox
       Left = 56
-      Top = 105
+      Top = 92
       Width = 123
       Height = 17
       Caption = 'Dt. Vencimento entre'
@@ -181,7 +183,7 @@ object frmLancamentos: TfrmLancamentos
     end
     object dtVencIni: TDateTimePicker
       Left = 185
-      Top = 102
+      Top = 89
       Width = 83
       Height = 21
       Date = 42487.935495578710000000
@@ -191,7 +193,7 @@ object frmLancamentos: TfrmLancamentos
     end
     object dtVencFim: TDateTimePicker
       Left = 287
-      Top = 102
+      Top = 89
       Width = 83
       Height = 21
       Date = 42487.935495578710000000
@@ -520,7 +522,8 @@ object frmLancamentos: TfrmLancamentos
       #9#9'  else  0 '
       #9#9' end valor_despesa  '
       'from lancamentos l , tipos_lancamentos tl'
-      'where l.cod_tipo_lanc = tl.cod_tipo_lanc')
+      'where l.cod_tipo_lanc = tl.cod_tipo_lanc'
+      'and 1 =2')
     Left = 552
     Top = 240
     object qryLanccod_lanc: TFDAutoIncField
