@@ -96,7 +96,7 @@ object frmUsuarios: TfrmUsuarios
       Height = 39
       Action = acExcluir
       Align = alLeft
-      TabOrder = 1
+      TabOrder = 4
     end
     object btnCancelar: TButton
       Left = 226
@@ -105,7 +105,7 @@ object frmUsuarios: TfrmUsuarios
       Height = 39
       Action = acCancelar
       Align = alLeft
-      TabOrder = 2
+      TabOrder = 3
     end
     object btnEditar: TButton
       Left = 76
@@ -114,7 +114,7 @@ object frmUsuarios: TfrmUsuarios
       Height = 39
       Action = acEditar
       Align = alLeft
-      TabOrder = 3
+      TabOrder = 1
     end
     object btnGravar: TButton
       Left = 151
@@ -123,7 +123,7 @@ object frmUsuarios: TfrmUsuarios
       Height = 39
       Action = acGravar
       Align = alLeft
-      TabOrder = 4
+      TabOrder = 2
     end
   end
   object grdUsuarios: TDBGrid

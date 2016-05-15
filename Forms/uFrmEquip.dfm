@@ -124,7 +124,7 @@ object frmEquip: TfrmEquip
       Height = 39
       Action = acExcluir
       Align = alLeft
-      TabOrder = 1
+      TabOrder = 3
     end
     object btnCancelar: TButton
       Left = 226
@@ -142,7 +142,7 @@ object frmEquip: TfrmEquip
       Height = 39
       Action = acEditar
       Align = alLeft
-      TabOrder = 3
+      TabOrder = 1
     end
     object btnGravar: TButton
       Left = 151

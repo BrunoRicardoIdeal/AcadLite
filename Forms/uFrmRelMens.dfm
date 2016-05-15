@@ -12,6 +12,7 @@ object frmRelMens: TfrmRelMens
   Font.Style = []
   KeyPreview = True
   OldCreateOrder = False
+  Position = poScreenCenter
   OnCreate = FormCreate
   OnKeyPress = FormKeyPress
   PixelsPerInch = 96
@@ -26,14 +27,14 @@ object frmRelMens: TfrmRelMens
   end
   object Label1: TLabel
     Left = 38
-    Top = 88
+    Top = 91
     Width = 27
     Height = 13
     Caption = 'Aluno'
   end
   object lblEdtCod: TLabeledEdit
     Left = 72
-    Top = 28
+    Top = 35
     Width = 73
     Height = 21
     EditLabel.Width = 33
@@ -45,7 +46,7 @@ object frmRelMens: TfrmRelMens
   end
   object lblEdtDesc: TLabeledEdit
     Left = 72
-    Top = 55
+    Top = 62
     Width = 314
     Height = 21
     EditLabel.Width = 46
@@ -85,7 +86,7 @@ object frmRelMens: TfrmRelMens
   end
   object cbAlunos: TComboBox
     Left = 72
-    Top = 85
+    Top = 88
     Width = 314
     Height = 22
     Style = csOwnerDrawFixed
@@ -257,7 +258,7 @@ object frmRelMens: TfrmRelMens
     end
   end
   object frxMens: TfrxReport
-    Version = '5.5'
+    Version = '5.1.5'
     DotMatrixReport = False
     IniFile = '\Software\Fast Reports'
     PreviewOptions.Buttons = [pbPrint, pbLoad, pbSave, pbExport, pbZoom, pbFind, pbOutline, pbPageSetup, pbTools, pbEdit, pbNavigator, pbExportQuick]

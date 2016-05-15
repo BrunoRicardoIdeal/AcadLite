@@ -498,6 +498,7 @@ begin
       lDtRec := now;
       qryMensalidadeDT_RECEBIMENTO.AsDateTime := lDtRec;
 
+
       if pTipoRec = trIndividual then
       begin
         qryMensalidade.Post;
@@ -507,22 +508,25 @@ begin
       begin
        lListaNaoRec := ReceberMensalidades(lCodAgrup, lValorRec, lDtRec,lCodFormaPag);
       end;
-
-      if (Assigned(lListaNaoRec) and (lListaNaoRec.Count > 0) )then
-      begin
-        if lListaNaoRec.Count > 0 then
+      lListaNaoRec := TStringList.Create;
+      try
+        if (Assigned(lListaNaoRec) and (lListaNaoRec.Count > 0) )then
         begin
-          lMsg := 'As seguintes mensalidades (Código || Dt.Vencimento) já estavam recebidas, e permaneceram inalteradas:';
-          for i := 0 to lListaNaoRec.Count - 1 do
+          if lListaNaoRec.Count > 0 then
           begin
-            lMsg := lMsg + #13#10 + lListaNaoRec[i];
+            lMsg := 'As seguintes mensalidades (Código || Dt.Vencimento) já estavam recebidas, e permaneceram inalteradas:';
+            for i := 0 to lListaNaoRec.Count - 1 do
+            begin
+              lMsg := lMsg + #13#10 + lListaNaoRec[i];
+            end;
           end;
+        end
+        else
+        begin
+          lMsg := 'Mensalidade(s) Recebida(s).'+#13#10+'Lançamento(s) de Receita gerado(s) com sucesso.';
         end;
+      finally
         lListaNaoRec.Free;
-      end
-      else
-      begin
-        lMsg := 'Mensalidade(s) Recebida(s).'+#13#10+'Lançamento(s) de Receita gerado(s) com sucesso.';
       end;
       qryMensalidade.Refresh;
 
@@ -597,6 +601,8 @@ begin
   PreenCbAlunos;
   PreenCbPlanos;
   PreenCbFormaPag;
+  dtVencIni.Date :=Date;
+  dtVencFim.Date :=Date;
 end;
 
 procedure TfrmMensalidades.FormKeyPress(Sender: TObject; var Key: Char);
