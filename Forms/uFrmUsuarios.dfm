@@ -125,6 +125,17 @@ object frmUsuarios: TfrmUsuarios
       Align = alLeft
       TabOrder = 2
     end
+    object btnPermissoes: TButton
+      Left = 724
+      Top = 1
+      Width = 75
+      Height = 39
+      Align = alRight
+      Caption = 'Permiss'#245'es'
+      TabOrder = 5
+      OnClick = btnPermissoesClick
+      ExplicitLeft = 725
+    end
   end
   object grdUsuarios: TDBGrid
     Left = 0

@@ -24,7 +24,10 @@ uses
   uFrmTipoLanc in 'Forms\uFrmTipoLanc.pas' {frmTiposLanc},
   uFrmUsuarios in 'Forms\uFrmUsuarios.pas' {frmUsuarios},
   uEndereco in 'Class\uEndereco.pas',
-  uFrmPlanos in 'Forms\uFrmPlanos.pas' {frmPlanos};
+  uFrmPlanos in 'Forms\uFrmPlanos.pas' {frmPlanos},
+  uPermissoes in 'Class\uPermissoes.pas',
+  uTelas in 'Class\uTelas.pas',
+  uFrmPermissoes in 'Forms\uFrmPermissoes.pas' {frmPermissoes};
 
 {$R *.res}
 

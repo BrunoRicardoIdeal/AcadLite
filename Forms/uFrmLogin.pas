@@ -27,6 +27,8 @@ type
     procedure FormKeyPress(Sender: TObject; var Key: Char);
   private
    function TentarLogin(pLogin,pSenha : string) : boolean;
+   procedure ConfigurarPermissoes;
+    procedure Entrar;
     { Private declarations }
   public
     { Public declarations }
@@ -37,34 +39,40 @@ var
 
 implementation
   uses
-   uFrmPrinc,uConstantes;
+   uFrmPrinc,uConstantes, uPermissoes;
 
  {$R *.dfm}
 
 procedure TfrmLogin.btnEntrarClick(Sender: TObject);
 begin
- if not TentarLogin(lblEdtUsu.Text,lblEdtSenha.Text) then
- begin
-   MessageBox(0, 'Usuário ou senha incorretos', 'Erro', MB_ICONERROR or MB_OK);
-   Abort;
- end
- else
- begin
-   lblProcesso.Enabled := True;
-   Application.ProcessMessages;
-   lblProcesso.Caption := 'Iniciando configurações padrões...';
-   dmPrincipal.CriaInsereUfCid(pbLogin);
-   lblProcesso.Caption := 'Conferindo dados importantes...';
-   dmPrincipal.InserirTpLancPadroes(pbLogin);
-   dmPrincipal.InserirFormaPGPadroes(pbLogin);
-   Close;
- end;
+  Entrar;
 end;
 
 procedure TfrmLogin.btnFecharClick(Sender: TObject);
 begin
  Close;
  Application.Terminate;
+end;
+
+procedure TfrmLogin.ConfigurarPermissoes;
+var
+ lPerm : TPermissoes;
+begin
+ lPerm := TPermissoes.Create(dmPrincipal.MysqlConn);
+ try
+  frmPrinc.AcPes.Enabled := lPerm.PossuiPermissao(dmPrincipal.CodUsuario,PERM_PESSOAS);
+  frmPrinc.acEquip.Enabled := lPerm.PossuiPermissao(dmPrincipal.CodUsuario,PERM_EQUIPAMENTOS);
+  frmPrinc.AcTpLanc.Enabled := lPerm.PossuiPermissao(dmPrincipal.CodUsuario,PERM_TIPOS_DE_LANC);
+  frmPrinc.acLanc.Enabled := lPerm.PossuiPermissao(dmPrincipal.CodUsuario,PERM_LANC);
+  frmPrinc.acRel.Enabled := lPerm.PossuiPermissao(dmPrincipal.CodUsuario,PERM_REL);
+  frmPrinc.acLancFixos.Enabled := lPerm.PossuiPermissao(dmPrincipal.CodUsuario,PERM_LANC_FIXOS);
+  frmPrinc.acUsuarios.Enabled := lPerm.PossuiPermissao(dmPrincipal.CodUsuario,PERM_USUARIOS);
+  frmPrinc.acMensalidades.Enabled := lPerm.PossuiPermissao(dmPrincipal.CodUsuario,PERM_MENSALIDADES);
+  frmPrinc.acPlanos.Enabled := lPerm.PossuiPermissao(dmPrincipal.CodUsuario,PERM_PLANOS);
+ finally
+   lPerm.Free;
+ end;
+
 end;
 
 procedure TfrmLogin.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -120,6 +128,41 @@ begin
 
   finally
     lQryLog.Free;
+  end;
+end;
+
+procedure TfrmLogin.Entrar;
+begin
+  if not TentarLogin(lblEdtUsu.Text, lblEdtSenha.Text) then
+  begin
+    MessageBox(0, 'Usuário ou senha incorretos', 'Erro', MB_ICONERROR or MB_OK);
+    Abort;
+  end
+  else
+  begin
+    pbLogin.Position := 0;
+    pbLogin.Step := 1;
+    pbLogin.Min := 1;
+    pbLogin.Max := 5;
+    lblProcesso.Enabled := True;
+    Application.ProcessMessages;
+    lblProcesso.Caption := 'Conferindo telas...';
+    dmPrincipal.CriarTelas;
+    pbLogin.StepIt;
+    lblProcesso.Caption := 'Conferindo tipos de lançamentos padrões...';
+    dmPrincipal.InserirTpLancPadroes;
+    pbLogin.StepIt;
+    lblProcesso.Caption := 'Conferindo formas de pagamento padrões...';
+    dmPrincipal.InserirFormaPGPadroes;
+    pbLogin.StepIt;
+    lblProcesso.Caption := 'Conferindo informações de UFs e Cidades brasileiras...';
+    dmPrincipal.CriaInsereUfCid;
+    pbLogin.StepIt;
+    lblProcesso.Caption := 'Conferindo permissões...';
+    dmPrincipal.CriarPermissoes;
+    ConfigurarPermissoes;
+    pbLogin.StepIt;
+    Close;
   end;
 end;
 

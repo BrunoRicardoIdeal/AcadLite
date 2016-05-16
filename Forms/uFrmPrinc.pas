@@ -65,7 +65,7 @@ implementation
          uFrmTipoLanc,uFrmUsuarios,
          uFrmLancamentos, uFrmRelatorios,
          uFrmLogin,ufrmMensalidades,
-         uConstantes, uFrmPlanos;
+         uConstantes, uFrmPlanos,uPermissoes;
 {$R *.dfm}
 
 procedure TfrmPrinc.acEquipExecute(Sender: TObject);
@@ -143,7 +143,7 @@ end;
 
 procedure TfrmPrinc.acUsuariosExecute(Sender: TObject);
 begin
- if dmPrincipal.isAdmin then
+// if dmPrincipal.isAdmin then
  begin
    if frmUsuarios = nil then
    begin
@@ -151,12 +151,12 @@ begin
    end;
   frmUsuarios.Show;
  end
- else
- begin
-   MessageBox(0, 'Faça login como Administrador Master para poder ter acesso!'
-      , 'Atenção', MB_ICONWARNING or MB_OK);
-   Exit;
- end;
+// else
+// begin
+//   MessageBox(0, 'Faça login como Administrador Master para poder ter acesso!'
+//      , 'Atenção', MB_ICONWARNING or MB_OK);
+//   Exit;
+// end;
 end;
 
 procedure TfrmPrinc.btnEquipClick(Sender: TObject);
@@ -167,6 +167,7 @@ begin
  end;
  frmEquip.Show;
 end;
+
 
 
 
@@ -185,8 +186,6 @@ begin
  begin
   ActionList.Actions[i].Enabled := pEnabled;
  end;
-
-
 
 end;
 
@@ -221,7 +220,7 @@ procedure TfrmPrinc.FormShow(Sender: TObject);
 begin
  EfetuarLogin;
  ConfStatusBar;
- DesAtivAc(True);
+// DesAtivAc(True);
 end;
 
 end.

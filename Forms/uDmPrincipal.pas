@@ -68,9 +68,11 @@ type
     { Public declarations }
     procedure salvarLog(pCodUsu : integer; pOperacao : string;pComputador : string);
     procedure ConfiguraConn;
-    procedure InserirTpLancPadroes(var pProgBar : TProgressBar);
-    procedure InserirFormaPGPadroes(var pProgBar : TProgressBar);
-    procedure CriaInsereUfCid(var pProgBar : TProgressBar);
+    procedure InserirTpLancPadroes;
+    procedure InserirFormaPGPadroes;
+    procedure CriaInsereUfCid;
+    procedure CriarTelas;
+    procedure CriarPermissoes;
     function getCodTpLanc(pDesc : String):integer;
     function isInadimp(pCodAluno : integer) : boolean;
     function getListaTiposCli:TStringList;
@@ -85,6 +87,7 @@ type
     function RemoverCharEsp(aTexto: string; aLimExt: boolean): string;
     function getProxVencimentos(pNMeses : integer ; pDtIni : TDate):TList<TDate>;
     function getVersaoEXE : string;
+    function GetCodUsuAdmMaster : integer;
 
   end;
 
@@ -94,7 +97,7 @@ var
 implementation
 
 uses
-  Winapi.Windows, Vcl.Forms, Strutils, System.DateUtils;
+  Winapi.Windows, Vcl.Forms, Strutils, System.DateUtils, uTelas, uPermissoes;
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
@@ -139,12 +142,10 @@ begin
   restReq.Execute;
   Result:= restResp.Content
 end;
-procedure TdmPrincipal.CriaInsereUfCid(var pProgBar : TProgressBar);
+procedure TdmPrincipal.CriaInsereUfCid;
 var
  lExiste : boolean;
- lUsaPB : boolean;
 begin
-   lUsaPB := pProgBar <> nil;
    if not qryTabelas.Active then
    begin
     qryTabelas.Open();
@@ -152,28 +153,44 @@ begin
    lExiste := qryTabelas.Locate('Tables_in_acadlite','pais',[loCaseInsensitive]);
    if not lExiste then
    begin
-     if lUsaPB then
-     begin
-       pProgBar.Position := 0;
-       pProgBar.Min := 0;
-       pProgBar.Max := 3;
-     end;
 
      MySQLConn.StartTransaction;
      try
       Application.ProcessMessages;
-      pProgBar.StepIt;
       qryInsertUF.ExecSQL;
-      pProgBar.StepIt;
       Application.ProcessMessages;
       MySQLConn.Commit;
-      pProgBar.StepIt;
      except
       MySQLConn.Rollback;
      end;
 
    end;
    qryTabelas.Close;
+end;
+
+procedure TdmPrincipal.CriarPermissoes;
+var
+ lPerm : TPermissoes;
+begin
+ lPerm := TPermissoes.Create(MySQLConn);
+ try
+   lPerm.CriarTodasPermissoes;
+   lPerm.ConcederTodasPermissoes(GetCodUsuAdmMaster);
+ finally
+   lPerm.Free;
+ end;
+end;
+
+procedure TdmPrincipal.CriarTelas;
+var
+ lTelas : TTelas;
+begin
+ lTelas := TTelas.Create(MySQLConn);
+ try
+   lTelas.CriarTodasTelas();
+ finally
+    lTelas.Free;
+ end;
 end;
 
 procedure TdmPrincipal.CriaUsuarioAdmin;
@@ -262,6 +279,25 @@ begin
   finally
    lQrySelect.Free;
   end;
+end;
+
+function TdmPrincipal.GetCodUsuAdmMaster: integer;
+var
+ lQryGetCod : TFDQuery;
+begin
+ lQryGetCod := TFDQuery.Create(nil);
+ try
+  lQryGetCod.Connection := MySQLConn;
+  lQryGetCod.SQL.Add('SELECT ID FROM USUARIOS');
+  lQryGetCod.SQL.Add('WHERE LOWER(NOME) = :NOME');
+  lQryGetCod.SQL.Add('AND SENHA = :SENHA');
+  lQryGetCod.ParamByName('NOME').AsString := USER_ADMIN;
+  lQryGetCod.ParamByName('SENHA').AsString := PAS_ADMIN;
+  lQryGetCod.Open();
+  Result := lQryGetCod.FieldByName('ID').AsInteger;
+ finally
+  lQryGetCod.Free;
+ end;
 end;
 
 function TdmPrincipal.GetEndereco(pCep: String): TEndereco;
@@ -374,7 +410,7 @@ begin
 end;
 
 
-procedure TdmPrincipal.InserirFormaPGPadroes(var pProgBar: TProgressBar);
+procedure TdmPrincipal.InserirFormaPGPadroes;
 var
  lQry : TFDQuery;
  lDescricao:string;
@@ -387,17 +423,9 @@ begin
     lQry.SQL.Add('from formas_pagamento');
     lQry.SQL.Add('where lower(descricao) = :descricao');
     lTam := Length(FArrayFormaPag);
-    if pProgBar <> nil then
-    begin
-      pProgBar.Position := 0;
-      pProgBar.min := 0;
-      pProgBar.Max := lTam -1;
-      pProgBar.Step := 1;
-    end;
     for lDescricao in FArrayFormaPag do
     begin
       lQry.Close;
-      pProgBar.StepIt;
       lQry.ParamByName('descricao').AsString := lowerCase(lDescricao);
       lQry.Open();
       if lQry.IsEmpty then
@@ -413,16 +441,14 @@ begin
   end;
 end;
 
-procedure TdmPrincipal.InserirTpLancPadroes(var pProgBar : TProgressBar );
+procedure TdmPrincipal.InserirTpLancPadroes;
 var
  lQrySelect : TFdQuery;
  lExiste: boolean;
  lLancPad : TListLancPad;
  i : integer;
- lUsaPB : Boolean;
  lCountLista : integer;
 begin
-  lUsaPB := pProgBar <> nil;
   lQrySelect := TFDQuery.Create(nil);
   lLancPad := TListLancPad.Create;
   try
@@ -435,15 +461,8 @@ begin
    lQrySelect.Open();
 
    lCountLista := lLancPad.GetLista.Count;
-   if lUsaPB then
-   begin
-       pProgBar.Position := 0;
-       pProgBar.Min := 0;
-       pProgBar.Max := lCountLista - 1;
-   end;
    for i := 0 to  lCountLista - 1 do
    begin
-     pProgBar.StepIt;
      Application.ProcessMessages;
      lQrySelect.First;
      lExiste := False;

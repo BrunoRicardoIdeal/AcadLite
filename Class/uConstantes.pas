@@ -31,6 +31,26 @@ interface
     USER_ADMIN = 'Admin';
     PAS_ADMIN = '#Admin123';
 
+    {Permissões}
+    PERM_PESSOAS='Acesso à tela de Pessoas';
+    PERM_EQUIPAMENTOS = 'Acesso à tela de Equipamentos';
+    PERM_TIPOS_DE_LANC = 'Acesso à tela de Tipos de Lançamento';
+    PERM_LANC = 'Acesso à tela de Lançamentos';
+    PERM_LANC_FIXOS = 'Acesso à tela de Lançamentos Fixos';
+    PERM_MENSALIDADES = 'Acesso à tela de Mensalidades';
+    PERM_USUARIOS = 'Acesso à tela de Usuários';
+    PERM_PLANOS ='Acesso à tela de Planos';
+    PERM_REL = 'Acesso à tela de Relatórios';
+    PERM_REL_PESSOAS = 'Acesso à tela de Relatórios de Pessoas';
+    PERM_REL_EQUIPAMENTOS = 'Acesso à tela de Relatórios de Equipamentos';
+    PERM_REL_TIPOS_LANC= 'Acesso à tela de Relatórios de Tipos de Lançamento';
+    PERM_REL_LANC ='Acesso à tela de Relatórios de Lançamentos';
+    PERM_REL_MENS= 'Acesso à tela de Relatórios de Mensalidades';
+
+
+
+
+
     {URL}
     URL_CEP_CORREIOS = 'viacep.com.br/ws/';
 

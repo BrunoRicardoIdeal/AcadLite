@@ -42,6 +42,7 @@ type
     lblEdtNovaSenha: TLabeledEdit;
     lblEdtConfNovaSenha: TLabeledEdit;
     qryUsuariosadmin: TStringField;
+    btnPermissoes: TButton;
     procedure acNovoExecute(Sender: TObject);
     procedure acEditarExecute(Sender: TObject);
     procedure acGravarExecute(Sender: TObject);
@@ -51,6 +52,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
+    procedure btnPermissoesClick(Sender: TObject);
   private
     procedure ValidaPreench;
     procedure ValidaAdmin(pUser,pPas : string);
@@ -64,7 +66,7 @@ var
 
 implementation
 
- uses uDmPrincipal;
+ uses uDmPrincipal, uFrmPermissoes,uConstantes;
 
 {$R *.dfm}
 
@@ -208,6 +210,28 @@ begin
    MessageBox(0, 'Nada encontrado', 'Informação', MB_ICONINFORMATION or MB_OK);
    Exit;
  end;
+end;
+
+procedure TfrmUsuarios.btnPermissoesClick(Sender: TObject);
+begin
+ if qryUsuarios.IsEmpty then
+ begin
+   MessageBox(0, 'Nenhuma pessoa selecionada!', 'Atenção', MB_ICONWARNING or MB_OK);
+   Abort;
+ end;
+ if qryUsuariosnome.AsString = USER_ADMIN then
+ begin
+   MessageBox(0, 'As permissões do Administrador Master não podem ser alteradas!', 'Atenção', MB_ICONWARNING or MB_OK);
+   Abort;
+ end;
+
+ if frmPermissoes = nil then
+ begin
+   Application.CreateForm(TfrmPermissoes,frmPermissoes);
+ end;
+ frmPermissoes.CodUsu := qryUsuariosid.AsInteger;
+ frmPermissoes.NomeUsu := qryUsuariosnome.AsString;
+ frmPermissoes.ShowModal;
 end;
 
 procedure TfrmUsuarios.FormClose(Sender: TObject; var Action: TCloseAction);
